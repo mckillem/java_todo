@@ -1,5 +1,6 @@
 package com.example.demo.todo;
 
+import com.example.demo.todo.exception.TodoNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,11 @@ public class TodoService {
 		todoRepository.save(todo);
 	}
 
-//	public void deleteTodo(Long todoId) {
-//		if(!todoRepository.existsById(todoId)) {
-//			throw new TodoNotFoundException(
-//					"Todo with id " + todoId + " does not exists");
-//		}
-//		todoRepository.deleteById(todoId);
-//	}
+	public void deleteTodo(Long todoId) {
+		if(!todoRepository.existsById(todoId)) {
+			throw new TodoNotFoundException(
+					"Todo with id " + todoId + " does not exists");
+		}
+		todoRepository.deleteById(todoId);
+	}
 }

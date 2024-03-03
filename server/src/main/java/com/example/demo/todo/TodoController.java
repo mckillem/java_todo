@@ -1,10 +1,7 @@
 package com.example.demo.todo;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/todos")
@@ -22,9 +19,8 @@ public class TodoController {
 		todoService.addTodo(todo);
 	}
 
-//	@DeleteMapping(path = "/{todoId}")
-//	public void deleteTodo(
-//			@PathVariable("todoId") Long todoId) {
-//		todoService.deleteTodo(todoId);
-//	}
+	@DeleteMapping(path = "/{todoId}")
+	public void deleteTodo(@PathVariable("todoId") Long todoId) {
+		todoService.deleteTodo(todoId);
+	}
 }
