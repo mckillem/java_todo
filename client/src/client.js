@@ -18,8 +18,14 @@ export const getAllUsers = () =>
 		method: "GET"
 	}).then(checkStatus);
 
-// export const getAllTodos = () =>
-// 	fetch(baseURL + "api/v1/todos", {
-// 		headers: {"Content-Type": "application/json"},
-// 		method: "GET"
-// 	}).then(checkStatus);
+export const getAllTodos = () =>
+	fetch(baseURL + "api/v1/todos", {
+		headers: {"Content-Type": "application/json"},
+		method: "GET"
+	}).then(checkStatus);
+
+export const getAllTodosByUser = (id) =>
+	fetch(baseURL + "api/v1/todos/" + id, {
+		headers: {"Content-Type": "application/json"},
+		method: "GET"
+	}).then(checkStatus);

@@ -16,6 +16,11 @@ public class TodoController {
 		return todoService.getAllTodos();
 	}
 
+	@GetMapping
+	public List<Todo> getAllTodosByUser(id) {
+		return todoService.getAllTodosByUser(id);
+	}
+
 	@PostMapping
 	public void addTodo(@RequestBody Todo todo) {
 		todoService.addTodo(todo);

@@ -1,43 +1,43 @@
 import {useEffect, useState} from "react";
-import {getAllUsers} from "./client";
+import {getAllTodosByUser} from "./client";
 
-function UserList() {
-	const [users, setUsers] = useState([]);
+function TodoList() {
+	const [todos, setTodos] = useState([]);
 	const [fetching, setFetching] = useState(true);
 
-	const fetchUsers = () =>
-		getAllUsers()
+	const fetchTodos = () =>
+		getAllTodosByUser()
 			.then(res => res.json())
 			.then(data => {
-				setUsers(data);
+				setTodos(data);
 			}).catch(err => {
 			console.log(err.response);
 		}).finally(() => setFetching(false));
 
 	useEffect(() => {
 		console.log("component is mounted");
-		fetchUsers();
+		fetchTodos();
 	}, []);
 
 	const buttonOnClick = (id) => {
 		console.log(id)
 		// let navigate = useNavigate();
 		// navigate("user-list/id");
-		window.location.href="todo-list/" + id;
-		// window.location.href="todo-list";
+		// window.location.href="user-list/id";
+
 	}
 
 	return (
 		<>
-			<h1>Seznam uživatelů</h1>
-			{users && users.length > 0 ? users.map(user => {
+			<h1>Seznam úkolů</h1>
+			{todos && todos.length > 0 ? todos.map(todo => {
 				return <div>
-					<button onClick={() => buttonOnClick(user.id)}>{user.username}</button>
+					<button onClick={() => buttonOnClick(todo.id)}>{todo.content}</button>
 					<br/>
 				</div>
-			}) : "no users"}
+			}) : "no todos"}
 		</>
 	)
 }
 
-export default UserList;
+export default TodoList;
