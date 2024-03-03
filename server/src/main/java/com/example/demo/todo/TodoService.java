@@ -12,15 +12,14 @@ public class TodoService {
 	private TodoRepository todoRepository;
 
 	public List<Todo> getAllTodos() {
-		List<Todo> all = todoRepository.findAll();
 
-		return all;
+		return todoRepository.findAll();
 	}
 
 	public void addTodo(Todo todo) {
 //		todo.setCreatedAt(LocalDateTime.now());
 //		todo.setCreatedBy();
-		todoRepository.save(todo);
+		todoRepository.saveAndFlush(todo);
 	}
 
 	public void deleteTodo(Long todoId) {
@@ -29,5 +28,6 @@ public class TodoService {
 					"Todo with id " + todoId + " does not exists");
 		}
 		todoRepository.deleteById(todoId);
+		todoRepository.flush();
 	}
 }
