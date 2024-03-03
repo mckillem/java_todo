@@ -17,14 +17,6 @@ public class Todo {
 	private Long id;
 	private String content;
 	private String description;
-	private int createdBy;
+	private Long createdBy;
 	private boolean visibility = true;
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getId() {
-		return id;
-	}
 }
