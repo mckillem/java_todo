@@ -18,7 +18,7 @@ public class Todo {
 	private String content;
 	private String description;
 	private int createdBy;
-	private boolean visibility;
+	private boolean visibility = true;
 
 	public void setId(Long id) {
 		this.id = id;
