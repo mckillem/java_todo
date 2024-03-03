@@ -4,15 +4,18 @@ import com.example.demo.todo.exception.TodoNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class TodoService {
 	private TodoRepository todoRepository;
 
-//	public List<Todo> getAllTodos() {
-//		List<Todo> all = todoRepository.findAll();
-//		return all;
-//	}
+	public List<Todo> getAllTodos() {
+		List<Todo> all = todoRepository.findAll();
+
+		return all;
+	}
 
 	public void addTodo(Todo todo) {
 //		todo.setCreatedAt(LocalDateTime.now());
