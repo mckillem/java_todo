@@ -16,10 +16,9 @@ public class TodoService {
 		return todoRepository.findAll();
 	}
 
-	public List<Todo> getAllTodosByUser() {
-		List<Todo> all = todoRepository.findAllByUser();
+	public List<Todo> getAllTodosByUser(Long id) {
 
-		return all;
+		return todoRepository.findAllByCreatedBy(id);
 	}
 
 	public void addTodo(Todo todo) {

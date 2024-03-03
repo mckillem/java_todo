@@ -25,7 +25,8 @@ export const getAllTodos = () =>
 	}).then(checkStatus);
 
 export const getAllTodosByUser = (id) =>
-	fetch(baseURL + "api/v1/todos/" + id, {
+	// fetch(baseURL + "api/v1/todos/" + id, {
+	fetch(baseURL + "api/v1/user", {
 		headers: {"Content-Type": "application/json"},
 		method: "GET"
 	}).then(checkStatus);
