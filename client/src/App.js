@@ -9,7 +9,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path={"/"} element={<UserList/>}></Route>
-            <Route path={"/todo-list"} element={<TodoList/>}></Route>
+            <Route path={"/todos/:id"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<TodoList/>}></Route>
           </Routes>
         </BrowserRouter>
       </>

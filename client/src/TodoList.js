@@ -1,12 +1,14 @@
 import {useEffect, useState} from "react";
 import {getAllTodosByUser} from "./client";
+import {useParams} from "react-router-dom";
 
 function TodoList() {
 	const [todos, setTodos] = useState([]);
 	const [fetching, setFetching] = useState(true);
+	let params = useParams();
 
 	const fetchTodos = () =>
-		getAllTodosByUser()
+		getAllTodosByUser(params.id)
 			.then(res => res.json())
 			.then(data => {
 				setTodos(data);
