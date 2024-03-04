@@ -20,11 +20,7 @@ function UserList() {
 	}, []);
 
 	const buttonOnClick = (id) => {
-		console.log(id)
-		// let navigate = useNavigate();
-		// navigate("user-list/id");
-		window.location.href="todo-list/" + id;
-		// window.location.href="todo-list";
+		window.location.href="todos/" + id;
 	}
 
 	return (
