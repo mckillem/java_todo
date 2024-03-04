@@ -16,8 +16,9 @@ public class TodoController {
 		return todoService.getAllTodos();
 	}
 
-	@GetMapping("/user")
-	public List<Todo> getAllTodosByUser(@RequestBody Long id) {
+	@GetMapping("/")
+	@ResponseBody
+	public List<Todo> getAllTodosByUser(@RequestParam Long id) {
 		return todoService.getAllTodosByUser(id);
 	}
 
