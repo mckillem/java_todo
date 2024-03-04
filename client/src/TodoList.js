@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getAllTodosByUser} from "./client";
+import {deleteTodo, getAllTodosByUser} from "./client";
 import {useParams} from "react-router-dom";
 
 function TodoList() {
@@ -16,6 +16,22 @@ function TodoList() {
 			console.log(err.response);
 		}).finally(() => setFetching(false));
 
+	const removeTodo = (todoId, callback) => {
+		deleteTodo(todoId).then(() => {
+			// successNotification("Student deleted", `Student with ${todoId} was deleted`);
+			// console.log(callback);
+			callback();
+		}).catch(err => {
+			// err.response.json().then(res => {
+			// 	console.log(res);
+			// errorNotification(
+			// 	"There was an issue",
+			// 	`${res.message} [${res.status}] [${res.error}]`
+			// )
+			// });
+		});
+	}
+
 	useEffect(() => {
 		console.log("component is mounted");
 		fetchTodos();
@@ -23,10 +39,7 @@ function TodoList() {
 
 	const buttonOnClick = (id) => {
 		console.log(id)
-		// let navigate = useNavigate();
-		// navigate("user-list/id");
-		// window.location.href="user-list/id";
-
+		removeTodo(id, fetchTodos);
 	}
 
 	return (
@@ -34,7 +47,8 @@ function TodoList() {
 			<h1>Seznam úkolů</h1>
 			{todos && todos.length > 0 ? todos.map(todo => {
 				return <div>
-					<button onClick={() => buttonOnClick(todo.id)}>{todo.content}</button>
+					<button>{todo.content}</button>
+					<button onClick={() => buttonOnClick(todo.id)}>X</button>
 					<br/>
 				</div>
 			}) : "no todos"}
