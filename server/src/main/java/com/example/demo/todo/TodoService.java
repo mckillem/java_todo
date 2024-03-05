@@ -16,6 +16,11 @@ public class TodoService {
 		return todoRepository.findAll();
 	}
 
+	public List<Todo> getAllTodosByUser(Long id) {
+
+		return todoRepository.findAllByCreatedBy(id);
+	}
+
 	public void addTodo(Todo todo) {
 //		todo.setCreatedAt(LocalDateTime.now());
 //		todo.setCreatedBy();
