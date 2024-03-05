@@ -30,13 +30,12 @@ export const getAllTodosByUser = (id) =>
 		method: "GET"
 	}).then(checkStatus);
 
-// export const addTodo = async todo =>
-// 	await fetch(baseURL + "api/v1/todos", {
-// 			headers: {"Content-type": "application/json"},
-// 			method: "POST",
-// 			body: JSON.stringify(todo)
-// 		}
-// 	).then(checkStatus)
+export const addTodo = async todo =>
+	await fetch(baseURL + "api/v1/todos", {
+		headers: {"Content-type": "application/json"},
+		method: "POST",
+		body: JSON.stringify(todo)
+	}).then(checkStatus);
 
 export const deleteTodo = (todoId) =>
 	fetch(baseURL +`api/v1/todos/${todoId}`, {

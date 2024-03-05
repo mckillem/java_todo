@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {deleteTodo, getAllTodosByUser} from "./client";
 import {useParams} from "react-router-dom";
+import {AddForm} from "./AddForm";
 
 function TodoList() {
 	const [todos, setTodos] = useState([]);
@@ -38,12 +39,13 @@ function TodoList() {
 	}, []);
 
 	const buttonOnClick = (id) => {
-		console.log(id)
 		removeTodo(id, fetchTodos);
 	}
 
 	return (
 		<>
+			<AddForm fetchTodos={fetchTodos()}/>
+			<br/>
 			<h1>Seznam úkolů</h1>
 			{todos && todos.length > 0 ? todos.map(todo => {
 				return <div>
