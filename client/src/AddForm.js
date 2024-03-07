@@ -8,13 +8,13 @@ export const AddForm = (fetchTodos) => {
 
 	function add(event) {
 		event.preventDefault();
-		console.log(createdBy)
+
 		const todo = {
-			"createdBy": createdBy.target.value,
-			"content": content.target.value,
-			"description": description.target.value,
+			"createdBy": createdBy,
+			"content": content,
+			"description": description,
 		}
-		console.log(todo)
+
 		addTodo(todo)
 			.then(() => {
 				console.log("todo added")
@@ -24,7 +24,7 @@ export const AddForm = (fetchTodos) => {
 				// )
 				fetchTodos();
 			}).catch(err => {
-			console.log(err);
+			// console.log(err);
 			// err.response.json().then(res => {
 			// 	console.log(res);
 				// errorNotification(
@@ -35,6 +35,9 @@ export const AddForm = (fetchTodos) => {
 			// });
 		}).finally(() => {
 			// setSubmitting(false);
+			setCreatedBy("");
+			setContent("");
+			setDescription("");
 		})
 	}
 
@@ -42,9 +45,9 @@ export const AddForm = (fetchTodos) => {
 		<>
 			<h1>Přidat</h1>
 			<form onSubmit={add}>
-				<input type="text" onChange={setCreatedBy} name={"createdBy"} hidden={false}/>
-				<input type="text" onChange={setContent} name={"content"} placeholder={"obsah"}/>
-				<input type="text" onChange={setDescription} name={"description"} placeholder={"popis"}/>
+				<input type="text" onChange={(e) => setCreatedBy(e.target.value)} value={createdBy} name={"createdBy"} hidden={false}/>
+				<input type="text" onChange={(e) => setContent(e.target.value)} value={content} name={"content"} placeholder={"obsah"}/>
+				<input type="text" onChange={(e) => setDescription(e.target.value)} value={description} name={"description"} placeholder={"popis"}/>
 				<button type={"submit"}>Uložit</button>
 			</form>
 		</>
