@@ -1,21 +1,37 @@
 import {useEffect, useState} from "react";
-import {deleteTodo, getAllTodosByUser} from "./client";
+import {deleteTodo, getAllTodos, getAllTodosByUser} from "./client";
 import {useParams} from "react-router-dom";
 import {AddForm} from "./AddForm";
 
 function TodoList() {
 	const [todos, setTodos] = useState([]);
-	const [fetching, setFetching] = useState(true);
+	// const [fetching, setFetching] = useState(true);
+	const [allTodos, setAllTodos] = useState(true);
 	let params = useParams();
 
-	const fetchTodos = () =>
-		getAllTodosByUser(params.id)
-			.then(res => res.json())
-			.then(data => {
-				setTodos(data);
-			}).catch(err => {
-			console.log(err.response);
-		}).finally(() => setFetching(false));
+	const fetchTodos = () => {
+		if (allTodos) {
+			getAllTodos()
+				.then(res => res.json())
+				.then(data => {
+					setTodos(data);
+				}).catch(err => {
+				console.log(err.response);
+			}).finally(
+				// () => setFetching(false)
+			);
+		} else {
+			getAllTodosByUser(params.id)
+				.then(res => res.json())
+				.then(data => {
+					setTodos(data);
+				}).catch(err => {
+				console.log(err.response);
+			}).finally(
+				// () => setFetching(false)
+			);
+		}
+	}
 
 	const removeTodo = (todoId, callback) => {
 		deleteTodo(todoId).then(() => {
@@ -42,14 +58,20 @@ function TodoList() {
 		removeTodo(id, fetchTodos);
 	}
 
+	const switchTodoList = () => {
+		setAllTodos(!allTodos);
+	}
+
 	return (
 		<>
 			<AddForm fetchTodos={fetchTodos()}/>
 			<br/>
 			<h1>Seznam úkolů</h1>
+			<button onClick={switchTodoList}>Všechny/moje</button>
+			<br/>
 			{todos && todos.length > 0 ? todos.map(todo => {
 				return <div>
-					<button>{todo.content}</button>
+					<>{todo.content}</>
 					<button onClick={() => buttonOnClick(todo.id)}>X</button>
 					<br/>
 				</div>

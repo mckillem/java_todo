@@ -3,7 +3,7 @@ import {getAllUsers} from "./client";
 
 function UserList() {
 	const [users, setUsers] = useState([]);
-	const [fetching, setFetching] = useState(true);
+	// const [fetching, setFetching] = useState(true);
 
 	const fetchUsers = () =>
 		getAllUsers()
@@ -12,7 +12,9 @@ function UserList() {
 				setUsers(data);
 			}).catch(err => {
 			console.log(err.response);
-		}).finally(() => setFetching(false));
+		}).finally(
+			// () => setFetching(false)
+		);
 
 	useEffect(() => {
 		console.log("component is mounted");
