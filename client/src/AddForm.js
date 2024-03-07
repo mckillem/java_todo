@@ -45,9 +45,29 @@ export const AddForm = (fetchTodos) => {
 		<>
 			<h1>Přidat</h1>
 			<form onSubmit={add}>
-				<input type="text" onChange={(e) => setCreatedBy(e.target.value)} value={createdBy} name={"createdBy"} hidden={false}/>
-				<input type="text" onChange={(e) => setContent(e.target.value)} value={content} name={"content"} placeholder={"obsah"}/>
-				<input type="text" onChange={(e) => setDescription(e.target.value)} value={description} name={"description"} placeholder={"popis"}/>
+				<input
+					type="text"
+					onChange={(e) => setCreatedBy(e.target.value)}
+					value={createdBy}
+					name={"createdBy"}
+					required={true}
+					hidden={false}
+				/>
+				<input
+					type="text"
+					onChange={(e) => setContent(e.target.value)}
+					value={content}
+					name={"content"}
+					required={true}
+					placeholder={"obsah"}
+				/>
+				<input
+					type="text"
+					onChange={(e) => setDescription(e.target.value)}
+					value={description}
+					name={"description"}
+					placeholder={"popis"}
+				/>
 				<button type={"submit"}>Uložit</button>
 			</form>
 		</>
