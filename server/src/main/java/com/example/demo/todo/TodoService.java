@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -34,5 +35,19 @@ public class TodoService {
 		}
 		todoRepository.deleteById(todoId);
 		todoRepository.flush();
+	}
+
+	public void updateTodo(Long todoId, Todo todo) {
+		if (!todoRepository.existsById(todoId)) {
+			throw new TodoNotFoundException(
+					"Todo with id " + todoId + " does not exists");
+		}
+
+		Optional<Todo> byId = todoRepository.findById(todoId);
+		if (byId.isPresent()) {
+			Todo todoById = byId.get();
+			todoById.setContent(todo.getContent());
+			todoRepository.saveAndFlush(todoById);
+		}
 	}
 }
