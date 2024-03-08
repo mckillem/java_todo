@@ -64,11 +64,12 @@ function TodoList() {
 
 	const switchTodoList = () => {
 		setAllTodos(!allTodos);
+		fetchTodos();
 	}
 
 	return (
 		<>
-			<AddForm fetchTodos={fetchTodos()} userId={params.id}/>
+			<AddForm fetchTodos={fetchTodos} userId={params.id}/>
 			<br/>
 			<h1>Seznam úkolů</h1>
 			<button onClick={switchTodoList}>Všechny/moje</button>
