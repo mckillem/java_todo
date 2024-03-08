@@ -1,8 +1,8 @@
 import {addTodo} from "./client";
 import {useState} from "react";
 
-export const AddForm = (fetchTodos) => {
-	const [createdBy, setCreatedBy] = useState("");
+export const AddForm = ({fetchTodos, userId}) => {
+	const [createdBy, setCreatedBy] = useState(userId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
 
@@ -45,14 +45,6 @@ export const AddForm = (fetchTodos) => {
 		<>
 			<h1>Přidat</h1>
 			<form onSubmit={add}>
-				<input
-					type="text"
-					onChange={(e) => setCreatedBy(e.target.value)}
-					value={createdBy}
-					name={"createdBy"}
-					required={true}
-					hidden={false}
-				/>
 				<input
 					type="text"
 					onChange={(e) => setContent(e.target.value)}

@@ -11,6 +11,8 @@ function TodoList() {
 
 	const fetchTodos = () => {
 		if (allTodos) {
+			console.log(allTodos)
+
 			getAllTodos()
 				.then(res => res.json())
 				.then(data => {
@@ -21,6 +23,8 @@ function TodoList() {
 				// () => setFetching(false)
 			);
 		} else {
+			console.log(allTodos)
+
 			getAllTodosByUser(params.id)
 				.then(res => res.json())
 				.then(data => {
@@ -64,7 +68,7 @@ function TodoList() {
 
 	return (
 		<>
-			<AddForm fetchTodos={fetchTodos()}/>
+			<AddForm fetchTodos={fetchTodos()} userId={params.id}/>
 			<br/>
 			<h1>Seznam úkolů</h1>
 			<button onClick={switchTodoList}>Všechny/moje</button>
