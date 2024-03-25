@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {deleteTodo, getAllTodos, getAllTodosByUser} from "./client";
 import {useParams} from "react-router-dom";
-import {AddForm} from "./AddForm";
+import AddForm from "./AddForm";
 
 function TodoList() {
 	const [todos, setTodos] = useState([]);
