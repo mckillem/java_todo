@@ -2,6 +2,8 @@ import {useEffect, useState} from "react";
 import {deleteTodo, getAllTodos, getAllTodosByUser} from "./client";
 import {useParams} from "react-router-dom";
 import AddForm from "./AddForm";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 function TodoList() {
 	const [todos, setTodos] = useState([]);
@@ -69,18 +71,28 @@ function TodoList() {
 
 	return (
 		<>
-			<AddForm fetchTodos={fetchTodos} userId={params.id}/>
-			<br/>
-			<h1>Seznam úkolů</h1>
-			<button onClick={switchTodoList}>Všechny/moje</button>
-			<br/>
-			{todos && todos.length > 0 ? todos.map(todo => {
-				return <div>
-					<>{todo.content}</>
-					<button onClick={() => buttonOnClick(todo.id)}>X</button>
-					<br/>
-				</div>
-			}) : "no todos"}
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					'& > *': {
+						m: 1,
+					}
+				}}
+			>
+				<AddForm fetchTodos={fetchTodos} userId={params.id}/>
+				<br/>
+				<h1>Seznam úkolů</h1>
+				<Button onClick={switchTodoList}>Všechny/moje</Button>
+				<br/>
+				{todos && todos.length > 0 ? todos.map(todo => {
+					return <div>
+						<Button variant="outlined">{todo.content}</Button>
+						<Button onClick={() => buttonOnClick(todo.id)}>X</Button>
+					</div>
+				}) : "no todos"}
+			</Box>
 		</>
 	)
 }
