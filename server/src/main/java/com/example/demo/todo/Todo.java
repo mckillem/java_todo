@@ -19,4 +19,5 @@ public class Todo {
 	private String description;
 	private Long createdBy;
 	private boolean visibility = true;
+	private State state;
 }
