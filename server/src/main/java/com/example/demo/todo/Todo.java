@@ -1,9 +1,6 @@
 package com.example.demo.todo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +16,7 @@ public class Todo {
 	private String description;
 	private Long createdBy;
 	private boolean visibility = true;
+	@Enumerated(EnumType.STRING)
 	private State state;
+	private Long projectId = null;
 }
