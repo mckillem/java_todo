@@ -7,13 +7,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {addTodo} from "./client";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {getAllStates} from "./client";
+import Select from "react-select";
 
 export default function AddForm({ fetchTodos, userId }) {
 	const [open, setOpen] = React.useState(false);
 	const [createdBy, setCreatedBy] = useState(userId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
+	const [state, setState] = useState([]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -30,6 +33,8 @@ export default function AddForm({ fetchTodos, userId }) {
 			"createdBy": createdBy,
 			"content": content,
 			"description": description,
+			// "state": state[0].value,
+			"state": state,
 		}
 
 		addTodo(todo)
@@ -57,6 +62,23 @@ export default function AddForm({ fetchTodos, userId }) {
 			handleClose()
 		})
 	}
+
+	useEffect(() => {
+		getAllStates()
+			.then(res => res.json())
+			.then(data => {
+
+				setState(data.map(d => ({
+					value: d,
+					label: d
+				})));
+
+			}).catch(err => {
+			console.log(err.response);
+		}).finally(
+			// () => setFetching(false)
+		);
+	}, [])
 
 	return (
 		<React.Fragment>
@@ -99,6 +121,21 @@ export default function AddForm({ fetchTodos, userId }) {
 						onChange={(e) => setDescription(e.target.value)}
 						value={description}
 					/>
+					{/*{state && state.length > 0 ? state.map(s => {*/}
+					{/*	// console.log(s.value)*/}
+					{/*	// return <>*/}
+							<Select
+								options={state}
+								// labelId="state"
+								// value={state}
+								// label="Stav"
+								// onChange={(e) => setState(e.target.value)}
+							>
+							</Select>
+							{/*<MenuItem value={s}>{s.value}</MenuItem>*/}
+						{/*// </>*/}
+					{/*// }) : "no states"}*/}
+
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Zrušit</Button>

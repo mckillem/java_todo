@@ -50,4 +50,9 @@ public class TodoService {
 			todoRepository.saveAndFlush(todoById);
 		}
 	}
+
+	public State[] getAllStates() {
+
+		return State.values();
+	}
 }
