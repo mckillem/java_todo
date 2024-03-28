@@ -46,7 +46,14 @@ public class TodoController {
 
 	@CrossOrigin("*")
 	@GetMapping("/states")
-	public State[] getAllStates() {
+	public List<State> getAllStates() {
 		return todoService.getAllStates();
 	}
+
+	@CrossOrigin("*")
+	@PostMapping("/states")
+	public void addState(@RequestBody State state) {
+		todoService.addState(state);
+	}
+
 }
