@@ -33,8 +33,8 @@ export default function AddForm({ fetchTodos, userId }) {
 			"createdBy": createdBy,
 			"content": content,
 			"description": description,
-			// "state": state[0].value,
-			"state": state,
+			"state": {"id": state[0].key},
+			// "state": state,
 		}
 
 		addTodo(todo)
@@ -67,10 +67,14 @@ export default function AddForm({ fetchTodos, userId }) {
 		getAllStates()
 			.then(res => res.json())
 			.then(data => {
+				data.map(d => console.log(d))
+
+				// setState(data);
 
 				setState(data.map(d => ({
-					value: d,
-					label: d
+					key: d.id,
+					value: d.name,
+					label: d.text
 				})));
 
 			}).catch(err => {
