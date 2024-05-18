@@ -41,3 +41,9 @@ export const deleteTodo = (todoId) =>
 	fetch(baseURL +`api/v1/todos/${todoId}`, {
 		method: 'DELETE'
 	}).then(checkStatus);
+
+export const getAllStates = () =>
+	fetch(baseURL + "api/v1/todos/states", {
+		headers: {"Content-Type": "application/json"},
+		method: "GET"
+	}).then(checkStatus);

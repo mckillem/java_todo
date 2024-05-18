@@ -43,4 +43,17 @@ public class TodoController {
 						   @RequestBody Todo todo) {
 		todoService.updateTodo(todoId, todo);
 	}
+
+	@CrossOrigin("*")
+	@GetMapping("/states")
+	public List<State> getAllStates() {
+		return todoService.getAllStates();
+	}
+
+	@CrossOrigin("*")
+	@PostMapping("/states")
+	public void addState(@RequestBody State state) {
+		todoService.addState(state);
+	}
+
 }

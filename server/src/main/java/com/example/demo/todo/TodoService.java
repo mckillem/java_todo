@@ -11,6 +11,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TodoService {
 	private TodoRepository todoRepository;
+	private StateRepository stateRepository;
 
 	public List<Todo> getAllTodos() {
 
@@ -49,5 +50,14 @@ public class TodoService {
 			todoById.setContent(todo.getContent());
 			todoRepository.saveAndFlush(todoById);
 		}
+	}
+
+	public List<State> getAllStates() {
+
+		return stateRepository.findAll();
+	}
+
+	public void addState(State state) {
+		stateRepository.saveAndFlush(state);
 	}
 }

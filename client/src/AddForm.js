@@ -7,13 +7,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {addTodo} from "./client";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {getAllStates} from "./client";
+import Select from "react-select";
 
 export default function AddForm({ fetchTodos, userId }) {
 	const [open, setOpen] = React.useState(false);
 	const [createdBy, setCreatedBy] = useState(userId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
+	const [state, setState] = useState(0);
+	const [states, setStates] = useState([]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -30,6 +34,7 @@ export default function AddForm({ fetchTodos, userId }) {
 			"createdBy": createdBy,
 			"content": content,
 			"description": description,
+			"state": {"id": state},
 		}
 
 		addTodo(todo)
@@ -57,6 +62,25 @@ export default function AddForm({ fetchTodos, userId }) {
 			handleClose()
 		})
 	}
+
+	useEffect(() => {
+		getAllStates()
+			.then(res => res.json())
+			.then(data => {
+				data.map(d => console.log(d))
+
+				setStates(data.map(d => ({
+					key: d.id,
+					value: d.name,
+					label: d.text
+				})));
+
+			}).catch(err => {
+			console.log(err.response);
+		}).finally(
+			// () => setFetching(false)
+		);
+	}, [])
 
 	return (
 		<React.Fragment>
@@ -99,6 +123,12 @@ export default function AddForm({ fetchTodos, userId }) {
 						onChange={(e) => setDescription(e.target.value)}
 						value={description}
 					/>
+					<Select
+						options={states}
+						onChange={(e) => setState(e.key)}
+					>
+					</Select>
+
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Zrušit</Button>

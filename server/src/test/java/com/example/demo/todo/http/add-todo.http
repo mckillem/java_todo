@@ -4,5 +4,7 @@ Content-Type: application/json
 {
   "id": 1,
   "content": "obsah",
-  "createdBy": 1
+  "description": "popis",
+  "createdBy": 1,
+  "state": {"id": 0}
 }
