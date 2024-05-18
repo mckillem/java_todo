@@ -16,7 +16,8 @@ export default function AddForm({ fetchTodos, userId }) {
 	const [createdBy, setCreatedBy] = useState(userId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
-	const [state, setState] = useState([]);
+	const [state, setState] = useState(0);
+	const [states, setStates] = useState([]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -33,8 +34,7 @@ export default function AddForm({ fetchTodos, userId }) {
 			"createdBy": createdBy,
 			"content": content,
 			"description": description,
-			"state": {"id": state[0].key},
-			// "state": state,
+			"state": {"id": state},
 		}
 
 		addTodo(todo)
@@ -69,9 +69,7 @@ export default function AddForm({ fetchTodos, userId }) {
 			.then(data => {
 				data.map(d => console.log(d))
 
-				// setState(data);
-
-				setState(data.map(d => ({
+				setStates(data.map(d => ({
 					key: d.id,
 					value: d.name,
 					label: d.text
@@ -125,20 +123,11 @@ export default function AddForm({ fetchTodos, userId }) {
 						onChange={(e) => setDescription(e.target.value)}
 						value={description}
 					/>
-					{/*{state && state.length > 0 ? state.map(s => {*/}
-					{/*	// console.log(s.value)*/}
-					{/*	// return <>*/}
-							<Select
-								options={state}
-								// labelId="state"
-								// value={state}
-								// label="Stav"
-								// onChange={(e) => setState(e.target.value)}
-							>
-							</Select>
-							{/*<MenuItem value={s}>{s.value}</MenuItem>*/}
-						{/*// </>*/}
-					{/*// }) : "no states"}*/}
+					<Select
+						options={states}
+						onChange={(e) => setState(e.key)}
+					>
+					</Select>
 
 				</DialogContent>
 				<DialogActions>
