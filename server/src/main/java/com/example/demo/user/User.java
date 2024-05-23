@@ -21,11 +21,10 @@ import java.util.Set;
 		})
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private Long id;
 
 	@NotBlank
