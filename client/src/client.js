@@ -54,3 +54,9 @@ export const loginUser = async user =>
 		method: "POST",
 		body: JSON.stringify(user)
 	}).then(checkStatus);
+
+export const getAllProjects = () =>
+	fetch(baseURL + "api/v1/projects", {
+		headers: {"Content-Type": "application/json"},
+		method: "GET"
+	}).then(checkStatus);
