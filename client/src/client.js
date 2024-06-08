@@ -47,3 +47,10 @@ export const getAllStates = () =>
 		headers: {"Content-Type": "application/json"},
 		method: "GET"
 	}).then(checkStatus);
+
+export const loginUser = async user =>
+	await fetch(baseURL + "api/v1/auth/signin", {
+		headers: {"Content-type": "application/json"},
+		method: "POST",
+		body: JSON.stringify(user)
+	}).then(checkStatus);
