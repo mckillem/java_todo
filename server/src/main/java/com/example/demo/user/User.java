@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,6 @@ public class User {
 	@GeneratedValue
 	private Long id;
 	private String username;
-	@ManyToMany(mappedBy = "user")
-	private Set<Todo> todo;
+	@ManyToMany(mappedBy = "users")
+	private Set<Todo> todo = new HashSet<>();
 }

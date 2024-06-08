@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,8 +20,6 @@ public class Todo {
 	private String description;
 	private Long createdBy;
 	private boolean visibility = true;
-//	@Enumerated(EnumType.STRING)
-//	private StateEnum state;
 	private Long projectId = null;
 	@ManyToOne
 	private State state;
@@ -30,5 +29,10 @@ public class Todo {
 			joinColumns = @JoinColumn(name = "todo_id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id")
 	)
-	private Set<User> user;
+	private Set<User> users = new HashSet<>();
+
+	public void addUser(User user) {
+		this.users.add(user);
+		user.getTodo().add(this);
+	}
 }
