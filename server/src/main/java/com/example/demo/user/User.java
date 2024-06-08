@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import com.example.demo.todo.Todo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -51,4 +54,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 	}
+	@ManyToMany(mappedBy = "users")
+	@JsonIgnore
+	private Set<Todo> todo = new HashSet<>();
 }

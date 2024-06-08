@@ -1,11 +1,14 @@
 package com.example.demo.todo;
 
 import com.example.demo.todo.exception.TodoNotFoundException;
+import com.example.demo.user.User;
+import com.example.demo.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +28,11 @@ public class TodoService {
 
 	public void addTodo(Todo todo) {
 //		todo.setCreatedAt(LocalDateTime.now());
-//		todo.setCreatedBy();
+		Stream<User> users = todo.getUsers().stream();
+
+		User user = users.findFirst().get();
+
+		todo.addUser(user);
 		todoRepository.saveAndFlush(todo);
 	}
 
