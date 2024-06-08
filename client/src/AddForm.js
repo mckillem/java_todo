@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addTodo} from "./client";
+import {addTodo, getAllUsers} from "./client";
 import {useEffect, useState} from "react";
 import {getAllStates} from "./client";
 import Select from "react-select";
@@ -18,6 +18,8 @@ export default function AddForm({ fetchTodos, userId }) {
 	const [description, setDescription] = useState("");
 	const [state, setState] = useState(0);
 	const [states, setStates] = useState([]);
+	const [users, setUsers] = useState([]);
+	const [user, setUser] = useState(0);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -35,6 +37,9 @@ export default function AddForm({ fetchTodos, userId }) {
 			"content": content,
 			"description": description,
 			"state": {"id": state},
+			"users": [
+				{"id": user}
+			]
 		}
 
 		addTodo(todo)
@@ -63,6 +68,20 @@ export default function AddForm({ fetchTodos, userId }) {
 		})
 	}
 
+	const fetchUsers = () =>
+		getAllUsers()
+			.then(res => res.json())
+			.then(data => {
+				setUsers(data.map(d => ({
+					key: d.id,
+					value: d.username,
+					label: d.username
+				})));
+			}).catch(err => {
+			console.log(err.response);
+		}).finally(
+		);
+
 	useEffect(() => {
 		getAllStates()
 			.then(res => res.json())
@@ -80,6 +99,8 @@ export default function AddForm({ fetchTodos, userId }) {
 		}).finally(
 			// () => setFetching(false)
 		);
+
+		fetchUsers();
 	}, [])
 
 	return (
@@ -128,7 +149,11 @@ export default function AddForm({ fetchTodos, userId }) {
 						onChange={(e) => setState(e.key)}
 					>
 					</Select>
-
+					<Select
+						options={users}
+						onChange={e => setUser(e.key)}
+					>
+					</Select>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Zrušit</Button>

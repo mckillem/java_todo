@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 import com.example.demo.todo.Todo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +19,6 @@ public class User {
 	private Long id;
 	private String username;
 	@ManyToMany(mappedBy = "users")
+	@JsonIgnore
 	private Set<Todo> todo = new HashSet<>();
 }
