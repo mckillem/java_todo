@@ -6,9 +6,7 @@ import AddProject from "./AddProject";
 import {useParams} from "react-router-dom";
 
 function Dashboard() {
-
 	let params = useParams();
-	console.log(params)
 
 	function dashboard() {
 		window.location.href="/dashboard/" + params.id;
@@ -19,7 +17,7 @@ function Dashboard() {
 	}
 	
 	function listOfProjects() {
-		window.location.href="/list-of-projects";
+		window.location.href="/list-of-projects/" + params.id;
 	}
 
 	useEffect(() => {

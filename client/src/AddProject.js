@@ -6,18 +6,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addTodo, getAllUsers} from "./client";
+import {addProject, getAllUsers} from "./client";
 import {useEffect, useState} from "react";
-import {getAllStates} from "./client";
 import Select from "react-select";
 
 export default function AddProject({ fetchProjects, userId }) {
 	const [open, setOpen] = React.useState(false);
-	const [createdBy, setCreatedBy] = useState(userId);
-	const [content, setContent] = useState("");
+	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [state, setState] = useState(0);
-	const [states, setStates] = useState([]);
 	const [users, setUsers] = useState([]);
 	const [user, setUser] = useState(0);
 
@@ -32,19 +28,17 @@ export default function AddProject({ fetchProjects, userId }) {
 	function add(event) {
 		event.preventDefault();
 
-		const todo = {
-			"createdBy": createdBy,
-			"content": content,
+		const project = {
+			"name": name,
 			"description": description,
-			"state": {"id": state},
 			"users": [
 				{"id": user}
 			]
 		}
 
-		addTodo(todo)
+		addProject(project)
 			.then(() => {
-				console.log("todo added")
+				console.log("project added")
 				// successNotification(
 				//     "Todo successfully added",
 				//     `${todo.name} was added to the system`
@@ -62,7 +56,7 @@ export default function AddProject({ fetchProjects, userId }) {
 			// });
 		}).finally(() => {
 			// setSubmitting(false);
-			setContent("");
+			setName("");
 			setDescription("");
 			handleClose()
 		})
@@ -83,30 +77,13 @@ export default function AddProject({ fetchProjects, userId }) {
 		);
 
 	useEffect(() => {
-		getAllStates()
-			.then(res => res.json())
-			.then(data => {
-				data.map(d => console.log(d))
-
-				setStates(data.map(d => ({
-					key: d.id,
-					value: d.name,
-					label: d.text
-				})));
-
-			}).catch(err => {
-			console.log(err.response);
-		}).finally(
-			// () => setFetching(false)
-		);
-
 		fetchUsers();
 	}, [])
 
 	return (
 		<React.Fragment>
 			<Button variant="outlined" onClick={handleClickOpen}>
-				Přidat projekt (očividně je třeba se domluvit co a jak)
+				Přidat projekt
 			</Button>
 			<Dialog
 				open={open}
@@ -116,7 +93,7 @@ export default function AddProject({ fetchProjects, userId }) {
 					onSubmit: add
 				}}
 			>
-				<DialogTitle>Úkol</DialogTitle>
+				<DialogTitle>Projekt</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
 						Co budeme dnes tvořit?
@@ -125,16 +102,15 @@ export default function AddProject({ fetchProjects, userId }) {
 						autoFocus
 						required
 						margin="dense"
-						name="content"
-						label="Obsah"
+						name="name"
+						label="Název"
 						type="text"
 						fullWidth
 						variant="standard"
-						onChange={(e) => setContent(e.target.value)}
-						value={content}
+						onChange={(e) => setName(e.target.value)}
+						value={name}
 					/>
 					<TextField
-						required
 						margin="dense"
 						name="description"
 						label="Popis"
@@ -144,11 +120,6 @@ export default function AddProject({ fetchProjects, userId }) {
 						onChange={(e) => setDescription(e.target.value)}
 						value={description}
 					/>
-					<Select
-						options={states}
-						onChange={(e) => setState(e.key)}
-					>
-					</Select>
 					<Select
 						options={users}
 						onChange={e => setUser(e.key)}

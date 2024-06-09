@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {deleteTodo, getAllTodos, getAllTodosByUser} from "./client";
+import {deleteTodo, getAllTodos, getAllTodosByProject, getAllTodosByUser} from "./client";
 import {useParams} from "react-router-dom";
 import AddForm from "./AddForm";
 import Box from "@mui/material/Box";
@@ -11,32 +11,43 @@ function TodoList() {
 	const [allTodos, setAllTodos] = useState(true);
 	let params = useParams();
 
+	console.log(params)
 	const fetchTodos = () => {
-		if (allTodos) {
-			console.log(allTodos)
 
-			getAllTodos()
-				.then(res => res.json())
-				.then(data => {
-					setTodos(data);
-				}).catch(err => {
-				console.log(err.response);
-			}).finally(
-				// () => setFetching(false)
-			);
-		} else {
-			console.log(allTodos)
+		getAllTodosByProject(params.id)
+			.then(res => res.json())
+			.then(data => {
+				setTodos(data);
+			}).catch(err => {
+			console.log(err.response)
+		}).finally();
 
-			getAllTodosByUser(params.id)
-				.then(res => res.json())
-				.then(data => {
-					setTodos(data);
-				}).catch(err => {
-				console.log(err.response);
-			}).finally(
-				// () => setFetching(false)
-			);
-		}
+		//todo: jak upravit v rámci projektu?
+		// if (allTodos) {
+		// 	console.log(allTodos)
+		//
+		// 	getAllTodos()
+		// 		.then(res => res.json())
+		// 		.then(data => {
+		// 			setTodos(data);
+		// 		}).catch(err => {
+		// 		console.log(err.response);
+		// 	}).finally(
+		// 		// () => setFetching(false)
+		// 	);
+		// } else {
+		// 	console.log(allTodos)
+		//
+		// 	getAllTodosByUser(params.id)
+		// 		.then(res => res.json())
+		// 		.then(data => {
+		// 			setTodos(data);
+		// 		}).catch(err => {
+		// 		console.log(err.response);
+		// 	}).finally(
+		// 		// () => setFetching(false)
+		// 	);
+		// }
 	}
 
 	const removeTodo = (todoId, callback) => {
@@ -81,7 +92,7 @@ function TodoList() {
 					}
 				}}
 			>
-				<AddForm fetchTodos={fetchTodos} userId={params.id}/>
+				<AddForm fetchTodos={fetchTodos} projectId={params.id}/>
 				<br/>
 				<h1>Seznam úkolů</h1>
 				<Button onClick={switchTodoList}>Všechny/moje</Button>

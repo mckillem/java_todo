@@ -13,7 +13,8 @@ function App() {
 					<Route path={"/"} element={<Login/>}></Route>
 					<Route path={"/todos/:id"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<TodoList/>}></Route>
 					<Route path={"/dashboard/:id"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<Dashboard/>}></Route>
-					<Route path={"/list-of-projects"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<ListOfProjects/>}></Route>
+					<Route path={"/list-of-projects/:id"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<ListOfProjects/>}></Route>
+					<Route path={"/list-of-projects/:id/project/:id"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<TodoList/>}></Route>
 				</Routes>
 			</BrowserRouter>
 		</>

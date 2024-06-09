@@ -11,9 +11,10 @@ import {useEffect, useState} from "react";
 import {getAllStates} from "./client";
 import Select from "react-select";
 
-export default function AddForm({ fetchTodos, userId }) {
+export default function AddForm({ fetchTodos, projectId, userId }) {
 	const [open, setOpen] = React.useState(false);
 	const [createdBy, setCreatedBy] = useState(userId);
+	const [project, setProject] = useState(projectId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
 	const [state, setState] = useState(0);
@@ -34,6 +35,7 @@ export default function AddForm({ fetchTodos, userId }) {
 
 		const todo = {
 			"createdBy": createdBy,
+			"projectId": project,
 			"content": content,
 			"description": description,
 			"state": {"id": state},

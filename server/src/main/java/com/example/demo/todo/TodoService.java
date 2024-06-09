@@ -1,8 +1,8 @@
 package com.example.demo.todo;
 
+import com.example.demo.project.ProjectRepository;
 import com.example.demo.todo.exception.TodoNotFoundException;
 import com.example.demo.user.User;
-import com.example.demo.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 @Service
 @AllArgsConstructor
 public class TodoService {
+	private final ProjectRepository projectRepository;
 	private TodoRepository todoRepository;
 	private StateRepository stateRepository;
 
@@ -66,5 +67,11 @@ public class TodoService {
 
 	public void addState(State state) {
 		stateRepository.saveAndFlush(state);
+	}
+
+	public List<Todo> getAllTodosByProject(Long id) {
+		Long projectId = projectRepository.findById(id).get().getId();
+
+		return todoRepository.findAllByProjectId(projectId);
 	}
 }
