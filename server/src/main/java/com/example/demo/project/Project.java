@@ -1,6 +1,5 @@
-package com.example.demo.todo;
+package com.example.demo.project;
 
-import com.example.demo.project.Project;
 import com.example.demo.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,31 +9,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "todos")
+@Table(name = "projects")
 @Getter
 @Setter
-public class Todo {
+public class Project {
 	@Id
 	@GeneratedValue
 	private Long id;
-	private String content;
+	private String name;
 	private String description;
-	private Long createdBy;
-	private boolean visibility = true;
-	@ManyToOne
-	private Project project;
-	@ManyToOne
-	private State state;
 	@ManyToMany
 	@JoinTable(
-			name = "todo_user",
-			joinColumns = @JoinColumn(name = "todo_id"),
+			name = "project_user",
+			joinColumns = @JoinColumn(name = "project_id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id")
 	)
 	private Set<User> users = new HashSet<>();
 
 	public void addUser(User user) {
 		this.users.add(user);
-		user.getTodo().add(this);
+		user.getProject().add(this);
 	}
 }
