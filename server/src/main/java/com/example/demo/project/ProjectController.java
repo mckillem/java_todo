@@ -1,6 +1,7 @@
 package com.example.demo.project;
 
 import com.example.demo.project.exchange.ProjectRequest;
+import com.example.demo.project.model.Project;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

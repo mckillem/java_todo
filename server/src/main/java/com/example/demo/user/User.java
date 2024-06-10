@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import com.example.demo.todo.Todo;
-import com.example.demo.project.Project;
+import com.example.demo.project.model.Project;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -23,7 +23,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class User {
 	@Id
 	@GeneratedValue
@@ -56,8 +56,4 @@ public class User {
 	@ManyToMany(mappedBy = "users")
 	@JsonIgnore
 	private Set<Todo> todo = new HashSet<>();
-
-	@ManyToMany(mappedBy = "users")
-	@JsonIgnore
-	private Set<Project> project = new HashSet<>();
 }

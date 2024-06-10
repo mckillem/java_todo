@@ -1,5 +1,6 @@
 package com.example.demo.project;
 
+import com.example.demo.project.model.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
