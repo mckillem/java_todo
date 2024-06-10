@@ -6,21 +6,18 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addTodo, getAllUsers} from "./client";
+import {addProject, getAllUsers} from "./client";
 import {useEffect, useState} from "react";
-import {getAllStates} from "./client";
-import Select from "react-select";
+import Select from '@mui/material/Select';
+import {FormControl, InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 
-export default function AddForm({ fetchTodos, projectId, userId }) {
+export default function AddProject({ fetchProjects, userId }) {
 	const [open, setOpen] = React.useState(false);
-	const [createdBy, setCreatedBy] = useState(userId);
-	const [project, setProject] = useState(projectId);
-	const [content, setContent] = useState("");
+	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [state, setState] = useState(0);
-	const [states, setStates] = useState([]);
 	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState(0);
+	const [user, setUser] = useState([]);
+	const theme = useTheme();
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -33,25 +30,20 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 	function add(event) {
 		event.preventDefault();
 
-		const todo = {
-			"createdBy": createdBy,
-			"project": {"id": project},
-			"content": content,
+		const project = {
+			"name": name,
 			"description": description,
-			"state": {"id": state},
-			"users": [
-				{"id": user}
-			]
+			"users": user
 		}
 
-		addTodo(todo)
+		addProject(project)
 			.then(() => {
-				console.log("todo added")
+				console.log("project added")
 				// successNotification(
 				//     "Todo successfully added",
 				//     `${todo.name} was added to the system`
 				// )
-				fetchTodos();
+				fetchProjects();
 			}).catch(err => {
 			// console.log(err);
 			// err.response.json().then(res => {
@@ -63,8 +55,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 			// )
 			// });
 		}).finally(() => {
-			// setSubmitting(false);
-			setContent("");
+			setName("");
 			setDescription("");
 			handleClose()
 		})
@@ -81,33 +72,36 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 				})));
 			}).catch(err => {
 			console.log(err.response);
-		}).finally(
+		}).finally();
+
+	const handleChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+
+		setUser(
+			// On autofill we get a stringified value.
+			typeof value === 'number' ? value.split(',') : value,
 		);
+	};
 
 	useEffect(() => {
-		getAllStates()
-			.then(res => res.json())
-			.then(data => {
-
-				setStates(data.map(d => ({
-					key: d.id,
-					value: d.name,
-					label: d.text
-				})));
-
-			}).catch(err => {
-			console.log(err.response);
-		}).finally(
-			// () => setFetching(false)
-		);
-
 		fetchUsers();
 	}, [])
+
+	function getStyles(name, user, theme) {
+		return {
+			fontWeight:
+				users.indexOf(name) === -1
+					? theme.typography.fontWeightRegular
+					: theme.typography.fontWeightMedium,
+		};
+	}
 
 	return (
 		<React.Fragment>
 			<Button variant="outlined" onClick={handleClickOpen}>
-				Přidat úkol
+				Přidat projekt
 			</Button>
 			<Dialog
 				open={open}
@@ -117,44 +111,53 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 					onSubmit: add
 				}}
 			>
-				<DialogTitle>Úkol</DialogTitle>
+				<DialogTitle>Projekt</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
 						Co budeme dnes tvořit?
 					</DialogContentText>
-					<TextField
-						autoFocus
-						required
-						margin="dense"
-						name="content"
-						label="Obsah"
-						type="text"
-						fullWidth
-						variant="standard"
-						onChange={(e) => setContent(e.target.value)}
-						value={content}
-					/>
-					<TextField
-						required
-						margin="dense"
-						name="description"
-						label="Popis"
-						type="text"
-						fullWidth
-						variant="standard"
-						onChange={(e) => setDescription(e.target.value)}
-						value={description}
-					/>
-					<Select
-						options={states}
-						onChange={(e) => setState(e.key)}
-					>
-					</Select>
-					<Select
-						options={users}
-						onChange={e => setUser(e.key)}
-					>
-					</Select>
+					<FormControl>
+						<TextField
+							autoFocus
+							required
+							margin="dense"
+							name="name"
+							label="Název"
+							type="text"
+							fullWidth
+							variant="standard"
+							onChange={(e) => setName(e.target.value)}
+							value={name}
+						/>
+						<TextField
+							margin="dense"
+							name="description"
+							label="Popis"
+							type="text"
+							fullWidth
+							variant="standard"
+							onChange={(e) => setDescription(e.target.value)}
+							value={description}
+						/>
+						<InputLabel id="multiple-name-label">Uživatelé</InputLabel>
+						<Select
+							labelId="multiple-name-label"
+							multiple
+							value={user}
+							onChange={handleChange}
+							input={<OutlinedInput label="Name" />}
+						>
+							{users.map(u => (
+								<MenuItem
+									key={u.key}
+									value={u.key}
+									style={getStyles(u.value, user, theme)}
+								>
+									{u.value}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Zrušit</Button>

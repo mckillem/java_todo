@@ -52,6 +52,12 @@ export const getAllTodosByUser = (id) =>
 		method: "GET"
 	}).then(checkStatus);
 
+export const getAllTodosByProject = (id) =>
+	fetch(baseURL + "api/v1/todos/project/?id=" + id, {
+		headers: {"Content-Type": "application/json"},
+		method: "GET"
+	}).then(checkStatus);
+
 export const addTodo = async todo =>
 	await fetch(baseURL + "api/v1/todos", {
 		headers: {"Content-type": "application/json"},
@@ -75,4 +81,17 @@ export const loginUser = async user =>
 		headers: {"Content-type": "application/json"},
 		method: "POST",
 		body: JSON.stringify(user)
+	}).then(checkStatus);
+
+export const getAllProjects = () =>
+	fetch(baseURL + "api/v1/projects", {
+		headers: {"Content-Type": "application/json"},
+		method: "GET"
+	}).then(checkStatus);
+
+export const addProject = async project =>
+	await fetch(baseURL + "api/v1/projects", {
+		headers: {"Content-type": "application/json"},
+		method: "POST",
+		body: JSON.stringify(project)
 	}).then(checkStatus);

@@ -8,5 +8,6 @@ Content-Type: application/json
   "state": {"id": 1},
   "users": [
     {"id": 1}
-  ]
+  ],
+  "project": {"id": 1}
 }

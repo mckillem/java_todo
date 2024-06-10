@@ -9,4 +9,6 @@ import java.util.List;
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
 	List<Todo> findAllByCreatedBy(Long id);
+
+	List<Todo> findAllByProjectId(Long project_id);
 }
