@@ -22,7 +22,8 @@ function Login() {
 			.then(res => res.json())
 			.then(data => {
 				console.log(data.id)
-				window.location.href="todos/" + data.id;
+				// window.location.href="todos/" + data.id;
+				window.location.href="dashboard/" + data.id;
 			})
 			.catch(err => {
 				console.log("Špatné přihlašovací údaje")

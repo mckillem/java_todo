@@ -1,5 +1,6 @@
 package com.example.demo.todo;
 
+import com.example.demo.project.model.Project;
 import com.example.demo.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class Todo {
 	private String description;
 	private Long createdBy;
 	private boolean visibility = true;
-	private Long projectId = null;
+	private Long projectId;
 	@ManyToOne
 	private State state;
 	@ManyToMany

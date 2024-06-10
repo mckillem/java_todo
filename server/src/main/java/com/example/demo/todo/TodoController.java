@@ -26,6 +26,13 @@ public class TodoController {
 	}
 
 	@CrossOrigin("*")
+	@GetMapping("/project/")
+	@ResponseBody
+	public List<Todo> getAllTodosByProject(@RequestParam Long id) {
+		return todoService.getAllTodosByProject(id);
+	}
+
+	@CrossOrigin("*")
 	@PostMapping
 	public void addTodo(@RequestBody Todo todo) {
 		todoService.addTodo(todo);
