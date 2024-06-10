@@ -1,9 +1,31 @@
 import unfetch from "unfetch";
+import {setEmail, setId, setRoles, setToken, setUsername} from "./localStorage/LocalStorage";
 
 const checkStatus = response => {
 	if (response.ok) {
+		console.log(response)
+		setToken('"token": ' + response.token);
+		setEmail(response.email);
+		setUsername(response.username);
+		setId(response.id);
+		setRoles(response.id);
+
 		return response;
 	}
+
+
+	// let jsonResponse = response.json();
+	//
+	// if (response.status === 200) {
+	// 	setToken('"token": ' + jsonResponse.token);
+	// 	setEmail(jsonResponse.email);
+	// 	setUsername(jsonResponse.username);
+	// 	window.location.href="/";
+	// } else {
+	// 	//     todo: else exception "email with this app is already registered"
+	// 	console.log(response.status);
+	// }
+
 	// convert non-2xx HTTP responses into errors:
 	const error = new Error(response.statusText);
 	error.response = response;
