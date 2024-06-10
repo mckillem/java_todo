@@ -8,14 +8,16 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {addProject, getAllUsers} from "./client";
 import {useEffect, useState} from "react";
-import Select from "react-select";
+import Select from '@mui/material/Select';
+import {FormControl, InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 
 export default function AddProject({ fetchProjects, userId }) {
 	const [open, setOpen] = React.useState(false);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState(0);
+	const [user, setUser] = useState([]);
+	const theme = useTheme();
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -31,9 +33,9 @@ export default function AddProject({ fetchProjects, userId }) {
 		const project = {
 			"name": name,
 			"description": description,
-			"users": [
-				{"id": user}
-			]
+			"users": user
+				// {"id": user}
+
 		}
 
 		addProject(project)
@@ -55,7 +57,6 @@ export default function AddProject({ fetchProjects, userId }) {
 			// )
 			// });
 		}).finally(() => {
-			// setSubmitting(false);
 			setName("");
 			setDescription("");
 			handleClose()
@@ -73,12 +74,35 @@ export default function AddProject({ fetchProjects, userId }) {
 				})));
 			}).catch(err => {
 			console.log(err.response);
-		}).finally(
+		}).finally();
+
+	const handleChange = (event) => {
+		console.log(event)
+		console.log(event.target)
+		const {
+			target: { value },
+		} = event;
+		console.log("tu: " + value)
+		setUser(
+			// On autofill we get a stringified value.
+			typeof value === 'string' ? value.split(',') : value,
+			// key
 		);
+		console.log(user)
+	};
 
 	useEffect(() => {
 		fetchUsers();
 	}, [])
+
+	function getStyles(name, user, theme) {
+		return {
+			fontWeight:
+				users.indexOf(name) === -1
+					? theme.typography.fontWeightRegular
+					: theme.typography.fontWeightMedium,
+		};
+	}
 
 	return (
 		<React.Fragment>
@@ -98,33 +122,49 @@ export default function AddProject({ fetchProjects, userId }) {
 					<DialogContentText>
 						Co budeme dnes tvořit?
 					</DialogContentText>
-					<TextField
-						autoFocus
-						required
-						margin="dense"
-						name="name"
-						label="Název"
-						type="text"
-						fullWidth
-						variant="standard"
-						onChange={(e) => setName(e.target.value)}
-						value={name}
-					/>
-					<TextField
-						margin="dense"
-						name="description"
-						label="Popis"
-						type="text"
-						fullWidth
-						variant="standard"
-						onChange={(e) => setDescription(e.target.value)}
-						value={description}
-					/>
-					<Select
-						options={users}
-						onChange={e => setUser(e.key)}
-					>
-					</Select>
+					<FormControl>
+						<TextField
+							autoFocus
+							required
+							margin="dense"
+							name="name"
+							label="Název"
+							type="text"
+							fullWidth
+							variant="standard"
+							onChange={(e) => setName(e.target.value)}
+							value={name}
+						/>
+						<TextField
+							margin="dense"
+							name="description"
+							label="Popis"
+							type="text"
+							fullWidth
+							variant="standard"
+							onChange={(e) => setDescription(e.target.value)}
+							value={description}
+						/>
+						<InputLabel id="multiple-name-label">Uživatelé</InputLabel>
+						<Select
+							labelId="multiple-name-label"
+							multiple
+							value={user}
+							onChange={e => setUser([e.key])}
+							// onChange={handleChange}
+							input={<OutlinedInput label="Name" />}
+						>
+							{users.map(u => (
+								<MenuItem
+									key={u.key}
+									value={u.value}
+									style={getStyles(u.value, user, theme)}
+								>
+									{u.value}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Zrušit</Button>
