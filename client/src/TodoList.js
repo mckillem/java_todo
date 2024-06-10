@@ -11,10 +11,9 @@ function TodoList() {
 	const [allTodos, setAllTodos] = useState(true);
 	let params = useParams();
 
-	console.log(params)
 	const fetchTodos = () => {
 
-		getAllTodosByProject(params.id)
+		getAllTodosByProject(params.projectId)
 			.then(res => res.json())
 			.then(data => {
 				setTodos(data);
@@ -92,7 +91,7 @@ function TodoList() {
 					}
 				}}
 			>
-				<AddForm fetchTodos={fetchTodos} projectId={params.id}/>
+				<AddForm fetchTodos={fetchTodos} projectId={params.projectId} userId={params.id}/>
 				<br/>
 				<h1>Seznam úkolů</h1>
 				<Button onClick={switchTodoList}>Všechny/moje</Button>

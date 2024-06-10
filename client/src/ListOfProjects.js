@@ -11,7 +11,6 @@ function ListOfProjects() {
 
 	console.log("seznam projektů")
 	const fetchProjects = () => {
-		console.log(allProjects)
 
 		getAllProjects()
 			.then(res => res.json())
@@ -24,7 +23,7 @@ function ListOfProjects() {
 	}
 
 	function todos(id) {
-		window.location.href="/list-of-projects/" + params.id + "/project/" + id;
+		window.location.href="/list-of-projects/" + params.id + "/" + id;
 	}
 
 	useEffect(() => {

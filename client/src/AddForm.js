@@ -35,7 +35,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 
 		const todo = {
 			"createdBy": createdBy,
-			"projectId": project,
+			"project": {"id": project},
 			"content": content,
 			"description": description,
 			"state": {"id": state},
@@ -88,7 +88,6 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 		getAllStates()
 			.then(res => res.json())
 			.then(data => {
-				data.map(d => console.log(d))
 
 				setStates(data.map(d => ({
 					key: d.id,
