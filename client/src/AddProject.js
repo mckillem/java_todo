@@ -150,8 +150,8 @@ export default function AddProject({ fetchProjects, userId }) {
 							labelId="multiple-name-label"
 							multiple
 							value={user}
-							onChange={e => setUser([e.key])}
-							// onChange={handleChange}
+							// onChange={e => setUser([e.key])}
+							onChange={handleChange}
 							input={<OutlinedInput label="Name" />}
 						>
 							{users.map(u => (
