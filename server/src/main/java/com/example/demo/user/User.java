@@ -8,9 +8,7 @@ import jakarta.validation.constraints.Size;
 import com.example.demo.todo.Todo;
 import com.example.demo.project.Project;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +22,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 	@Id
 	@GeneratedValue

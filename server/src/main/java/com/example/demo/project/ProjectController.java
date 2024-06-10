@@ -1,5 +1,6 @@
 package com.example.demo.project;
 
+import com.example.demo.project.exchange.ProjectRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class ProjectController {
 
 	@CrossOrigin("*")
 	@PostMapping
-	public void addProject(@RequestBody Project project) {
+	public void addProject(@RequestBody ProjectRequest project) {
 		projectService.addProject(project);
 	}
 }

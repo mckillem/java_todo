@@ -1,10 +1,11 @@
 package com.example.demo.project;
 
 import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,9 @@ import java.util.Set;
 @Table(name = "projects")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Project {
 	@Id
 	@GeneratedValue
@@ -24,10 +28,11 @@ public class Project {
 			joinColumns = @JoinColumn(name = "project_id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id")
 	)
+	@JsonIgnore
 	private Set<User> users = new HashSet<>();
 
-	public void addUser(User user) {
-		this.users.add(user);
-		user.getProject().add(this);
+	public void addUser(Collection<User> user) {
+		this.users.add((User) user);
+		((User) user).getProject().add(this);
 	}
 }

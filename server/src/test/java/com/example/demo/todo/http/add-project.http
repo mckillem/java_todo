@@ -4,8 +4,5 @@ Content-Type: application/json
 {
   "name": "obsah",
   "description": "popis",
-  "users": [
-    {"id": 1},
-    {"id": 2}
-  ]
+  "users": [1, 2]
 }

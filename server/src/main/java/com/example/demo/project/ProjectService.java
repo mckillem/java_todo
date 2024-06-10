@@ -1,6 +1,9 @@
 package com.example.demo.project;
 
+import com.example.demo.project.exchange.ProjectRequest;
 import com.example.demo.user.User;
+import com.example.demo.user.UserRepository;
+import com.example.demo.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,18 +14,17 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public class ProjectService {
 	private final ProjectRepository projectRepository;
+	private final UserRepository userRepository;
 
 	public List<Project> getAllProjects() {
 
 		return projectRepository.findAll();
 	}
 
-	public void addProject(Project project) {
-		Stream<User> users = project.getUsers().stream();
+	public void addProject(ProjectRequest projectRequest) {
+		Project project = new Project();
 
-		User user = users.findFirst().get();
-
-		project.addUser(user);
+		project.addUser(userRepository.findAllById(projectRequest.getUsers()));
 		projectRepository.saveAndFlush(project);
 	}
 }
