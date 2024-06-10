@@ -5,13 +5,11 @@ import com.example.demo.project.model.Project;
 import com.example.demo.project.users.ProjectUserService;
 import com.example.demo.user.User;
 import com.example.demo.user.UserRepository;
-import com.example.demo.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor

@@ -33,9 +33,7 @@ export default function AddProject({ fetchProjects, userId }) {
 		const project = {
 			"name": name,
 			"description": description,
-			"users":
-				{"id": user}
-
+			"users": user
 		}
 
 		addProject(project)
@@ -77,21 +75,14 @@ export default function AddProject({ fetchProjects, userId }) {
 		}).finally();
 
 	const handleChange = (event) => {
-		// console.log(event)
-		console.log(event.target)
 		const {
 			target: { value },
 		} = event;
-		console.log("tu: " + value.key)
-		console.log("tutu: " + value)
-		// let id = {"id": value}
-		// let id = {"id": value}
+
 		setUser(
 			// On autofill we get a stringified value.
 			typeof value === 'number' ? value.split(',') : value,
-			// id
 		);
-		console.log(user)
 	};
 
 	useEffect(() => {
@@ -153,10 +144,6 @@ export default function AddProject({ fetchProjects, userId }) {
 							labelId="multiple-name-label"
 							multiple
 							value={user}
-							// onChange={e => {
-							// 	setUser([e.key])
-							// 	console.log(e.key)
-							// }}
 							onChange={handleChange}
 							input={<OutlinedInput label="Name" />}
 						>
@@ -164,7 +151,6 @@ export default function AddProject({ fetchProjects, userId }) {
 								<MenuItem
 									key={u.key}
 									value={u.key}
-									// value={u}
 									style={getStyles(u.value, user, theme)}
 								>
 									{u.value}
