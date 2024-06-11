@@ -38,7 +38,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 
 		const todo = {
 			"createdBy": createdBy,
-			"project": {"id": project},
+			"projectId": project,
 			"content": content,
 			"description": description,
 			"state": {"id": state},

@@ -1,5 +1,6 @@
 package com.example.demo.todo.dto;
 
+import com.example.demo.todo.State;
 import com.example.demo.user.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,5 +17,8 @@ public class TodoDto {
 	private String title;
 	private String description;
 	private Collection<User> users;
-
+	private Long createdBy;
+	private boolean visibility;
+	private Long projectId;
+	private State state;
 }

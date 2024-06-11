@@ -1,5 +1,6 @@
 package com.example.demo.todo;
 
+import com.example.demo.todo.exchange.TodoRequest;
 import com.example.demo.todo.model.Todo;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class TodoController {
 
 	@CrossOrigin("*")
 	@PostMapping
-	public void addTodo(@RequestBody Todo todo) {
+	public void addTodo(@RequestBody TodoRequest todo) {
 		todoService.addTodo(todo);
 	}
 
@@ -45,12 +46,12 @@ public class TodoController {
 		todoService.deleteTodo(todoId);
 	}
 
-	@CrossOrigin("*")
-	@PatchMapping(path = "/{todoId}")
-	public void updateTodo(@PathVariable("todoId") Long todoId,
-						   @RequestBody Todo todo) {
-		todoService.updateTodo(todoId, todo);
-	}
+//	@CrossOrigin("*")
+//	@PatchMapping(path = "/{todoId}")
+//	public void updateTodo(@PathVariable("todoId") Long todoId,
+//						   @RequestBody Todo todo) {
+//		todoService.updateTodo(todoId, todo);
+//	}
 
 	@CrossOrigin("*")
 	@GetMapping("/states")
