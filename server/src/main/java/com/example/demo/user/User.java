@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import com.example.demo.todo.Todo;
-import com.example.demo.project.model.Project;
+import com.example.demo.todo.model.Todo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 

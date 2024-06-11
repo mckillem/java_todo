@@ -9,7 +9,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {addTodo, getAllUsers} from "./client";
 import {useEffect, useState} from "react";
 import {getAllStates} from "./client";
-import Select from "react-select";
+import * as ReactSelect from "react-select";
+import Select from '@mui/material/Select';
+import {InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 
 export default function AddForm({ fetchTodos, projectId, userId }) {
 	const [open, setOpen] = React.useState(false);
@@ -17,10 +19,11 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 	const [project, setProject] = useState(projectId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
-	const [state, setState] = useState(0);
+	const [state, setState] = useState("");
 	const [states, setStates] = useState([]);
 	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState(0);
+	const [user, setUser] = useState([]);
+	const theme = useTheme();
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -39,9 +42,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 			"content": content,
 			"description": description,
 			"state": {"id": state},
-			"users": [
-				{"id": user}
-			]
+			"users": user
 		}
 
 		addTodo(todo)
@@ -83,6 +84,26 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 			console.log(err.response);
 		}).finally(
 		);
+
+	const handleChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+
+		setUser(
+			// On autofill we get a stringified value.
+			typeof value === 'number' ? value.split(',') : value,
+		);
+	};
+
+	function getStyles(name, user, theme) {
+		return {
+			fontWeight:
+				users.indexOf(name) === -1
+					? theme.typography.fontWeightRegular
+					: theme.typography.fontWeightMedium,
+		};
+	}
 
 	useEffect(() => {
 		getAllStates()
@@ -146,14 +167,36 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 						value={description}
 					/>
 					<Select
-						options={states}
-						onChange={(e) => setState(e.key)}
+						value={state}
+						onChange={e => setState(e.target.value)}
 					>
+						{states.map(u => (
+							<MenuItem
+								key={u.key}
+								value={u.key}
+								style={getStyles(u.label, state, theme)}
+							>
+								{u.label}
+							</MenuItem>
+						))}
 					</Select>
+					<InputLabel id="multiple-name-label">Uživatelé</InputLabel>
 					<Select
-						options={users}
-						onChange={e => setUser(e.key)}
+						labelId="multiple-name-label"
+						multiple
+						value={user}
+						onChange={handleChange}
+						input={<OutlinedInput label="Name" />}
 					>
+						{users.map(u => (
+							<MenuItem
+								key={u.key}
+								value={u.key}
+								style={getStyles(u.value, user, theme)}
+							>
+								{u.value}
+							</MenuItem>
+						))}
 					</Select>
 				</DialogContent>
 				<DialogActions>

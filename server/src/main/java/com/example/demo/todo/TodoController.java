@@ -1,5 +1,6 @@
 package com.example.demo.todo;
 
+import com.example.demo.todo.model.Todo;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

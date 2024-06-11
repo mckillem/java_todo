@@ -1,5 +1,6 @@
 package com.example.demo.todo;
 
+import com.example.demo.todo.model.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

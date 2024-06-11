@@ -2,6 +2,7 @@ package com.example.demo.todo;
 
 import com.example.demo.project.ProjectRepository;
 import com.example.demo.todo.exception.TodoNotFoundException;
+import com.example.demo.todo.model.Todo;
 import com.example.demo.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
