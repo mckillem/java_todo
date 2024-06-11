@@ -2,13 +2,16 @@ package com.example.demo.todo;
 
 import com.example.demo.project.ProjectRepository;
 import com.example.demo.todo.exception.TodoNotFoundException;
+import com.example.demo.todo.exchange.TodoRequest;
+import com.example.demo.todo.model.Todo;
+import com.example.demo.todo.users.TodoUserService;
 import com.example.demo.user.User;
+import com.example.demo.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -16,6 +19,8 @@ public class TodoService {
 	private final ProjectRepository projectRepository;
 	private TodoRepository todoRepository;
 	private StateRepository stateRepository;
+	private final UserRepository userRepository;
+	private final TodoUserService todoUserService;
 
 	public List<Todo> getAllTodos() {
 
@@ -27,14 +32,20 @@ public class TodoService {
 		return todoRepository.findAllByCreatedBy(id);
 	}
 
-	public void addTodo(Todo todo) {
+	public void addTodo(TodoRequest todoRequest) {
 //		todo.setCreatedAt(LocalDateTime.now());
-		Stream<User> users = todo.getUsers().stream();
+		Collection<User> userByIds = userRepository.findAllById(todoRequest.getUsers());
+		Todo todo = Todo.builder()
+				.content(todoRequest.getContent())
+				.description(todoRequest.getDescription())
+				.createdBy(todoRequest.getCreatedBy())
+				.state(todoRequest.getState())
+				.projectId(todoRequest.getProjectId())
+				.build();
 
-		User user = users.findFirst().get();
+		Todo newTodo = todoRepository.saveAndFlush(todo);
 
-		todo.addUser(user);
-		todoRepository.saveAndFlush(todo);
+		todoUserService.create(userByIds, newTodo.getId());
 	}
 
 	public void deleteTodo(Long todoId) {
@@ -46,19 +57,19 @@ public class TodoService {
 		todoRepository.flush();
 	}
 
-	public void updateTodo(Long todoId, Todo todo) {
-		if (!todoRepository.existsById(todoId)) {
-			throw new TodoNotFoundException(
-					"Todo with id " + todoId + " does not exists");
-		}
-
-		Optional<Todo> byId = todoRepository.findById(todoId);
-		if (byId.isPresent()) {
-			Todo todoById = byId.get();
-			todoById.setContent(todo.getContent());
-			todoRepository.saveAndFlush(todoById);
-		}
-	}
+//	public void updateTodo(Long todoId, Todo todo) {
+//		if (!todoRepository.existsById(todoId)) {
+//			throw new TodoNotFoundException(
+//					"Todo with id " + todoId + " does not exists");
+//		}
+//
+//		Optional<Todo> byId = todoRepository.findById(todoId);
+//		if (byId.isPresent()) {
+//			Todo todoById = byId.get();
+//			todoById.setContent(todo.getContent());
+//			todoRepository.saveAndFlush(todoById);
+//		}
+//	}
 
 	public List<State> getAllStates() {
 

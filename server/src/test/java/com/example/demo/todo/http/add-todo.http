@@ -6,8 +6,6 @@ Content-Type: application/json
   "description": "popis",
   "createdBy": 1,
   "state": {"id": 1},
-  "users": [
-    {"id": 1}
-  ],
-  "project": {"id": 1}
+  "users": [1, 2],
+  "projectId": 1
 }
