@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from "@mui/material/TextField";
 import {loginUser} from "./client";
+import {setEmail, setId, setRoles, setToken, setUsernameLocal} from "./localStorage/LocalStorage";
 
 function Login() {
 	const [username, setUsername] = useState('');
@@ -21,8 +22,12 @@ function Login() {
 		loginUser(userParams)
 			.then(res => res.json())
 			.then(data => {
-				console.log(data.id)
-				// window.location.href="todos/" + data.id;
+				setToken('"token": ' + data.accessToken);
+				setEmail(data.email);
+				setUsernameLocal(data.username);
+				setId(data.id);
+				setRoles(data.roles);
+
 				window.location.href="dashboard/" + data.id;
 			})
 			.catch(err => {
