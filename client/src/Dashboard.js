@@ -1,25 +1,9 @@
 import {useEffect} from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import {Stack} from "@mui/material";
-import AddProject from "./AddProject";
-import {useParams} from "react-router-dom";
+import ListOfProjects from "./ListOfProjects";
 
 function Dashboard() {
-	let params = useParams();
-
-	function dashboard() {
-		window.location.href="/dashboard/" + params.id;
-	}
-	
-	const fetchProjects = () => {
-	  console.log("nacital bych kdyby byly projekty")
-	}
-	
-	function listOfProjects() {
-		window.location.href="/list-of-projects/" + params.id;
-	}
-
 	useEffect(() => {
 		console.log("component is mounted");
 	}, []);
@@ -29,17 +13,15 @@ function Dashboard() {
 			<Box
 				sx={{
 					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
+					flexDirection: 'row',
+					alignItems: 'left',
 					'& > *': {
 						m: 1,
 					}
 				}}
 			>
-				<Stack spacing={2} direction="row">
-					<Button onClick={dashboard}>Nástěnka</Button>
-					<AddProject fetchProjects={fetchProjects} userId={params.id}/>
-					<Button onClick={listOfProjects}>Seznam projektů</Button>
+				<Stack>
+					<ListOfProjects/>
 				</Stack>
 			</Box>
 		</>

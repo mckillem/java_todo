@@ -5,6 +5,7 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 import ListOfProjects from "./ListOfProjects";
 import {getToken} from "./localStorage/LocalStorage";
+import Navbar from "./Navbar";
 
 function isTokenExisting() {
 	return getToken() !== null;
@@ -13,6 +14,7 @@ function isTokenExisting() {
 function App() {
 	return (
 		<>
+			<Navbar/>
 			<BrowserRouter>
 				<Routes>
 					<Route path={"/"} element={<Login/>}></Route>
