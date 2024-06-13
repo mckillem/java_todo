@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getAllProjects} from "./client";
+import {getAllProjects} from "../client";
 import {useParams} from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -9,7 +9,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
-import AddProject from "./AddProject";
+import AddProject from "../AddProject";
 
 function ListOfProjects() {
 	const [projects, setProjects] = useState([]);
