@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import {MenuList} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {deleteLocaleStorage} from "../localStorage/LocalStorage";
 
 export default function UserMenu() {
 	const [open, setOpen] = React.useState(false);
@@ -24,6 +25,11 @@ export default function UserMenu() {
 
 		setOpen(false);
 	};
+
+	const handleLogout = () => {
+	  	deleteLocaleStorage();
+		window.location.href="/";
+	}
 
 	function handleListKeyDown(event) {
 		if (event.key === 'Tab') {
@@ -83,7 +89,7 @@ export default function UserMenu() {
 									>
 										<MenuItem onClick={handleClose}>Profile</MenuItem>
 										<MenuItem onClick={handleClose}>My account</MenuItem>
-										<MenuItem onClick={handleClose}>Logout</MenuItem>
+										<MenuItem onClick={handleLogout}>Logout</MenuItem>
 									</MenuList>
 								</ClickAwayListener>
 							</Paper>
