@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import AddForm from "./AddForm";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import {getProjectName} from "./localStorage/LocalStorage";
 
 function TodoList() {
 	const [todos, setTodos] = useState([]);
@@ -91,9 +92,12 @@ function TodoList() {
 					}
 				}}
 			>
+				<h1>{getProjectName()}</h1>
+				<br/>
+				<br/>
 				<AddForm fetchTodos={fetchTodos} projectId={params.projectId} userId={params.id}/>
 				<br/>
-				<h1>Seznam úkolů</h1>
+				<h3>Seznam úkolů</h3>
 				<Button onClick={switchTodoList}>Všechny/moje</Button>
 				<br/>
 				{todos && todos.length > 0 ? todos.map(todo => {

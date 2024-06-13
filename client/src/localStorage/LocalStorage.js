@@ -50,7 +50,14 @@ export const getRoles = () => {
 	return localStorage.getItem("roles");
 }
 
+export const setProjectName = (projectName) => {
+	localStorage.setItem("projectName",projectName);
+}
+
+export const getProjectName = () => {
+	return localStorage.getItem("projectName");
+}
+
 export const deleteLocaleStorage = () => {
-	// todo: delete only token, email, names
 	localStorage.clear();
 }
