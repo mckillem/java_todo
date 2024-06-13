@@ -13,7 +13,7 @@ import {getId} from "../localStorage/LocalStorage";
 
 function ListOfProjects() {
 	const [projects, setProjects] = useState([]);
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = React.useState(true);
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
