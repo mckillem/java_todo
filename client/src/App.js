@@ -5,6 +5,7 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 import ListOfProjects from "./sidebar/ListOfProjects";
 import {getToken} from "./localStorage/LocalStorage";
+import Header from "./header/Header";
 
 function isTokenExisting() {
 	return getToken() !== null;
@@ -15,9 +16,10 @@ function App() {
 	if (isTokenExisting()) {
 		return (
 			<>
+				<Header/>
+				<ListOfProjects/>
 				<Routes>
-					<Route path={"/dashboard/:id"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<Dashboard/>}></Route>
-					<Route path={"/list-of-projects/:id"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<ListOfProjects/>}></Route>
+					<Route path={"/dashboard/:id"} element={<Dashboard/>}></Route>
 					<Route path={"/list-of-projects/:id/:projectId"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<TodoList/>}></Route>
 					<Route path={"*"} element={<h1>This page does not exist here.</h1>}></Route>
 				</Routes>
