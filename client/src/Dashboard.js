@@ -1,12 +1,10 @@
 import {useEffect} from "react";
 import Box from "@mui/material/Box";
 import {Stack} from "@mui/material";
-import ListOfProjects from "./sidebar/ListOfProjects";
-import Header from "./header/Header";
 
 function Dashboard() {
 	useEffect(() => {
-		console.log("component is mounted");
+		console.log("dashboard is mounted");
 	}, []);
 
 	return (
@@ -22,8 +20,6 @@ function Dashboard() {
 				}}
 			>
 				<Stack>
-					<Header/>
-					<ListOfProjects/>
 				</Stack>
 			</Box>
 		</>

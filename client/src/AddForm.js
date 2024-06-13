@@ -9,7 +9,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {addTodo, getAllUsers} from "./client";
 import {useEffect, useState} from "react";
 import {getAllStates} from "./client";
-import * as ReactSelect from "react-select";
 import Select from '@mui/material/Select';
 import {InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 
