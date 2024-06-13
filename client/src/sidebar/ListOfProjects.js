@@ -9,7 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import AddProject from "../AddProject";
-import {getId} from "../localStorage/LocalStorage";
+import {getId, setProjectName} from "../localStorage/LocalStorage";
 
 function ListOfProjects() {
 	const [projects, setProjects] = useState([]);
@@ -31,8 +31,9 @@ function ListOfProjects() {
 		);
 	}
 
-	function todos(id) {
-		window.location.href="/list-of-projects/" + getId() + "/" + id;
+	function todos(project) {
+		setProjectName(project.name);
+		window.location.href="/list-of-projects/" + getId() + "/" + project.id;
 	}
 
 	useEffect(() => {
@@ -46,7 +47,7 @@ function ListOfProjects() {
 				{projects && projects.length > 0 ? projects.map((project) => (
 					<ListItem key={project.id} disablePadding>
 						<ListItemButton>
-							<ListItemText primary={project.name} onClick={() => todos(project.id)} />
+							<ListItemText primary={project.name} onClick={() => todos(project)} />
 						</ListItemButton>
 					</ListItem>
 				)) : "no projects"}
