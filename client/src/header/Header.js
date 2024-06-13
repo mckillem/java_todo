@@ -24,7 +24,8 @@ function Header() {
 					}
 				}}
 			>
-				<Stack direction="row" spacing={100}>
+				{/*todo: nepřišel jsem na to, jak zařídit, aby byla ikona vždy v pravo*/}
+				<Stack direction="row" spacing={200}>
 					<Button onClick={dashboard}>Nástěnka</Button>
 					<UserMenu/>
 				</Stack>
