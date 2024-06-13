@@ -2,9 +2,9 @@ import {useParams} from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {Stack} from "@mui/material";
-import MenuNavbar from "./navbar/MenuNavbar";
+import UserMenu from "./UserMenu";
 
-function Navbar() {
+function Header() {
 	let params = useParams();
 
 	function dashboard() {
@@ -26,7 +26,7 @@ function Navbar() {
 			>
 				<Stack direction="row" spacing={100}>
 					<Button onClick={dashboard}>Nástěnka</Button>
-					<MenuNavbar/>
+					<UserMenu/>
 				</Stack>
 			</Box>
 
@@ -34,4 +34,4 @@ function Navbar() {
 	)
 }
 
-export default Navbar;
+export default Header;

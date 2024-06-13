@@ -66,7 +66,7 @@ function TodoList() {
 	}
 
 	useEffect(() => {
-		console.log("component is mounted");
+		console.log("todolist is mounted");
 		fetchTodos();
 	}, []);
 

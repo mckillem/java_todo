@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import {MenuList} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-export default function MenuNavbar() {
+export default function UserMenu() {
 	const [open, setOpen] = React.useState(false);
 	const anchorRef = React.useRef(null);
 

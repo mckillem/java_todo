@@ -38,7 +38,7 @@ function ListOfProjects() {
 	}
 
 	useEffect(() => {
-		console.log("component is mounted");
+		console.log("listOfProjects is mounted");
 		fetchProjects();
 	}, []);
 
