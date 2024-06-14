@@ -1,4 +1,5 @@
 POST http://localhost:8080/api/v1/projects
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbmF0dGYiLCJpYXQiOjE3MTgzNTE5NDgsImV4cCI6MTcxODQzODM0OH0.zf5FFFdrU0DYdgEKS-URwQ6OS-vxMXZ69lMuo6OlT4w
 Content-Type: application/json
 
 {

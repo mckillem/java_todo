@@ -1,4 +1,5 @@
 import unfetch from "unfetch";
+import {getToken, getTokenType} from "./localStorage/LocalStorage";
 
 const checkStatus = response => {
 	if (response.ok) {
@@ -14,43 +15,46 @@ const baseURL = "http://localhost:8080/";
 
 export const getAllUsers = () =>
 	unfetch(baseURL + "api/v1/users", {
-		headers: {"Content-Type": "application/json"},
+		headers: {"Authorization": getTokenType() + " " + getToken()},
 		method: "GET"
 	}).then(checkStatus);
 
 export const getAllTodos = () =>
 	fetch(baseURL + "api/v1/todos", {
-		headers: {"Content-Type": "application/json"},
+		headers: {"Authorization": getTokenType() + " " + getToken()},
 		method: "GET"
 	}).then(checkStatus);
 
 export const getAllTodosByUser = (id) =>
 	fetch(baseURL + "api/v1/todos/?id=" + id, {
-		headers: {"Content-Type": "application/json"},
+		headers: {"Authorization": getTokenType() + " " + getToken()},
 		method: "GET"
 	}).then(checkStatus);
 
 export const getAllTodosByProject = (id) =>
 	fetch(baseURL + "api/v1/todos/project/?id=" + id, {
-		headers: {"Content-Type": "application/json"},
+		headers: {"Authorization": getTokenType() + " " + getToken()},
 		method: "GET"
 	}).then(checkStatus);
 
 export const addTodo = async todo =>
 	await fetch(baseURL + "api/v1/todos", {
-		headers: {"Content-type": "application/json"},
+		headers: {
+			"Content-type": "application/json",
+			"Authorization": getTokenType() + " " + getToken()},
 		method: "POST",
 		body: JSON.stringify(todo)
 	}).then(checkStatus);
 
 export const deleteTodo = (todoId) =>
 	fetch(baseURL +`api/v1/todos/${todoId}`, {
+		headers: {"Authorization": getTokenType() + " " + getToken()},
 		method: 'DELETE'
 	}).then(checkStatus);
 
 export const getAllStates = () =>
 	fetch(baseURL + "api/v1/todos/states", {
-		headers: {"Content-Type": "application/json"},
+		headers: {"Authorization": getTokenType() + " " + getToken()},
 		method: "GET"
 	}).then(checkStatus);
 
@@ -63,13 +67,15 @@ export const loginUser = async user =>
 
 export const getAllProjects = () =>
 	fetch(baseURL + "api/v1/projects", {
-		headers: {"Content-Type": "application/json"},
+		headers: {"Authorization": getTokenType() + " " + getToken()},
 		method: "GET"
 	}).then(checkStatus);
 
 export const addProject = async project =>
 	await fetch(baseURL + "api/v1/projects", {
-		headers: {"Content-type": "application/json"},
+		headers: {
+			"Content-type": "application/json",
+			"Authorization": getTokenType() + " " + getToken()},
 		method: "POST",
 		body: JSON.stringify(project)
 	}).then(checkStatus);
