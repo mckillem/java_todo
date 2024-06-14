@@ -6,6 +6,14 @@ export const setToken = (token) => {
 	localStorage.setItem("token", token);
 }
 
+export const getTokenType = () => {
+	return localStorage.getItem("tokenType");
+}
+
+export const setTokenType = (tokenType) => {
+	localStorage.setItem("tokenType", tokenType);
+}
+
 export const getEmail = () => {
 	return localStorage.getItem("email");
 }

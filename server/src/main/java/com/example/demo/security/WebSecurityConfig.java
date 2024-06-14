@@ -59,10 +59,6 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers("/api/v1/test/**").permitAll()
-                                .requestMatchers("/api/v1/todos/**").permitAll()
-                                .requestMatchers("/api/v1/users/**").permitAll()
-                                .requestMatchers("/api/v1/projects/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
