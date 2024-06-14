@@ -46,12 +46,12 @@ public class TodoController {
 		todoService.deleteTodo(todoId);
 	}
 
-//	@CrossOrigin("*")
-//	@PatchMapping(path = "/{todoId}")
-//	public void updateTodo(@PathVariable("todoId") Long todoId,
-//						   @RequestBody Todo todo) {
-//		todoService.updateTodo(todoId, todo);
-//	}
+	@CrossOrigin("*")
+	@PatchMapping(path = "/{todoId}")
+	public void updateTodo(@PathVariable("todoId") Long todoId,
+						   @RequestBody TodoRequest todoRequest) {
+		todoService.updateTodo(todoId, todoRequest);
+	}
 
 	@CrossOrigin("*")
 	@GetMapping("/states")
