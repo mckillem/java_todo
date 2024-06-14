@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -57,19 +58,31 @@ public class TodoService {
 		todoRepository.flush();
 	}
 
-//	public void updateTodo(Long todoId, Todo todo) {
-//		if (!todoRepository.existsById(todoId)) {
-//			throw new TodoNotFoundException(
-//					"Todo with id " + todoId + " does not exists");
-//		}
-//
-//		Optional<Todo> byId = todoRepository.findById(todoId);
-//		if (byId.isPresent()) {
-//			Todo todoById = byId.get();
-//			todoById.setContent(todo.getContent());
-//			todoRepository.saveAndFlush(todoById);
-//		}
-//	}
+	public void updateTodo(Long todoId, TodoRequest todoRequest) {
+		if (!todoRepository.existsById(todoId)) {
+			throw new TodoNotFoundException(
+					"Todo with id " + todoId + " does not exists");
+		}
+
+		Optional<Todo> byId = todoRepository.findById(todoId);
+		if (byId.isPresent()) {
+			Todo todoById = byId.get();
+
+			Collection<User> userByIds = userRepository.findAllById(todoRequest.getUsers());
+			Todo todo = Todo.builder()
+					.id(todoById.getId())
+					.content(todoRequest.getContent())
+					.description(todoRequest.getDescription())
+					.createdBy(todoRequest.getCreatedBy())
+					.state(todoRequest.getState())
+					.projectId(todoRequest.getProjectId())
+					.build();
+
+			Todo newTodo = todoRepository.saveAndFlush(todo);
+
+			todoUserService.create(userByIds, newTodo.getId());
+		}
+	}
 
 	public List<State> getAllStates() {
 

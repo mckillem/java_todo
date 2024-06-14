@@ -1,6 +1,13 @@
 PATCH http://localhost:8080/api/v1/todos/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbmF0dGYiLCJpYXQiOjE3MTgzNTUxNzcsImV4cCI6MTcxODQ0MTU3N30.PcLw-h3406iz-_HFrmG_-DHohk3qTwFlEe9AVhdhyVo
 Content-Type: application/json
 
 {
-  "content": "změna"
+  "id": 1,
+  "content": "úprava 1",
+  "description": "popis",
+  "createdBy": 1,
+  "state": {"id": 1},
+  "users": [1, 2],
+  "projectId": 1
 }
