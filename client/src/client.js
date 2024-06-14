@@ -46,6 +46,15 @@ export const addTodo = async todo =>
 		body: JSON.stringify(todo)
 	}).then(checkStatus);
 
+export const updateTodo = async todo =>
+	await fetch(baseURL + `api/v1/todos/${todo.id}`, {
+		headers: {
+			"Content-type": "application/json",
+			"Authorization": getTokenType() + " " + getToken()},
+		method: "PATCH",
+		body: JSON.stringify(todo)
+	}).then(checkStatus);
+
 export const deleteTodo = (todoId) =>
 	fetch(baseURL +`api/v1/todos/${todoId}`, {
 		headers: {"Authorization": getTokenType() + " " + getToken()},
