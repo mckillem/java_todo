@@ -6,10 +6,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addProject, getAllUsers} from "./client";
+import {addProject} from "./client";
 import {useEffect, useState} from "react";
 import Select from '@mui/material/Select';
 import {FormControl, InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
+import {handleChange, fetchUsers, getStyles} from './FormUtil';
 
 export default function AddProject({ fetchProjects, userId }) {
 	const [open, setOpen] = React.useState(false);
@@ -61,42 +62,9 @@ export default function AddProject({ fetchProjects, userId }) {
 		})
 	}
 
-	const fetchUsers = () =>
-		getAllUsers()
-			.then(res => res.json())
-			.then(data => {
-				setUsers(data.map(d => ({
-					key: d.id,
-					value: d.username,
-					label: d.username
-				})));
-			}).catch(err => {
-			console.log(err.response);
-		}).finally();
-
-	const handleChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-
-		setUser(
-			// On autofill we get a stringified value.
-			typeof value === 'number' ? value.split(',') : value,
-		);
-	};
-
 	useEffect(() => {
-		fetchUsers();
+		fetchUsers(setUsers);
 	}, [])
-
-	function getStyles(name, user, theme) {
-		return {
-			fontWeight:
-				users.indexOf(name) === -1
-					? theme.typography.fontWeightRegular
-					: theme.typography.fontWeightMedium,
-		};
-	}
 
 	return (
 		<React.Fragment>
@@ -144,14 +112,14 @@ export default function AddProject({ fetchProjects, userId }) {
 							labelId="multiple-name-label"
 							multiple
 							value={user}
-							onChange={handleChange}
+							onChange={() => handleChange(setUser)}
 							input={<OutlinedInput label="Name" />}
 						>
 							{users.map(u => (
 								<MenuItem
 									key={u.key}
 									value={u.key}
-									style={getStyles(u.value, user, theme)}
+									style={getStyles(u.value, user, theme, users)}
 								>
 									{u.value}
 								</MenuItem>

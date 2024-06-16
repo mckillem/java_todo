@@ -6,14 +6,17 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addTodo, getAllUsers} from "./client";
+import {addTodo} from "./client";
 import {useEffect, useState} from "react";
 import {getAllStates} from "./client";
 import Select from '@mui/material/Select';
 import {InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
+import {handleChange, fetchUsers, getStyles} from './FormUtil';
 
 export default function AddForm({ fetchTodos, projectId, userId }) {
-	const [open, setOpen] = React.useState(false);
+	// todo: předělat na univerzální formulář, který zvládne přidání i úpravu úkolu
+	const [open, setOpen] = useState(false);
+	// todo: měla by být výchozí hodnota v useEffect? pro práci s api zřejmě jo
 	const [createdBy, setCreatedBy] = useState(userId);
 	const [project, setProject] = useState(projectId);
 	const [content, setContent] = useState("");
@@ -68,40 +71,6 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 			setDescription("");
 			handleClose()
 		})
-	}
-
-	const fetchUsers = () =>
-		getAllUsers()
-			.then(res => res.json())
-			.then(data => {
-				setUsers(data.map(d => ({
-					key: d.id,
-					value: d.username,
-					label: d.username
-				})));
-			}).catch(err => {
-			console.log(err.response);
-		}).finally(
-		);
-
-	const handleChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-
-		setUser(
-			// On autofill we get a stringified value.
-			typeof value === 'number' ? value.split(',') : value,
-		);
-	};
-
-	function getStyles(name, user, theme) {
-		return {
-			fontWeight:
-				users.indexOf(name) === -1
-					? theme.typography.fontWeightRegular
-					: theme.typography.fontWeightMedium,
-		};
 	}
 
 	useEffect(() => {

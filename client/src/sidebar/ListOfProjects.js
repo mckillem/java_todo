@@ -13,7 +13,8 @@ import {getId, setProjectName} from "../localStorage/LocalStorage";
 
 function ListOfProjects() {
 	const [projects, setProjects] = useState([]);
-	const [open, setOpen] = React.useState(true);
+	const [fetchError, setFetchError] = useState(null);
+	const [open, setOpen] = useState(true);
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
@@ -26,7 +27,9 @@ function ListOfProjects() {
 			.then(data => {
 				setProjects(data);
 			}).catch(err => {
+			console.log("ListOfProjects:")
 			console.log(err.response);
+			setFetchError("Nepodařilo se načíst data.");
 		}).finally(
 		);
 	}
@@ -44,7 +47,7 @@ function ListOfProjects() {
 	const Projects = (
 		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
 			<List>
-				{projects && projects.length > 0 ? projects.map((project) => (
+				{projects.length ? projects.map((project) => (
 					<ListItem key={project.id} disablePadding>
 						<ListItemButton>
 							<ListItemText primary={project.name} onClick={() => todos(project)} />
@@ -60,7 +63,8 @@ function ListOfProjects() {
 			<Button onClick={toggleDrawer(true)}>Seznam projektů</Button>
 			<Drawer open={open} onClose={toggleDrawer(false)}>
 				<AddProject fetchProjects={fetchProjects} userId={getId()}/>
-				{Projects}
+				{fetchError && <p style={{ color: "red" }}>{`Chyba: ${fetchError}`}</p>}
+				{!fetchError && Projects}
 			</Drawer>
 		</>
 	)

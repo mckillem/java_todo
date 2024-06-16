@@ -100,7 +100,7 @@ function TodoList() {
 				<h3>Seznam úkolů</h3>
 				<Button onClick={switchTodoList}>Všechny/moje</Button>
 				<br/>
-				{todos && todos.length > 0 ? todos.map(todo => {
+				{todos.length ? todos.map(todo => {
 					return <div key={todo.id}>
 						<Button variant="outlined">{todo.content}</Button>
 						<Button onClick={() => buttonOnClick(todo.id)}>X</Button>
