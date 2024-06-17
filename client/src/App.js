@@ -1,13 +1,14 @@
 import './App.css';
 import {Routes, Route} from "react-router-dom";
 import TodoList from "./TodoList";
-import Login from "./Login";
-import Layout from "./Layout";
+import Login from "./components/Login";
+import Layout from "./components/Layout";
 import {DataProvider} from "./context/DataContext";
-import Register from "./Register";
-import LoginDave from "./LoginDave";
+import Register from "./components/Register";
+import LoginDave from "./components/LoginDave";
 import RequireAuth from "./components/RequireAuth";
 import Unauthorized from "./components/Unauthorized";
+import Users from "./components/Users";
 
 // todo: zvážit ohledně bezpečnosti jestli použivat jen kódy
 const ROLES = {
@@ -28,7 +29,8 @@ function App() {
 
 				<Route element={<RequireAuth allowedRoles={[ROLES.admin]}/>}>
 					<Route path="/" element={<Layout/>}>
-						<Route index path=":projectId" element={<TodoList/>}></Route>
+						{/*<Route index path=":projectId" element={<TodoList/>}></Route>*/}
+						<Route index path="/" element={<Users/>}></Route>
 					</Route>
 				</Route>
 
