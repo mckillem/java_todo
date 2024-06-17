@@ -4,10 +4,12 @@ import Box from '@mui/material/Box';
 import TextField from "@mui/material/TextField";
 import {loginUser} from "./client";
 import {setEmail, setId, setRoles, setToken, setTokenType, setUsernameLocal} from "./localStorage/LocalStorage";
+import {useNavigate} from "react-router-dom";
 
 function Login() {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		console.log("component is mounted");
@@ -29,7 +31,7 @@ function Login() {
 				setId(data.id);
 				setRoles(data.roles);
 
-				window.location.href="dashboard/" + data.id;
+				navigate("/");
 			})
 			.catch(err => {
 				console.log("Špatné přihlašovací údaje")

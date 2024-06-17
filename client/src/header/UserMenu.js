@@ -9,10 +9,12 @@ import Stack from '@mui/material/Stack';
 import {MenuList} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {deleteLocaleStorage} from "../localStorage/LocalStorage";
+import {useNavigate} from "react-router-dom";
 
 export default function UserMenu() {
 	const [open, setOpen] = React.useState(false);
 	const anchorRef = React.useRef(null);
+	const navigate = useNavigate();
 
 	const handleToggle = () => {
 		setOpen((prevOpen) => !prevOpen);
@@ -28,7 +30,8 @@ export default function UserMenu() {
 
 	const handleLogout = () => {
 	  	deleteLocaleStorage();
-		window.location.href="/";
+		//   todo: spravit
+		navigate("/login");
 	}
 
 	function handleListKeyDown(event) {

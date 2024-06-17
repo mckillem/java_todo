@@ -6,22 +6,22 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addTodo, getAllUsers} from "./client";
-import {useEffect, useState} from "react";
+import {addTodo} from "./client";
+import {Fragment, useContext, useEffect, useState} from "react";
 import {getAllStates} from "./client";
 import Select from '@mui/material/Select';
 import {InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
+import DataContext from "./context/DataContext";
+import {getId} from "./localStorage/LocalStorage";
 
-export default function AddForm({ fetchTodos, projectId, userId }) {
-	const [open, setOpen] = React.useState(false);
-	const [createdBy, setCreatedBy] = useState(userId);
+export default function AddForm({ fetchTodos, projectId }) {
+	const [open, setOpen] = useState(false);
 	const [project, setProject] = useState(projectId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
 	const [state, setState] = useState("");
 	const [states, setStates] = useState([]);
-	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState([]);
+	const { users, user, handleChange, setFetchError, getStyles } = useContext(DataContext);
 	const theme = useTheme();
 
 	const handleClickOpen = () => {
@@ -36,7 +36,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 		event.preventDefault();
 
 		const todo = {
-			"createdBy": createdBy,
+			"createdBy": getId(),
 			"projectId": project,
 			"content": content,
 			"description": description,
@@ -46,86 +46,32 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 
 		addTodo(todo)
 			.then(() => {
-				console.log("todo added")
-				// successNotification(
-				//     "Todo successfully added",
-				//     `${todo.name} was added to the system`
-				// )
 				fetchTodos();
-			}).catch(err => {
-			// console.log(err);
-			// err.response.json().then(res => {
-			// 	console.log(res);
-			// errorNotification(
-			//     "There was an issue",
-			//     `${res.message} [${res.status}] [${res.error}]`,
-			//     "bottomLeft"
-			// )
-			// });
+			}).catch(() => {
+				setFetchError("Nepodařilo se vytvořit úkol.");
 		}).finally(() => {
-			// setSubmitting(false);
 			setContent("");
 			setDescription("");
 			handleClose()
 		})
 	}
 
-	const fetchUsers = () =>
-		getAllUsers()
-			.then(res => res.json())
-			.then(data => {
-				setUsers(data.map(d => ({
-					key: d.id,
-					value: d.username,
-					label: d.username
-				})));
-			}).catch(err => {
-			console.log(err.response);
-		}).finally(
-		);
-
-	const handleChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-
-		setUser(
-			// On autofill we get a stringified value.
-			typeof value === 'number' ? value.split(',') : value,
-		);
-	};
-
-	function getStyles(name, user, theme) {
-		return {
-			fontWeight:
-				users.indexOf(name) === -1
-					? theme.typography.fontWeightRegular
-					: theme.typography.fontWeightMedium,
-		};
-	}
-
 	useEffect(() => {
 		getAllStates()
 			.then(res => res.json())
 			.then(data => {
-
 				setStates(data.map(d => ({
 					key: d.id,
 					value: d.name,
 					label: d.text
 				})));
-
-			}).catch(err => {
-			console.log(err.response);
-		}).finally(
-			// () => setFetching(false)
-		);
-
-		fetchUsers();
-	}, [])
+			}).catch(() => {
+				setFetchError("Nepodařilo se načíst stav.");
+		});
+		}, [])
 
 	return (
-		<React.Fragment>
+		<Fragment>
 			<Button variant="outlined" onClick={handleClickOpen}>
 				Přidat úkol
 			</Button>
@@ -173,7 +119,6 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 							<MenuItem
 								key={u.key}
 								value={u.key}
-								style={getStyles(u.label, state, theme)}
 							>
 								{u.label}
 							</MenuItem>
@@ -191,7 +136,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 							<MenuItem
 								key={u.key}
 								value={u.key}
-								style={getStyles(u.value, user, theme)}
+								style={getStyles(u.value, user, theme, users)}
 							>
 								{u.value}
 							</MenuItem>
@@ -203,6 +148,6 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 					<Button type="submit">Uložit</Button>
 				</DialogActions>
 			</Dialog>
-		</React.Fragment>
+		</Fragment>
 	);
 }

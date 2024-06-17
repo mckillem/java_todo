@@ -2,10 +2,9 @@ import './App.css';
 import {Routes, Route} from "react-router-dom";
 import TodoList from "./TodoList";
 import Login from "./Login";
-import Dashboard from "./Dashboard";
-import ListOfProjects from "./sidebar/ListOfProjects";
 import {getToken} from "./localStorage/LocalStorage";
-import Header from "./header/Header";
+import Layout from "./Layout";
+import {DataProvider} from "./context/DataContext";
 
 function isTokenExisting() {
 	return getToken() !== null;
@@ -15,24 +14,21 @@ function App() {
 
 	if (isTokenExisting()) {
 		return (
-			<>
-				<Header/>
-				<ListOfProjects/>
+			<DataProvider>
 				<Routes>
-					<Route path={"/dashboard/:id"} element={<Dashboard/>}></Route>
-					<Route path={"/list-of-projects/:id/:projectId"} loader={({ params }) => console.log(params.id)} action={({ params }) => {}} element={<TodoList/>}></Route>
-					<Route path={"*"} element={<h1>This page does not exist here.</h1>}></Route>
+					<Route path={"/"} element={<Layout/>}>
+						<Route index path={":projectId"} element={<TodoList/>}></Route>
+						{/*<Route path={"*"} element={<h1>This page does not exist here.</h1>}></Route>*/}
+					</Route>
 				</Routes>
-			</>
+			</DataProvider>
 		);
 	} else {
 		return (
-			<>
-				<Routes>
-					<Route path={"/"} element={<Login/>}></Route>
-					<Route path={"*"} element={<h1>This page does not exist here.</h1>}></Route>
-				</Routes>
-			</>
+			<Routes>
+				<Route path={"login"} element={<Login/>}></Route>
+				<Route path={"*"} element={<h1>This page does not exist here.</h1>}></Route>
+			</Routes>
 		);
 	}
 }

@@ -13,7 +13,7 @@ function Header() {
 	}
 
 	return (
-		<>
+		<header>
 			<Box
 				sx={{
 					display: 'flex',
@@ -31,7 +31,7 @@ function Header() {
 				</Stack>
 			</Box>
 
-		</>
+		</header>
 	)
 }
 
