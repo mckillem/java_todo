@@ -7,17 +7,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {addProject} from "./client";
-import {useContext, useState} from "react";
+import {Fragment, useContext, useState} from "react";
 import Select from '@mui/material/Select';
-import {FormControl, InputLabel, MenuItem, OutlinedInput} from "@mui/material";
+import {FormControl, InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 import DataContext from "./context/DataContext";
 
-export default function AddProject({ fetchProjects, userId }) {
+export default function AddProject() {
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const { users, user, handleChange } = useContext(DataContext);
-	// const theme = useTheme();
+	const { users, user, handleChange, setFetchError, fetchProjects, getStyles} = useContext(DataContext);
+	const theme = useTheme();
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -38,22 +38,9 @@ export default function AddProject({ fetchProjects, userId }) {
 
 		addProject(project)
 			.then(() => {
-				console.log("project added")
-				// successNotification(
-				//     "Todo successfully added",
-				//     `${todo.name} was added to the system`
-				// )
 				fetchProjects();
-			}).catch(err => {
-			// console.log(err);
-			// err.response.json().then(res => {
-			// 	console.log(res);
-			// errorNotification(
-			//     "There was an issue",
-			//     `${res.message} [${res.status}] [${res.error}]`,
-			//     "bottomLeft"
-			// )
-			// });
+			}).catch(() => {
+				setFetchError("Nepodařilo se uložit projekt.");
 		}).finally(() => {
 			setName("");
 			setDescription("");
@@ -62,7 +49,7 @@ export default function AddProject({ fetchProjects, userId }) {
 	}
 
 	return (
-		<React.Fragment>
+		<Fragment>
 			<Button variant="outlined" onClick={handleClickOpen}>
 				Přidat projekt
 			</Button>
@@ -114,7 +101,7 @@ export default function AddProject({ fetchProjects, userId }) {
 								<MenuItem
 									key={u.key}
 									value={u.key}
-									// style={getStyles(u.value, user, theme, users)}
+									style={getStyles(u.value, user, theme, users)}
 								>
 									{u.value}
 								</MenuItem>
@@ -127,6 +114,6 @@ export default function AddProject({ fetchProjects, userId }) {
 					<Button type="submit">Uložit</Button>
 				</DialogActions>
 			</Dialog>
-		</React.Fragment>
+		</Fragment>
 	);
 }

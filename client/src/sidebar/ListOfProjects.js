@@ -1,5 +1,4 @@
-import {useEffect, useState} from "react";
-import {getAllProjects} from "../client";
+import {useContext, useState} from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -10,40 +9,21 @@ import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import AddProject from "../AddProject";
 import {getId, setProjectName} from "../localStorage/LocalStorage";
+import DataContext from "../context/DataContext";
 
 function ListOfProjects() {
-	const [projects, setProjects] = useState([]);
-	const [fetchError, setFetchError] = useState(null);
 	const [open, setOpen] = useState(true);
+	const { fetchError, projects } = useContext(DataContext);
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
 	};
-
-	const fetchProjects = () => {
-
-		getAllProjects()
-			.then(res => res.json())
-			.then(data => {
-				setProjects(data);
-			}).catch(err => {
-			console.log("ListOfProjects:")
-			console.log(err.response);
-			setFetchError("Nepodařilo se načíst data.");
-		}).finally(
-		);
-	}
 
 	function todos(project) {
 		setProjectName(project.name);
 		// todo: změnit aby se nenačítala stráka ale jen se načetla data
 		window.location.href="/list-of-projects/" + getId() + "/" + project.id;
 	}
-
-	useEffect(() => {
-		console.log("listOfProjects is mounted");
-		fetchProjects();
-	}, []);
 
 	const Projects = (
 		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
@@ -63,7 +43,7 @@ function ListOfProjects() {
 		<>
 			<Button onClick={toggleDrawer(true)}>Seznam projektů</Button>
 			<Drawer open={open} onClose={toggleDrawer(false)}>
-				<AddProject fetchProjects={fetchProjects} userId={getId()}/>
+				<AddProject/>
 				{fetchError && <p style={{ color: "red" }}>{`Chyba: ${fetchError}`}</p>}
 				{!fetchError && Projects}
 			</Drawer>
