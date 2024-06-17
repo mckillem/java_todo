@@ -5,12 +5,12 @@ import {Outlet} from "react-router-dom";
 
 const Layout = () => {
 	return (
-		<div className="App">
+		<main className="App">
 			{/*todo: header jsem upravil, držet se html tagů. Co bude main?*/}
 			<Header/>
 			<ListOfProjects/>
 			<Outlet/>
-		</div>
+		</main>
 	);
 };
 
