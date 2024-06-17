@@ -7,11 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {addTodo} from "./client";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {getAllStates} from "./client";
 import Select from '@mui/material/Select';
 import {InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
-import {handleChange, fetchUsers, getStyles} from './FormUtil';
+import DataContext from "./context/DataContext";
 
 export default function AddForm({ fetchTodos, projectId, userId }) {
 	// todo: předělat na univerzální formulář, který zvládne přidání i úpravu úkolu
@@ -23,9 +23,8 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 	const [description, setDescription] = useState("");
 	const [state, setState] = useState("");
 	const [states, setStates] = useState([]);
-	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState([]);
-	const theme = useTheme();
+	const { users, user, handleChange } = useContext(DataContext);
+	// const theme = useTheme();
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -89,9 +88,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 		}).finally(
 			// () => setFetching(false)
 		);
-
-		fetchUsers();
-	}, [])
+		}, [])
 
 	return (
 		<React.Fragment>
@@ -142,7 +139,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 							<MenuItem
 								key={u.key}
 								value={u.key}
-								style={getStyles(u.label, state, theme)}
+								// style={getStyles(u.label, state, theme)}
 							>
 								{u.label}
 							</MenuItem>
@@ -160,7 +157,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 							<MenuItem
 								key={u.key}
 								value={u.key}
-								style={getStyles(u.value, user, theme)}
+								// style={getStyles(u.value, user, theme)}
 							>
 								{u.value}
 							</MenuItem>

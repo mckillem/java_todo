@@ -36,6 +36,7 @@ function ListOfProjects() {
 
 	function todos(project) {
 		setProjectName(project.name);
+		// todo: změnit aby se nenačítala stráka ale jen se načetla data
 		window.location.href="/list-of-projects/" + getId() + "/" + project.id;
 	}
 

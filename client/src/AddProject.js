@@ -7,18 +7,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {addProject} from "./client";
-import {useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import Select from '@mui/material/Select';
-import {FormControl, InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
-import {handleChange, fetchUsers, getStyles} from './FormUtil';
+import {FormControl, InputLabel, MenuItem, OutlinedInput} from "@mui/material";
+import DataContext from "./context/DataContext";
 
 export default function AddProject({ fetchProjects, userId }) {
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState([]);
-	const theme = useTheme();
+	const { users, user, handleChange } = useContext(DataContext);
+	// const theme = useTheme();
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -61,10 +60,6 @@ export default function AddProject({ fetchProjects, userId }) {
 			handleClose()
 		})
 	}
-
-	useEffect(() => {
-		fetchUsers(setUsers);
-	}, [])
 
 	return (
 		<React.Fragment>
@@ -112,14 +107,14 @@ export default function AddProject({ fetchProjects, userId }) {
 							labelId="multiple-name-label"
 							multiple
 							value={user}
-							onChange={() => handleChange(setUser)}
+							onChange={handleChange}
 							input={<OutlinedInput label="Name" />}
 						>
 							{users.map(u => (
 								<MenuItem
 									key={u.key}
 									value={u.key}
-									style={getStyles(u.value, user, theme, users)}
+									// style={getStyles(u.value, user, theme, users)}
 								>
 									{u.value}
 								</MenuItem>
