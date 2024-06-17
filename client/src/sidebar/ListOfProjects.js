@@ -8,7 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import AddProject from "../AddProject";
-import {getId, setProjectName} from "../localStorage/LocalStorage";
+import {setProjectName} from "../localStorage/LocalStorage";
 import DataContext from "../context/DataContext";
 
 function ListOfProjects() {
@@ -22,7 +22,7 @@ function ListOfProjects() {
 	function todos(project) {
 		setProjectName(project.name);
 		// todo: změnit aby se nenačítala stráka ale jen se načetla data
-		window.location.href="/list-of-projects/" + getId() + "/" + project.id;
+		window.location.href= project.id;
 	}
 
 	const Projects = (

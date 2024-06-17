@@ -12,11 +12,11 @@ function TodoList() {
 	const [todos, setTodos] = useState([]);
 	const [allTodos, setAllTodos] = useState(true);
 	const { fetchError, setFetchError } = useContext(DataContext);
-	let params = useParams();
+	const { projectId } = useParams();
 
 	const fetchTodos = () => {
 		if (allTodos) {
-			getAllTodosByProject(params.projectId)
+			getAllTodosByProject(projectId)
 				.then(res => res.json())
 				.then(data => {
 					setTodos(data);
@@ -39,7 +39,7 @@ function TodoList() {
 		deleteTodo(todoId)
 			.then(() => {
 				callback();
-		}).catch(err => {
+		}).catch(() => {
 			setFetchError("Nepodařilo se smazat úkol.");
 		});
 
@@ -71,7 +71,7 @@ function TodoList() {
 				<h1>{getProjectName()}</h1>
 				<br/>
 				<br/>
-				<AddForm fetchTodos={fetchTodos} projectId={params.projectId}/>
+				<AddForm fetchTodos={fetchTodos} projectId={projectId}/>
 				<br/>
 				<h3>Seznam úkolů</h3>
 				<Button onClick={switchTodoList}>Všechny/moje</Button>
