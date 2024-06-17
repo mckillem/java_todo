@@ -6,6 +6,7 @@ import {getToken} from "./localStorage/LocalStorage";
 import Layout from "./Layout";
 import {DataProvider} from "./context/DataContext";
 import Register from "./Register";
+import LoginDave from "./LoginDave";
 
 function isTokenExisting() {
 	return getToken() !== null;
@@ -27,7 +28,7 @@ function App() {
 	} else {
 		return (
 			<Routes>
-				<Route path={"login"} element={<Login/>}></Route>
+				<Route path={"login"} element={<LoginDave/>}></Route>
 				<Route path={"register"} element={<Register/>}></Route>
 				<Route path={"*"} element={<h1>This page does not exist here.</h1>}></Route>
 			</Routes>
