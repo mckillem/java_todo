@@ -7,24 +7,22 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {addTodo} from "./client";
-import {useContext, useEffect, useState} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import {getAllStates} from "./client";
 import Select from '@mui/material/Select';
 import {InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 import DataContext from "./context/DataContext";
+import {getId} from "./localStorage/LocalStorage";
 
-export default function AddForm({ fetchTodos, projectId, userId }) {
-	// todo: předělat na univerzální formulář, který zvládne přidání i úpravu úkolu
+export default function AddForm({ fetchTodos, projectId }) {
 	const [open, setOpen] = useState(false);
-	// todo: měla by být výchozí hodnota v useEffect? pro práci s api zřejmě jo
-	const [createdBy, setCreatedBy] = useState(userId);
 	const [project, setProject] = useState(projectId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
 	const [state, setState] = useState("");
 	const [states, setStates] = useState([]);
-	const { users, user, handleChange } = useContext(DataContext);
-	// const theme = useTheme();
+	const { users, user, handleChange, setFetchError, getStyles } = useContext(DataContext);
+	const theme = useTheme();
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -38,7 +36,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 		event.preventDefault();
 
 		const todo = {
-			"createdBy": createdBy,
+			"createdBy": getId(),
 			"projectId": project,
 			"content": content,
 			"description": description,
@@ -48,24 +46,10 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 
 		addTodo(todo)
 			.then(() => {
-				console.log("todo added")
-				// successNotification(
-				//     "Todo successfully added",
-				//     `${todo.name} was added to the system`
-				// )
 				fetchTodos();
-			}).catch(err => {
-			// console.log(err);
-			// err.response.json().then(res => {
-			// 	console.log(res);
-			// errorNotification(
-			//     "There was an issue",
-			//     `${res.message} [${res.status}] [${res.error}]`,
-			//     "bottomLeft"
-			// )
-			// });
+			}).catch(() => {
+				setFetchError("Nepodařilo se vytvořit úkol.");
 		}).finally(() => {
-			// setSubmitting(false);
 			setContent("");
 			setDescription("");
 			handleClose()
@@ -76,22 +60,18 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 		getAllStates()
 			.then(res => res.json())
 			.then(data => {
-
 				setStates(data.map(d => ({
 					key: d.id,
 					value: d.name,
 					label: d.text
 				})));
-
-			}).catch(err => {
-			console.log(err.response);
-		}).finally(
-			// () => setFetching(false)
-		);
+			}).catch(() => {
+				setFetchError("Nepodařilo se načíst stav.");
+		});
 		}, [])
 
 	return (
-		<React.Fragment>
+		<Fragment>
 			<Button variant="outlined" onClick={handleClickOpen}>
 				Přidat úkol
 			</Button>
@@ -139,7 +119,6 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 							<MenuItem
 								key={u.key}
 								value={u.key}
-								// style={getStyles(u.label, state, theme)}
 							>
 								{u.label}
 							</MenuItem>
@@ -157,7 +136,7 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 							<MenuItem
 								key={u.key}
 								value={u.key}
-								// style={getStyles(u.value, user, theme)}
+								style={getStyles(u.value, user, theme, users)}
 							>
 								{u.value}
 							</MenuItem>
@@ -169,6 +148,6 @@ export default function AddForm({ fetchTodos, projectId, userId }) {
 					<Button type="submit">Uložit</Button>
 				</DialogActions>
 			</Dialog>
-		</React.Fragment>
+		</Fragment>
 	);
 }
