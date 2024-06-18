@@ -4,15 +4,17 @@ import {useParams} from "react-router-dom";
 import AddForm from "./AddForm";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import {getId, getProjectName} from "./localStorage/LocalStorage";
+import {getId} from "./localStorage/LocalStorage";
 import * as React from "react";
 import DataContext from "./context/DataContext";
+import useInput from "./hooks/useInput";
 
 function TodoList() {
 	const [todos, setTodos] = useState([]);
 	const [allTodos, setAllTodos] = useState(true);
 	const { fetchError, setFetchError } = useContext(DataContext);
 	const { projectId } = useParams();
+	const [projectNameAttribs] = useInput('projectName', '');
 
 	const fetchTodos = () => {
 		if (allTodos) {
@@ -68,7 +70,7 @@ function TodoList() {
 					}
 				}}
 			>
-				<h1>{getProjectName()}</h1>
+				<h1>{projectNameAttribs}</h1>
 				<br/>
 				<br/>
 				<AddForm fetchTodos={fetchTodos} projectId={projectId}/>
