@@ -1,12 +1,9 @@
-import {useParams} from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {Stack} from "@mui/material";
 import UserMenu from "./UserMenu";
 
 function Header() {
-	let params = useParams();
-
 	function dashboard() {
 		// todo: nemá přístup k id přihlášeného uživatele
 		// window.location.href="/dashboard/" + params.id;

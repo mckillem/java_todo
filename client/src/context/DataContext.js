@@ -1,12 +1,11 @@
 import { createContext, useState, useEffect } from 'react';
-import {getAllProjects, getAllUsers} from "../client";
+import { getAllUsers} from "../client";
 
 const DataContext = createContext({});
 
 export const DataProvider = ({ children }) => {
 	const [users, setUsers] = useState([]);
 	const [user, setUser] = useState([]);
-	const [projects, setProjects] = useState([]);
 	const [fetchError, setFetchError] = useState(null);
 
 	 const fetchUsers = () =>
@@ -21,17 +20,6 @@ export const DataProvider = ({ children }) => {
 			}).catch(() => {
 				setFetchError("Nepodařilo se načíst uživatelé.");
 		});
-
-	const fetchProjects = () => {
-		getAllProjects()
-			.then(res => res.json())
-			.then(data => {
-				console.log("projekty: " + data)
-				setProjects(data);
-			}).catch(() => {
-				setFetchError("Nepodařilo se načíst projekty.");
-		});
-	}
 
 	const handleChange = (event) => {
 		const {
@@ -57,15 +45,10 @@ export const DataProvider = ({ children }) => {
 		fetchUsers();
 	}, [])
 
-	useEffect(() => {
-		fetchProjects();
-	}, []);
-
 	return (
 		<DataContext.Provider value={{
 			fetchError, setFetchError,
-			users, user, handleChange,
-			projects, setProjects, fetchProjects, getStyles
+			users, user, handleChange, getStyles
 		}}>
 			{children}
 		</DataContext.Provider>

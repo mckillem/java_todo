@@ -41,9 +41,17 @@ const LoginDave = () => {
 				}
 			);
 			console.log(JSON.stringify(response?.data));
+
+			// todo: dočasné řešení
+			// setEmail(response.data.email);
+			// setUsernameLocal(response.data.username);
+			// setId(response.data.id);
+			// setRoles(response.data.roles);
+			//
+
 			const accessToken = response?.data?.accessToken;
 			const roles = response?.data?.roles;
-			setAuth({ username, roles, accessToken });
+			setAuth({ username, password, roles, accessToken });
 			resetUsername();
 			setPassword("");
 			navigate(from, { replace: true });
