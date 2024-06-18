@@ -8,7 +8,7 @@ const Layout = () => {
 		<main className="App">
 			{/*todo: header jsem upravil, držet se html tagů. Co bude main?*/}
 			<Header/>
-			{/*<ListOfProjects/>*/}
+			<ListOfProjects/>
 			<Outlet/>
 		</main>
 	);

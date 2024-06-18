@@ -31,8 +31,9 @@ function App() {
 				<Route element={<PersistLogin />}>
 					<Route element={<RequireAuth allowedRoles={[ROLES.admin]}/>}>
 						<Route path="/" element={<Layout/>}>
-							{/*<Route index path=":projectId" element={<TodoList/>}></Route>*/}
-							<Route index path="/" element={<Users/>}></Route>
+							<Route index path=":projectId" element={<TodoList/>}></Route>
+							{/*todo: na ověření, že funguje refresh token*/}
+							{/*<Route index path="/" element={<Users/>}></Route>*/}
 						</Route>
 					</Route>
 				</Route>

@@ -8,19 +8,20 @@ import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import AddProject from "../AddProject";
-import {setProjectName} from "../localStorage/LocalStorage";
 import DataContext from "../context/DataContext";
+import useInput from "../hooks/useInput";
 
 function ListOfProjects() {
 	const [open, setOpen] = useState(true);
 	const { fetchError, projects } = useContext(DataContext);
+	const [projectNameAttribs] = useInput('projectName', '');
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
 	};
 
 	function todos(project) {
-		setProjectName(project.name);
+		projectNameAttribs(project.name);
 		// todo: změnit aby se nenačítala stráka ale jen se načetla data
 		window.location.href= project.id;
 	}

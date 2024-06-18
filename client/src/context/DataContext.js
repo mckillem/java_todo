@@ -26,6 +26,7 @@ export const DataProvider = ({ children }) => {
 		getAllProjects()
 			.then(res => res.json())
 			.then(data => {
+				console.log("projekty: " + data)
 				setProjects(data);
 			}).catch(() => {
 				setFetchError("Nepodařilo se načíst projekty.");

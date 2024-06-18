@@ -30,15 +30,9 @@ export default function UserMenu() {
 		setOpen(false);
 	};
 
-	// const handleLogout = () => {
-	//   	deleteLocaleStorage();
-	// 	//   todo: spravit
-	// 	navigate("/login");
-	// }
-
-
 	const handleSignOut = async () => {
 		await logout();
+		deleteLocaleStorage();
 		navigate('/login');
 	}
 
