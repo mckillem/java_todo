@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import useRefreshToken from "../hooks/useRefreshToken";
-import login from "./Login";
 
 const Users = () => {
 	const [users, setUsers] = useState();
@@ -19,7 +18,7 @@ const Users = () => {
 		const getUsers = async () => {
 			console.log("tu")
 			try {
-				const response = await axiosPrivate.get('/api/v1/users', {
+				const response = await axiosPrivate.get('/users', {
 					signal: controller.signal
 				});
 				console.log(response.data);

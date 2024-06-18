@@ -19,7 +19,7 @@ export const DataProvider = ({ children }) => {
 					label: d.username
 				})));
 			}).catch(() => {
-				setFetchError("Nepodařilo se načíst uživatelé.")
+				setFetchError("Nepodařilo se načíst uživatelé.");
 		});
 
 	const fetchProjects = () => {

@@ -1,12 +1,12 @@
 import { useRef, useState, useEffect } from "react";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
-import {useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
-const LOGIN_URL = "/api/v1/auth/signin";
+const LOGIN_URL = "/auth/signin";
 
 const LoginDave = () => {
-	const { setAuth } = useAuth();
+	const { setAuth, persist, setPersist } = useAuth();
 	const userRef = useRef();
 	const errRef = useRef();
 
@@ -58,6 +58,14 @@ const LoginDave = () => {
 		}
 	}
 
+	const togglePersist = () => {
+		setPersist(prev => !prev);
+	}
+
+	useEffect(() => {
+		localStorage.setItem("persist", persist);
+	}, [persist])
+
 	return (
 		<section>
 			<p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -83,12 +91,20 @@ const LoginDave = () => {
 					required
 				/>
 				<button>Sign In</button>
+				<div className="persistCheck">
+					<input
+						type="checkbox"
+						id="persist"
+						onChange={togglePersist}
+						checked={persist}
+					/>
+					<label htmlFor="persist">Trust This Device</label>
+				</div>
 			</form>
 			<p>
-				Need an Account?<br />
+				Need an Account?<br/>
 				<span className="line">
-					{/*put router link here*/}
-					<a href="#">Sign Up</a>
+					<Link to="/register">Sign Up</Link>
 				</span>
 			</p>
 		</section>

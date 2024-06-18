@@ -9,6 +9,7 @@ import LoginDave from "./components/LoginDave";
 import RequireAuth from "./components/RequireAuth";
 import Unauthorized from "./components/Unauthorized";
 import Users from "./components/Users";
+import PersistLogin from "./components/PersistLogin";
 
 // todo: zvážit ohledně bezpečnosti jestli použivat jen kódy
 const ROLES = {
@@ -27,10 +28,12 @@ function App() {
 				<Route path="register" element={<Register/>}></Route>
 				<Route path="unauthorized" element={<Unauthorized />} />
 
-				<Route element={<RequireAuth allowedRoles={[ROLES.admin]}/>}>
-					<Route path="/" element={<Layout/>}>
-						{/*<Route index path=":projectId" element={<TodoList/>}></Route>*/}
-						<Route index path="/" element={<Users/>}></Route>
+				<Route element={<PersistLogin />}>
+					<Route element={<RequireAuth allowedRoles={[ROLES.admin]}/>}>
+						<Route path="/" element={<Layout/>}>
+							{/*<Route index path=":projectId" element={<TodoList/>}></Route>*/}
+							<Route index path="/" element={<Users/>}></Route>
+						</Route>
 					</Route>
 				</Route>
 

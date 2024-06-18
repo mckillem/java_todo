@@ -2,7 +2,6 @@ import React from 'react';
 import Header from "../header/Header";
 import ListOfProjects from "../sidebar/ListOfProjects";
 import {Outlet} from "react-router-dom";
-import Users from "./Users";
 
 const Layout = () => {
 	return (
