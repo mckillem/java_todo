@@ -74,12 +74,6 @@ export const loginUser = async user =>
 		body: JSON.stringify(user)
 	}).then(checkStatus);
 
-export const getAllProjects = () =>
-	fetch(baseURL + "api/v1/projects", {
-		headers: {"Authorization": getTokenType() + " " + getToken()},
-		method: "GET"
-	}).then(checkStatus);
-
 export const addProject = async project =>
 	await fetch(baseURL + "api/v1/projects", {
 		headers: {

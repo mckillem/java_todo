@@ -7,17 +7,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {addProject} from "./client";
-import {Fragment, useContext, useState} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import Select from '@mui/material/Select';
 import {FormControl, InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 import DataContext from "./context/DataContext";
+import useAxiosPrivate from "./hooks/useAxiosPrivate";
 
 export default function AddProject() {
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const { users, user, handleChange, setFetchError, fetchProjects, getStyles} = useContext(DataContext);
+	const { setFetchError, fetchProjects, getStyles} = useContext(DataContext);
 	const theme = useTheme();
+	const axiosPrivate = useAxiosPrivate();
+	const [users, setUsers] = useState([]);
+	const [user, setUser] = useState([]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -47,6 +51,48 @@ export default function AddProject() {
 			handleClose()
 		})
 	}
+
+	const handleChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+
+		setUser(
+			// On autofill we get a stringified value.
+			typeof value === 'number' ? value.split(',') : value,
+		);
+	};
+
+	useEffect(() => {
+		let isMounted = true;
+		const controller = new AbortController();
+
+		const getUsers = async () => {
+			try {
+				const response = await axiosPrivate.get('/users', {
+					signal: controller.signal
+				});
+				console.log(response.data);
+				isMounted && setUsers(response.data.map(d => ({
+					key: d.id,
+					value: d.username,
+					label: d.username
+				})));
+			} catch (err) {
+				console.error(err);
+				// setFetchError("Nepodařilo se načíst uživatelé.");
+
+				// navigate('/login', { state: { from: location }, replace: true });
+			}
+		}
+
+		getUsers();
+
+		return () => {
+			isMounted = false;
+			controller.abort();
+		}
+	}, [])
 
 	return (
 		<Fragment>
