@@ -2,11 +2,13 @@ import { useRef, useState, useEffect } from "react";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import {Link, useLocation, useNavigate} from "react-router-dom";
+import useInput from "../hooks/useInput";
+import useToggle from "../hooks/useToggle";
 
 const LOGIN_URL = "/auth/signin";
 
 const LoginDave = () => {
-	const { setAuth, persist, setPersist } = useAuth();
+	const { setAuth } = useAuth();
 	const userRef = useRef();
 	const errRef = useRef();
 
@@ -14,9 +16,10 @@ const LoginDave = () => {
 	const location = useLocation();
 	const from = location.state?.from?.pathname || "/";
 
-	const [username, setUsername] = useState("");
+	const [username, resetUsername, usernameAttribs] = useInput('username', '');
 	const [password, setPassword] = useState("");
 	const [errMsg, setErrMsg] = useState("");
+	const [check, toggleCheck] = useToggle('persist', false);
 
 	useEffect(() => {
 		userRef.current.focus();
@@ -41,7 +44,7 @@ const LoginDave = () => {
 			const accessToken = response?.data?.accessToken;
 			const roles = response?.data?.roles;
 			setAuth({ username, password, roles, accessToken });
-			setUsername("");
+			resetUsername();
 			setPassword("");
 			navigate(from, { replace: true });
 		} catch (err) {
@@ -58,14 +61,6 @@ const LoginDave = () => {
 		}
 	}
 
-	const togglePersist = () => {
-		setPersist(prev => !prev);
-	}
-
-	useEffect(() => {
-		localStorage.setItem("persist", persist);
-	}, [persist])
-
 	return (
 		<section>
 			<p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -77,8 +72,7 @@ const LoginDave = () => {
 					id="username"
 					ref={userRef}
 					autoComplete="off"
-					onChange={(e) => setUsername(e.target.value)}
-					value={username}
+					{...usernameAttribs}
 					required
 				/>
 
@@ -95,8 +89,8 @@ const LoginDave = () => {
 					<input
 						type="checkbox"
 						id="persist"
-						onChange={togglePersist}
-						checked={persist}
+						onChange={toggleCheck}
+						checked={check}
 					/>
 					<label htmlFor="persist">Trust This Device</label>
 				</div>
@@ -111,4 +105,4 @@ const LoginDave = () => {
 	)
 }
 
-export default LoginDave
+export default LoginDave;
