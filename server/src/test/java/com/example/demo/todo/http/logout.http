@@ -1,0 +1,6 @@
+POST http://localhost:8080/api/v1/auth/signout
+Content-Type: application/json
+
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbmF0dGZmIiwiaWF0IjoxNzE4Nzk4MzU1LCJleHAiOjE3MTg4ODQ3NTV9.IzXA0uNjsYNnTgneKFwupcxNuLM-GQAkLX1Es6d_qqI"
+}

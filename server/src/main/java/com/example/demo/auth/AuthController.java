@@ -62,7 +62,7 @@ public class AuthController {
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-//		String jwt = jwtUtils.generateJwtToken(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
 
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		List<String> roles = userDetails.getAuthorities().stream()
@@ -79,6 +79,7 @@ public class AuthController {
 				.header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
 				.header(HttpHeaders.SET_COOKIE, jwtRefreshCookie.toString())
 				.body(new JwtResponse(
+						jwt,
 						userDetails.getId(),
 						userDetails.getUsername(),
 						userDetails.getEmail(),
@@ -144,8 +145,11 @@ public class AuthController {
 	@PostMapping("/signout")
 	public ResponseEntity<?> logoutUser() {
 		Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		todo: jak má vypadat dotaz, aby se splnila podmínka?
+		System.out.println("logged out " + principle);
 		if (!Objects.equals(principle.toString(), "anonymousUser")) {
 			Long userId = ((UserDetailsImpl) principle).getId();
+			System.out.println("Logged out user: " + userId);
 			refreshTokenService.deleteByUserId(userId);
 		}
 
