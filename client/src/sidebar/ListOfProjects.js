@@ -44,10 +44,12 @@ function ListOfProjects() {
 					signal: controller.signal
 				});
 				isMounted && setProjects(response.data);
+				console.log(response)
 			} catch (err) {
 				// todo: jak zobrazovat chyby uživateli?
 				// todo: i když načte projekty tak stejně hodí chybu a tím pádem by přeměroval
-				console.log(" toto je nějaká chyba: " + err);
+				console.error(err)
+				console.log("nějaká chyba v listOfProjects: " + err);
 				// setFetchError("Nepodařilo se načíst projekty.");
 
 				// navigate('/login', { state: { from: location }, replace: true });
