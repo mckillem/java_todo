@@ -1,13 +1,10 @@
 import {useContext, useEffect, useState} from "react";
-import {deleteTodo, getAllTodosByProject, getAllTodosByUser} from "./client";
 import {useParams} from "react-router-dom";
 import AddForm from "./AddForm";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import {getId} from "./localStorage/LocalStorage";
 import * as React from "react";
 import DataContext from "./context/DataContext";
-import useInput from "./hooks/useInput";
 import useAxiosPrivate from "./hooks/useAxiosPrivate";
 
 function TodoList() {
@@ -15,7 +12,6 @@ function TodoList() {
 	const [allTodos, setAllTodos] = useState(true);
 	const { fetchError, setFetchError } = useContext(DataContext);
 	const { projectId } = useParams();
-	const [value] = useInput('projectName', '');
 	const axiosPrivate = useAxiosPrivate();
 
 
@@ -44,7 +40,7 @@ function TodoList() {
 		let isMounted = true;
 		const controller = new AbortController();
 
-		const getTodos = async () => {
+		const getTodosByProject = async () => {
 
 			try {
 				const response = await axiosPrivate.get('/todos/project/?id=' + projectId, {
@@ -59,7 +55,7 @@ function TodoList() {
 			}
 		}
 
-		getTodos();
+		getTodosByProject();
 
 		return () => {
 			isMounted = false;
@@ -67,21 +63,20 @@ function TodoList() {
 		}
 	}, []);
 
-	const removeTodo = (todoId, callback) =>
-		deleteTodo(todoId)
-			.then(() => {
-				callback();
-		}).catch(() => {
-			setFetchError("Nepodařilo se smazat úkol.");
-		});
+	const removeTodo = async (todoId) => {
+		try {
+			const response = await axiosPrivate.delete('/todos/' + todoId);
+		} catch (err) {
+			console.error(err);
+			// setFetchError("Nepodařilo se načíst uživatelé.");
+
+			// navigate('/login', { state: { from: location }, replace: true });
+		}
+	}
 
 	// useEffect(() => {
 	// 	fetchTodos();
 	// }, []);
-
-	// const buttonOnClick = (id) => {
-	// 	removeTodo(id, fetchTodos);
-	// }
 
 	const switchTodoList = () => {
 		setAllTodos(!allTodos);
@@ -112,7 +107,7 @@ function TodoList() {
 				{!fetchError && todos.length ? todos.map(todo => {
 					return <div key={todo.id}>
 						<Button variant="outlined">{todo.content}</Button>
-						{/*<Button onClick={() => buttonOnClick(todo.id)}>X</Button>*/}
+						<Button onClick={() => removeTodo(todo.id)}>X</Button>
 					</div>
 				}) : "no todos"}
 			</Box>

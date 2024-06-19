@@ -44,19 +44,15 @@ export default function AddProject() {
 	function add(event) {
 		event.preventDefault();
 
-		// const project = {
-		// 	"name": name,
-		// 	"description": description,
-		// 	"users": user
-		// }
+		const project = {
+			name: name,
+			description: description,
+			users: user
+		}
 
 		const newProject = async () => {
 			try {
-				const response = await axiosPrivate.post('/projects', {
-					name: name,
-					description: description,
-					users: user
-				});
+				const response = await axiosPrivate.post('/projects', project);
 			} catch (err) {
 				console.error(err);
 				// setFetchError("Nepodařilo se načíst uživatelé.");

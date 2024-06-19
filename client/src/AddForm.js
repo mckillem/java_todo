@@ -6,29 +6,25 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addTodo} from "./client";
 import {Fragment, useContext, useEffect, useState} from "react";
-import {getAllStates} from "./client";
 import Select from '@mui/material/Select';
 import {InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 import DataContext from "./context/DataContext";
-import {getId} from "./localStorage/LocalStorage";
 import useAxiosPrivate from "./hooks/useAxiosPrivate";
 import useAuth from "./hooks/useAuth";
 
 export default function AddForm({ fetchTodos, projectId }) {
 	const [open, setOpen] = useState(false);
-	const [project, setProject] = useState(projectId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
 	const [state, setState] = useState("");
 	const [states, setStates] = useState([]);
-	const { setFetchError, getStyles } = useContext(DataContext);
+	const { getStyles } = useContext(DataContext);
 	const theme = useTheme();
 	const axiosPrivate = useAxiosPrivate();
 	const [users, setUsers] = useState([]);
 	const [user, setUser] = useState([]);
-	const [projects, setProjects] = useState([]);
+	const [todos, setTodos] = useState([]);
 	const { auth } = useAuth();
 
 	const handleClickOpen = () => {
@@ -39,12 +35,12 @@ export default function AddForm({ fetchTodos, projectId }) {
 		setOpen(false);
 	};
 
-	const getProjects = async () => {
+	const getTodos = async () => {
 
 		try {
-			const response = await axiosPrivate.get('/projects');
+			const response = await axiosPrivate.get('/todos');
 			console.log(response.data);
-			setProjects(response.data);
+			setTodos(response.data);
 		} catch (err) {
 			console.log(" toto je nějaká chyba: " + err);
 		}
@@ -62,17 +58,6 @@ export default function AddForm({ fetchTodos, projectId }) {
 			users: user
 		}
 
-		// addTodo(todo)
-		// 	.then(() => {
-		// 		getProjects();
-		// 	}).catch(() => {
-		// 		setFetchError("Nepodařilo se vytvořit úkol.");
-		// }).finally(() => {
-		// 	setContent("");
-		// 	setDescription("");
-		// 	handleClose()
-		// })
-
 		const newTodo = async () => {
 			try {
 				const response = await axiosPrivate.post('/todos', todo);
@@ -87,6 +72,7 @@ export default function AddForm({ fetchTodos, projectId }) {
 		}
 
 		newTodo();
+		getTodos();
 	}
 
 	const handleChange = (event) => {
