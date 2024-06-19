@@ -11,6 +11,7 @@ import AddProject from "../AddProject";
 import DataContext from "../context/DataContext";
 import useInput from "../hooks/useInput";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import {setProjectName} from "../localStorage/LocalStorage";
 
 function ListOfProjects() {
 	const [open, setOpen] = useState(true);
@@ -19,14 +20,15 @@ function ListOfProjects() {
 	const axiosPrivate = useAxiosPrivate();
 	const [fetchError, setFetchError] = useState(null);
 
-	const [projectNameAttribs] = useInput('projectName', '');
+	const [setValue] = useInput('projectName', '');
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
 	};
 
 	function todos(project) {
-		projectNameAttribs(project.name);
+		// setValue(project.name);
+		// setProjectName(project.name);
 		// todo: změnit aby se nenačítala stráka ale jen se načetla data
 		window.location.href= project.id;
 	}
