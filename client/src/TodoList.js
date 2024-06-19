@@ -103,7 +103,7 @@ function TodoList() {
 				{/*<h1>{value}</h1>*/}
 				<br/>
 				<br/>
-				{/*<AddForm fetchTodos={fetchTodos} projectId={projectId}/>*/}
+				<AddForm projectId={projectId}/>
 				<br/>
 				<h3>Seznam úkolů</h3>
 				<Button onClick={switchTodoList}>Všechny/moje</Button>

@@ -51,7 +51,8 @@ const LoginDave = () => {
 
 			const accessToken = response?.data?.accessToken;
 			const roles = response?.data?.roles;
-			setAuth({ username, password, roles, accessToken });
+			const id = response?.data?.id;
+			setAuth({ id, username, password, roles, accessToken });
 			resetUsername();
 			setPassword("");
 			navigate(from, { replace: true });
