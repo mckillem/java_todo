@@ -41,12 +41,10 @@ function ListOfProjects() {
 				const response = await axiosPrivate.get('/projects', {
 					signal: controller.signal
 				});
-				console.log("is mounted? " + isMounted);
-				console.log(response.data);
 				isMounted && setProjects(response.data);
-				console.log("chyba?" + fetchError)
 			} catch (err) {
 				// todo: jak zobrazovat chyby uživateli?
+				// todo: i když načte projekty tak stejně hodí chybu a tím pádem by přeměroval
 				console.log(" toto je nějaká chyba: " + err);
 				// setFetchError("Nepodařilo se načíst projekty.");
 

@@ -6,7 +6,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addProject} from "./client";
 import {Fragment, useContext, useEffect, useState} from "react";
 import Select from '@mui/material/Select';
 import {FormControl, InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
@@ -22,6 +21,7 @@ export default function AddProject() {
 	const axiosPrivate = useAxiosPrivate();
 	const [users, setUsers] = useState([]);
 	const [user, setUser] = useState([]);
+	const [projects, setProjects] = useState([]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -31,25 +31,47 @@ export default function AddProject() {
 		setOpen(false);
 	};
 
+	const getProjects = async () => {
+
+		try {
+			const response = await axiosPrivate.get('/projects');
+			setProjects(response.data);
+		} catch (err) {
+			console.log(" toto je nějaká chyba: " + err);
+		}
+	}
+
 	function add(event) {
 		event.preventDefault();
 
-		const project = {
-			"name": name,
-			"description": description,
-			"users": user
-		}
+		// const project = {
+		// 	"name": name,
+		// 	"description": description,
+		// 	"users": user
+		// }
 
-		addProject(project)
-			.then(() => {
-				fetchProjects();
-			}).catch(() => {
-				setFetchError("Nepodařilo se uložit projekt.");
-		}).finally(() => {
+		const newProject = async () => {
+			try {
+				const response = await axiosPrivate.post('/projects', {
+					name: name,
+					description: description,
+					users: user
+				});
+			} catch (err) {
+				console.error(err);
+				// setFetchError("Nepodařilo se načíst uživatelé.");
+
+				// navigate('/login', { state: { from: location }, replace: true });
+			}
+
 			setName("");
 			setDescription("");
-			handleClose()
-		})
+			handleClose();
+		}
+
+		newProject();
+		// todo: neobnoví seznam projektů
+		getProjects();
 	}
 
 	const handleChange = (event) => {
@@ -72,7 +94,6 @@ export default function AddProject() {
 				const response = await axiosPrivate.get('/users', {
 					signal: controller.signal
 				});
-				console.log(response.data);
 				isMounted && setUsers(response.data.map(d => ({
 					key: d.id,
 					value: d.username,
@@ -80,8 +101,6 @@ export default function AddProject() {
 				})));
 			} catch (err) {
 				console.error(err);
-				// setFetchError("Nepodařilo se načíst uživatelé.");
-
 				// navigate('/login', { state: { from: location }, replace: true });
 			}
 		}
