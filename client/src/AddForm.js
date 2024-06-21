@@ -87,15 +87,16 @@ export default function AddForm({ fetchTodos, projectId }) {
 	};
 
 	useEffect(() => {
-		let isMounted = true;
-		const controller = new AbortController();
+		// let isMounted = true;
+		// const controller = new AbortController();
 
 		const getStates = async () => {
 			try {
 				const response = await axiosPrivate.get('/todos/states', {
-					signal: controller.signal
+					// signal: controller.signal
 				});
-				isMounted && setStates(response.data.map(d => ({
+				// isMounted && setStates(response.data.map(d => ({
+				setStates(response.data.map(d => ({
 					key: d.id,
 					value: d.name,
 					label: d.text
@@ -108,22 +109,23 @@ export default function AddForm({ fetchTodos, projectId }) {
 
 		getStates();
 
-		return () => {
-			isMounted = false;
-			controller.abort();
-		}
+		// return () => {
+		// 	isMounted = false;
+		// 	controller.abort();
+		// }
 		}, [])
 
 	useEffect(() => {
-		let isMounted = true;
-		const controller = new AbortController();
+		// let isMounted = true;
+		// const controller = new AbortController();
 
 		const getUsers = async () => {
 			try {
 				const response = await axiosPrivate.get('/users', {
-					signal: controller.signal
+					// signal: controller.signal
 				});
-				isMounted && setUsers(response.data.map(d => ({
+				// isMounted && setUsers(response.data.map(d => ({
+				setUsers(response.data.map(d => ({
 					key: d.id,
 					value: d.username,
 					label: d.username
@@ -138,10 +140,10 @@ export default function AddForm({ fetchTodos, projectId }) {
 
 		getUsers();
 
-		return () => {
-			isMounted = false;
-			controller.abort();
-		}
+		// return () => {
+		// 	isMounted = false;
+		// 	controller.abort();
+		// }
 	}, [])
 
 	return (

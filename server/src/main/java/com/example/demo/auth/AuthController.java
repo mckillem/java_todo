@@ -139,15 +139,12 @@ public class AuthController {
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
 
-//	todo: @RequestBody?
 	@PostMapping("/signout")
 	public ResponseEntity<?> logoutUser() {
 		Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		todo: jak má vypadat dotaz, aby se splnila podmínka?
-		System.out.println("logged out " + principle);
+
 		if (!Objects.equals(principle.toString(), "anonymousUser")) {
 			Long userId = ((UserDetailsImpl) principle).getId();
-			System.out.println("Logged out user: " + userId);
 			refreshTokenService.deleteByUserId(userId);
 		}
 
@@ -175,7 +172,8 @@ public class AuthController {
 								.header(newAccessToken)
 								.body(new MessageResponse("Token is refreshed successfully!"));
 					})
-					.orElseThrow(() -> new TokenRefreshException(refreshToken,
+					.orElseThrow(() -> new TokenRefreshException(
+							refreshToken,
 							"Refresh token is not in database!"));
 		}
 

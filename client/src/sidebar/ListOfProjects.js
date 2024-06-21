@@ -12,6 +12,7 @@ import DataContext from "../context/DataContext";
 import useInput from "../hooks/useInput";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import {setProjectName} from "../localStorage/LocalStorage";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function ListOfProjects() {
 	const [open, setOpen] = useState(true);
@@ -19,6 +20,9 @@ function ListOfProjects() {
 	const [projects, setProjects] = useState([]);
 	const axiosPrivate = useAxiosPrivate();
 	const [fetchError, setFetchError] = useState(null);
+	const navigate = useNavigate();
+	const location = useLocation();
+	const from = location.state?.from?.pathname || "/";
 
 	const [setValue] = useInput('projectName', '');
 
@@ -30,20 +34,23 @@ function ListOfProjects() {
 		// setValue(project.name);
 		// setProjectName(project.name);
 		// todo: změnit aby se nenačítala stráka ale jen se načetla data
-		window.location.href= project.id;
+		// window.location.href= project.id;
+		navigate("/" + project.id);
 	}
 
+	// todo: k čemu je isMounted a controller a proč axios neco ruší
 	useEffect(() => {
-		let isMounted = true;
-		const controller = new AbortController();
+		// let isMounted = true;
+		// const controller = new AbortController();
 
 		const getProjects = async () => {
 
 			try {
 				const response = await axiosPrivate.get('/projects', {
-					signal: controller.signal
+					// signal: controller.signal
 				});
-				isMounted && setProjects(response.data);
+				// isMounted && setProjects(response.data);
+				setProjects(response.data);
 				console.log(response)
 			} catch (err) {
 				// todo: jak zobrazovat chyby uživateli?
@@ -52,16 +59,16 @@ function ListOfProjects() {
 				console.log("nějaká chyba v listOfProjects: " + err);
 				// setFetchError("Nepodařilo se načíst projekty.");
 
-				// navigate('/login', { state: { from: location }, replace: true });
+				navigate('/login', { state: { from: location }, replace: true });
 			}
 		}
 
 		getProjects();
 
-		return () => {
-			isMounted = false;
-			controller.abort();
-		}
+		// return () => {
+		// 	isMounted = false;
+		// 	controller.abort();
+		// }
 	}, []);
 
 	const Projects = (

@@ -37,18 +37,19 @@ function TodoList() {
 	// }
 
 	useEffect(() => {
-		let isMounted = true;
-		const controller = new AbortController();
+		// let isMounted = true;
+		// const controller = new AbortController();
 
 		const getTodosByProject = async () => {
 
 			try {
 				const response = await axiosPrivate.get('/todos/project/?id=' + projectId, {
-					signal: controller.signal
+					// signal: controller.signal
 				});
-				isMounted && setTodos(response.data);
+				// isMounted && setTodos(response.data);
+				setTodos(response.data);
 			} catch (err) {
-				console.log(" toto je nějaká chyba: " + err);
+				console.log("nějaká chyba v todolistu: " + err);
 				// setFetchError("Nepodařilo se načíst projekty.");
 
 				// navigate('/login', { state: { from: location }, replace: true });
@@ -57,10 +58,10 @@ function TodoList() {
 
 		getTodosByProject();
 
-		return () => {
-			isMounted = false;
-			controller.abort();
-		}
+		// return () => {
+		// 	isMounted = false;
+		// 	controller.abort();
+		// }
 	}, []);
 
 	const removeTodo = async (todoId) => {

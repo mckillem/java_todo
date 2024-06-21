@@ -50,7 +50,7 @@ const Users = () => {
 
 			<button onClick={() => {
 				refresh()
-				console.log(refresh())
+				// console.log(refresh())
 			}}>obnovit token</button>
 		</article>
 	);

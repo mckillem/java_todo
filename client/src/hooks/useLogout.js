@@ -1,15 +1,13 @@
-import axios from "../api/axios";
+import {axiosPrivate} from "../api/axios";
 import useAuth from "./useAuth";
 
 const useLogout = () => {
-	const { setAuth, auth } = useAuth();
+	const { setAuth } = useAuth();
 
 	return async () => {
 
 		try {
-			await axios.post('/auth/signout', null, {
-				headers: {'Authorization': 'Bearer ' + auth.accessToken}
-			});
+			await axiosPrivate.post('/auth/signout');
 
 			setAuth({});
 		} catch (err) {
