@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
@@ -27,9 +28,32 @@ public class JwtUtils {
 	@Value("${bezkoder.app.jwtExpirationMs}")
 	private int jwtExpirationMs;
 
-	public String getJwtRefreshFromRequest(HttpServletRequest request) {
-//		todo: jak získat refresh token z requestu
-		return request.toString();
+	@Value("${bezkoder.app.jwtRefreshCookieName}")
+	private String jwtRefreshCookieName;
+
+	public String getJwtRefreshFromCookies(HttpServletRequest request) {
+		return getCookieValueByName(request, jwtRefreshCookieName);
+	}
+
+	private String getCookieValueByName(HttpServletRequest request, String name) {
+		Cookie cookie = WebUtils.getCookie(request, name);
+		if (cookie != null) {
+			return cookie.getValue();
+		} else {
+			return null;
+		}
+	}
+
+	public ResponseCookie generateRefreshJwtCookie(String refreshToken) {
+		return generateCookie(jwtRefreshCookieName, refreshToken, "/api/v1/auth/refresh");
+	}
+
+	private ResponseCookie generateCookie(String name, String value, String path) {
+		return ResponseCookie.from(name, value).path(path).maxAge(24 * 60 * 60).httpOnly(true).build();
+	}
+
+	public ResponseCookie getCleanJwtRefreshCookie() {
+		return ResponseCookie.from(jwtRefreshCookieName, null).path("/api/v1/auth/refresh").build();
 	}
 
 	public String getUserNameFromJwtToken(String token) {
@@ -58,7 +82,7 @@ public class JwtUtils {
 		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
 	}
 
-	public String generateJwtToken(Authentication authentication) {
+	public String generateAccessToken(Authentication authentication) {
 
 		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 //		todo: změnit na HS512?
@@ -70,7 +94,7 @@ public class JwtUtils {
 				.compact();
 	}
 
-	public String generateJwtToken(User user) {
+	public String generateAccessToken(User user) {
 
 //		todo: změnit na HS512?
 		return Jwts.builder()

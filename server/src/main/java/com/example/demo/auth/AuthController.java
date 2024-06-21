@@ -62,7 +62,7 @@ public class AuthController {
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
+		String accessToken = jwtUtils.generateAccessToken(authentication);
 
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		List<String> roles = userDetails.getAuthorities().stream()
@@ -71,10 +71,12 @@ public class AuthController {
 
 		RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
+		ResponseCookie jwtRefreshCookie = jwtUtils.generateRefreshJwtCookie(refreshToken.getToken());
+
 		return ResponseEntity.ok()
+				.header(HttpHeaders.SET_COOKIE, jwtRefreshCookie.toString())
 				.body(new JwtResponse(
-						jwt,
-						refreshToken.getToken(),
+						accessToken,
 						userDetails.getId(),
 						userDetails.getUsername(),
 						userDetails.getEmail(),
@@ -149,13 +151,16 @@ public class AuthController {
 			refreshTokenService.deleteByUserId(userId);
 		}
 
+		ResponseCookie cleanRefreshCookie = jwtUtils.getCleanJwtRefreshCookie();
+
 		return ResponseEntity.ok()
+				.header(HttpHeaders.SET_COOKIE, cleanRefreshCookie.toString())
 				.body(new MessageResponse("You've been signed out!"));
 	}
 
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refresh(HttpServletRequest request) {
-		String refreshToken = jwtUtils.getJwtRefreshFromRequest(request);
+		String refreshToken = jwtUtils.getJwtRefreshFromCookies(request);
 		System.out.println("RefreshToken: " + refreshToken);
 
 		if ((refreshToken != null) && (!refreshToken.isEmpty())) {
@@ -163,11 +168,11 @@ public class AuthController {
 					.map(refreshTokenService::verifyExpiration)
 					.map(RefreshToken::getUser)
 					.map(user -> {
-//						todo: co s tím? Potřebuju si předat nový token
-						String jwt = jwtUtils.generateJwtToken(user);
+
+						String newAccessToken = jwtUtils.generateAccessToken(user);
 
 						return ResponseEntity.ok()
-								.header(jwt)
+								.header(newAccessToken)
 								.body(new MessageResponse("Token is refreshed successfully!"));
 					})
 					.orElseThrow(() -> new TokenRefreshException(refreshToken,

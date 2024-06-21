@@ -2,20 +2,20 @@ import axios from "../api/axios";
 import useAuth from "./useAuth";
 
 const useLogout = () => {
-	const { setAuth } = useAuth();
+	const { setAuth, auth } = useAuth();
 
-	const logout = async () => {
-		setAuth({});
+	return async () => {
+
+		console.log(auth.accessToken)
 		try {
-			const response = await axios('/auth/logout', {
-				withCredentials: true
+			await axios.post('/auth/signout', {
+				headers: {"Authorization": "Bearer " + auth.accessToken}
 			});
+			setAuth({});
 		} catch (err) {
 			console.error(err);
 		}
-	}
-
-	return logout;
+	};
 }
 
 export default useLogout
