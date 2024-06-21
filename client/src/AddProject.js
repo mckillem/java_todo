@@ -56,8 +56,6 @@ export default function AddProject() {
 			} catch (err) {
 				console.error(err);
 				// setFetchError("Nepodařilo se načíst uživatelé.");
-
-				// navigate('/login', { state: { from: location }, replace: true });
 			}
 
 			setName("");
@@ -82,16 +80,15 @@ export default function AddProject() {
 	};
 
 	useEffect(() => {
-		// let isMounted = true;
-		// const controller = new AbortController();
+		let isMounted = true;
+		const controller = new AbortController();
 
 		const getUsers = async () => {
 			try {
 				const response = await axiosPrivate.get('/users', {
-					// signal: controller.signal
+					signal: controller.signal
 				});
-				// isMounted && setUsers(response.data.map(d => ({
-				 setUsers(response.data.map(d => ({
+				isMounted && setUsers(response.data.map(d => ({
 					key: d.id,
 					value: d.username,
 					label: d.username
@@ -104,10 +101,10 @@ export default function AddProject() {
 
 		getUsers();
 
-		// return () => {
-		// 	isMounted = false;
-		// 	controller.abort();
-		// }
+		return () => {
+			isMounted = false;
+			isMounted && controller.abort()
+		}
 	}, [])
 
 	return (

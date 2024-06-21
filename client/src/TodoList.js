@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import AddForm from "./AddForm";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,6 +13,9 @@ function TodoList() {
 	const { fetchError, setFetchError } = useContext(DataContext);
 	const { projectId } = useParams();
 	const axiosPrivate = useAxiosPrivate();
+	const navigate = useNavigate();
+	const location = useLocation();
+	const from = location.state?.from?.pathname || "/";
 
 
 	// const fetchTodos = () => {
@@ -37,41 +40,38 @@ function TodoList() {
 	// }
 
 	useEffect(() => {
-		// let isMounted = true;
-		// const controller = new AbortController();
+		let isMounted = true;
+		const controller = new AbortController();
 
 		const getTodosByProject = async () => {
 
 			try {
 				const response = await axiosPrivate.get('/todos/project/?id=' + projectId, {
-					// signal: controller.signal
+					signal: controller.signal
 				});
-				// isMounted && setTodos(response.data);
-				setTodos(response.data);
+				isMounted && setTodos(response.data);
 			} catch (err) {
 				console.log("nějaká chyba v todolistu: " + err);
 				// setFetchError("Nepodařilo se načíst projekty.");
 
-				// navigate('/login', { state: { from: location }, replace: true });
+				navigate('/login', { state: { from: location }, replace: true });
 			}
 		}
 
 		getTodosByProject();
 
-		// return () => {
-		// 	isMounted = false;
-		// 	controller.abort();
-		// }
+		return () => {
+			isMounted = false;
+			isMounted && controller.abort()
+		}
 	}, []);
 
 	const removeTodo = async (todoId) => {
 		try {
-			const response = await axiosPrivate.delete('/todos/' + todoId);
+			await axiosPrivate.delete('/todos/' + todoId);
 		} catch (err) {
 			console.error(err);
 			// setFetchError("Nepodařilo se načíst uživatelé.");
-
-			// navigate('/login', { state: { from: location }, replace: true });
 		}
 	}
 

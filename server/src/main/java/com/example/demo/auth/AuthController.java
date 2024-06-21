@@ -169,8 +169,10 @@ public class AuthController {
 						String newAccessToken = jwtUtils.generateAccessToken(user);
 
 						return ResponseEntity.ok()
-								.header(newAccessToken)
-								.body(new MessageResponse("Token is refreshed successfully!"));
+//								.body(new MessageResponse("Token is refreshed successfully!"));
+								.body(new JwtResponse(
+										newAccessToken
+								));
 					})
 					.orElseThrow(() -> new TokenRefreshException(
 							refreshToken,

@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import { useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -8,7 +8,6 @@ import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import AddProject from "../AddProject";
-import DataContext from "../context/DataContext";
 import useInput from "../hooks/useInput";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import {setProjectName} from "../localStorage/LocalStorage";
@@ -33,31 +32,26 @@ function ListOfProjects() {
 	function todos(project) {
 		// setValue(project.name);
 		// setProjectName(project.name);
-		// todo: změnit aby se nenačítala stráka ale jen se načetla data
-		// window.location.href= project.id;
 		navigate("/" + project.id);
 	}
 
-	// todo: k čemu je isMounted a controller a proč axios neco ruší
 	useEffect(() => {
-		// let isMounted = true;
-		// const controller = new AbortController();
+		let isMounted = true;
+		const controller = new AbortController();
 
 		const getProjects = async () => {
 
 			try {
 				const response = await axiosPrivate.get('/projects', {
-					// signal: controller.signal
+					signal: controller.signal
 				});
-				// isMounted && setProjects(response.data);
-				setProjects(response.data);
+				isMounted && setProjects(response.data);
 				console.log(response)
 			} catch (err) {
 				// todo: jak zobrazovat chyby uživateli?
 				// todo: i když načte projekty tak stejně hodí chybu a tím pádem by přeměroval
 				console.error(err)
 				console.log("nějaká chyba v listOfProjects: " + err);
-				// setFetchError("Nepodařilo se načíst projekty.");
 
 				navigate('/login', { state: { from: location }, replace: true });
 			}
@@ -65,10 +59,10 @@ function ListOfProjects() {
 
 		getProjects();
 
-		// return () => {
-		// 	isMounted = false;
-		// 	controller.abort();
-		// }
+		return () => {
+			isMounted = false;
+			isMounted && controller.abort()
+		}
 	}, []);
 
 	const Projects = (
