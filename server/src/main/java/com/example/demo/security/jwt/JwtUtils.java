@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
@@ -28,40 +27,9 @@ public class JwtUtils {
 	@Value("${bezkoder.app.jwtExpirationMs}")
 	private int jwtExpirationMs;
 
-	@Value("${bezkoder.app.jwtCookieName}")
-	private String jwtCookie;
-
-	@Value("${bezkoder.app.jwtRefreshCookieName}")
-	private String jwtRefreshCookie;
-
-	public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-		String jwt = generateTokenFromUsername(userPrincipal.getUsername());
-		return generateCookie(jwtCookie, jwt, "/api/v1");
-	}
-
-	public ResponseCookie generateJwtCookie(User user) {
-		String jwt = generateTokenFromUsername(user.getUsername());
-		return generateCookie(jwtCookie, jwt, "/api/v1");
-	}
-
-	public ResponseCookie generateRefreshJwtCookie(String refreshToken) {
-		return generateCookie(jwtRefreshCookie, refreshToken, "/api/v1/auth/refresh");
-	}
-
-	public String getJwtFromCookies(HttpServletRequest request) {
-		return getCookieValueByName(request, jwtCookie);
-	}
-
-	public String getJwtRefreshFromCookies(HttpServletRequest request) {
-		return getCookieValueByName(request, jwtRefreshCookie);
-	}
-
-	public ResponseCookie getCleanJwtCookie() {
-		return ResponseCookie.from(jwtCookie, null).path("/api/v1").build();
-	}
-
-	public ResponseCookie getCleanJwtRefreshCookie() {
-		return ResponseCookie.from(jwtRefreshCookie, null).path("/api/v1/auth/refresh").build();
+	public String getJwtRefreshFromRequest(HttpServletRequest request) {
+//		todo: jak získat refresh token z requestu
+		return request.toString();
 	}
 
 	public String getUserNameFromJwtToken(String token) {
@@ -90,35 +58,23 @@ public class JwtUtils {
 		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
 	}
 
-	public String generateTokenFromUsername(String username) {
-//		todo: změnit na HS512
+	public String generateJwtToken(Authentication authentication) {
+
+		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+//		todo: změnit na HS512?
 		return Jwts.builder()
-				.setSubject(username)
+				.setSubject((userPrincipal.getUsername()))
 				.setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 				.signWith(key(), SignatureAlgorithm.HS256)
 				.compact();
 	}
 
-	private ResponseCookie generateCookie(String name, String value, String path) {
-		return ResponseCookie.from(name, value).path(path).maxAge(24 * 60 * 60).httpOnly(true).build();
-	}
+	public String generateJwtToken(User user) {
 
-	private String getCookieValueByName(HttpServletRequest request, String name) {
-		Cookie cookie = WebUtils.getCookie(request, name);
-		if (cookie != null) {
-			return cookie.getValue();
-		} else {
-			return null;
-		}
-	}
-
-	public String generateJwtToken(Authentication authentication) {
-
-		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
+//		todo: změnit na HS512?
 		return Jwts.builder()
-				.setSubject((userPrincipal.getUsername()))
+				.setSubject((user.getUsername()))
 				.setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 				.signWith(key(), SignatureAlgorithm.HS256)
