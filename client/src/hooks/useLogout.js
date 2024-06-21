@@ -6,11 +6,11 @@ const useLogout = () => {
 
 	return async () => {
 
-		console.log(auth.accessToken)
 		try {
-			await axios.post('/auth/signout', {
-				headers: {"Authorization": "Bearer " + auth.accessToken}
+			await axios.post('/auth/signout', null, {
+				headers: {'Authorization': 'Bearer ' + auth.accessToken}
 			});
+
 			setAuth({});
 		} catch (err) {
 			console.error(err);
