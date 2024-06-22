@@ -1,4 +1,3 @@
-import './App.css';
 import {Routes, Route} from "react-router-dom";
 import TodoList from "./TodoList";
 import Login from "./components/Login";
@@ -22,26 +21,28 @@ const ROLES = {
 function App() {
 
 	return (
-		<DataProvider>
-			<Routes>
-				<Route path="login" element={<LoginDave/>}></Route>
-				{/*<Route path="login" element={<Login/>}></Route>*/}
-				<Route path="register" element={<Register/>}></Route>
-				<Route path="unauthorized" element={<Unauthorized />} />
+		<div className="App">
+			<DataProvider>
+				<Routes>
+					<Route path="login" element={<LoginDave/>}></Route>
+					{/*<Route path="login" element={<Login/>}></Route>*/}
+					<Route path="register" element={<Register/>}></Route>
+					<Route path="unauthorized" element={<Unauthorized />} />
 
-				<Route element={<PersistLogin />}>
-					<Route element={<RequireAuth allowedRoles={[ROLES.admin]}/>}>
-						<Route path="/" element={<Layout/>}>
-							<Route index path=":projectId" element={<TodoList/>}></Route>
-							{/*todo: na ověření, že funguje refresh token*/}
-							{/*<Route index path="/" element={<Users/>}></Route>*/}
+					<Route element={<PersistLogin />}>
+						<Route element={<RequireAuth allowedRoles={[ROLES.admin]}/>}>
+							<Route path="/" element={<Layout/>}>
+								<Route index path=":projectId" element={<TodoList/>}></Route>
+								{/*todo: na ověření, že funguje refresh token*/}
+								{/*<Route index path="/" element={<Users/>}></Route>*/}
+							</Route>
 						</Route>
 					</Route>
-				</Route>
 
-				<Route path="*" element={<h1>This page does not exist here.</h1>}></Route>
-			</Routes>
-		</DataProvider>
+					<Route path="*" element={<h1>This page does not exist here.</h1>}></Route>
+				</Routes>
+			</DataProvider>
+		</div>
 	);
 }
 
