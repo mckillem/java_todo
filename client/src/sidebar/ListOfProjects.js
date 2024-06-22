@@ -19,7 +19,7 @@ function ListOfProjects() {
 	const [fetchError] = useState(null);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const {projectName, setProjectName} = useContext(DataContext);
+	const {setProjectName} = useContext(DataContext);
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
