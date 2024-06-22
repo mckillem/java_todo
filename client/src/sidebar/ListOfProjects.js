@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -8,29 +8,26 @@ import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import AddProject from "../AddProject";
-import useInput from "../hooks/useInput";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import {setProjectName} from "../localStorage/LocalStorage";
 import {useLocation, useNavigate} from "react-router-dom";
+import DataContext from "../context/DataContext";
 
 function ListOfProjects() {
 	const [open, setOpen] = useState(true);
 	const [projects, setProjects] = useState([]);
 	const axiosPrivate = useAxiosPrivate();
-	const [fetchError, setFetchError] = useState(null);
+	const [fetchError] = useState(null);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const from = location.state?.from?.pathname || "/";
-
-	const [setValue] = useInput('projectName', '');
+	const {projectName, setProjectName} = useContext(DataContext);
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
 	};
 
 	function todos(project) {
-		// setValue(project.name);
-		// setProjectName(project.name);
+		setProjectName(project.name);
+
 		navigate("/" + project.id);
 	}
 

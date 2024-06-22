@@ -10,13 +10,11 @@ import useAxiosPrivate from "./hooks/useAxiosPrivate";
 function TodoList() {
 	const [todos, setTodos] = useState([]);
 	const [allTodos, setAllTodos] = useState(true);
-	const { fetchError, setFetchError } = useContext(DataContext);
+	const { fetchError, projectName } = useContext(DataContext);
 	const { projectId } = useParams();
 	const axiosPrivate = useAxiosPrivate();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const from = location.state?.from?.pathname || "/";
-
 
 	// const fetchTodos = () => {
 	// 	if (allTodos) {
@@ -71,13 +69,8 @@ function TodoList() {
 			await axiosPrivate.delete('/todos/' + todoId);
 		} catch (err) {
 			console.error(err);
-			// setFetchError("Nepodařilo se načíst uživatelé.");
 		}
 	}
-
-	// useEffect(() => {
-	// 	fetchTodos();
-	// }, []);
 
 	const switchTodoList = () => {
 		setAllTodos(!allTodos);
@@ -96,7 +89,7 @@ function TodoList() {
 					}
 				}}
 			>
-				{/*<h1>{value}</h1>*/}
+				<h1>{projectName}</h1>
 				<br/>
 				<br/>
 				<AddForm projectId={projectId}/>
