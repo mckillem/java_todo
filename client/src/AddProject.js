@@ -16,12 +16,11 @@ export default function AddProject() {
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const { setFetchError, fetchProjects, getStyles} = useContext(DataContext);
+	const { getStyles} = useContext(DataContext);
 	const theme = useTheme();
 	const axiosPrivate = useAxiosPrivate();
 	const [users, setUsers] = useState([]);
 	const [user, setUser] = useState([]);
-	const [projects, setProjects] = useState([]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -30,16 +29,6 @@ export default function AddProject() {
 	const handleClose = () => {
 		setOpen(false);
 	};
-
-	const getProjects = async () => {
-
-		try {
-			const response = await axiosPrivate.get('/projects');
-			setProjects(response.data);
-		} catch (err) {
-			console.log(" toto je nějaká chyba: " + err);
-		}
-	}
 
 	function add(event) {
 		event.preventDefault();
@@ -55,7 +44,6 @@ export default function AddProject() {
 				const response = await axiosPrivate.post('/projects', project);
 			} catch (err) {
 				console.error(err);
-				// setFetchError("Nepodařilo se načíst uživatelé.");
 			}
 
 			setName("");
@@ -64,8 +52,6 @@ export default function AddProject() {
 		}
 
 		newProject();
-		// todo: neobnoví seznam projektů
-		getProjects();
 	}
 
 	const handleChange = (event) => {
@@ -95,7 +81,6 @@ export default function AddProject() {
 				})));
 			} catch (err) {
 				console.error(err);
-				// navigate('/login', { state: { from: location }, replace: true });
 			}
 		}
 

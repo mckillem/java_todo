@@ -15,7 +15,6 @@ import {useLocation, useNavigate} from "react-router-dom";
 
 function ListOfProjects() {
 	const [open, setOpen] = useState(true);
-	// const { fetchError, setFetchError } = useContext(DataContext);
 	const [projects, setProjects] = useState([]);
 	const axiosPrivate = useAxiosPrivate();
 	const [fetchError, setFetchError] = useState(null);
@@ -46,12 +45,8 @@ function ListOfProjects() {
 					signal: controller.signal
 				});
 				isMounted && setProjects(response.data);
-				console.log(response)
 			} catch (err) {
-				// todo: jak zobrazovat chyby uživateli?
-				// todo: i když načte projekty tak stejně hodí chybu a tím pádem by přeměroval
 				console.error(err)
-				console.log("nějaká chyba v listOfProjects: " + err);
 
 				navigate('/login', { state: { from: location }, replace: true });
 			}
@@ -63,7 +58,7 @@ function ListOfProjects() {
 			isMounted = false;
 			isMounted && controller.abort()
 		}
-	}, []);
+	}, [projects]);
 
 	const Projects = (
 		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>

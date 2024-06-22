@@ -64,7 +64,7 @@ function TodoList() {
 			isMounted = false;
 			isMounted && controller.abort()
 		}
-	}, []);
+	}, [todos]);
 
 	const removeTodo = async (todoId) => {
 		try {

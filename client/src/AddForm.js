@@ -24,7 +24,6 @@ export default function AddForm({ fetchTodos, projectId }) {
 	const axiosPrivate = useAxiosPrivate();
 	const [users, setUsers] = useState([]);
 	const [user, setUser] = useState([]);
-	const [todos, setTodos] = useState([]);
 	const { auth } = useAuth();
 
 	const handleClickOpen = () => {
@@ -34,17 +33,6 @@ export default function AddForm({ fetchTodos, projectId }) {
 	const handleClose = () => {
 		setOpen(false);
 	};
-
-	const getTodos = async () => {
-
-		try {
-			const response = await axiosPrivate.get('/todos');
-			console.log(response.data);
-			setTodos(response.data);
-		} catch (err) {
-			console.log(" toto je nějaká chyba: " + err);
-		}
-	}
 
 	function add(event) {
 		event.preventDefault();
@@ -63,14 +51,12 @@ export default function AddForm({ fetchTodos, projectId }) {
 				const response = await axiosPrivate.post('/todos', todo);
 			} catch (err) {
 				console.error(err);
-				// setFetchError("Nepodařilo se načíst uživatelé.");
 			}
 
 			handleClose();
 		}
 
 		newTodo();
-		getTodos();
 	}
 
 	const handleChange = (event) => {
@@ -100,7 +86,6 @@ export default function AddForm({ fetchTodos, projectId }) {
 				})));
 			} catch (err) {
 				console.error(err);
-				// navigate('/login', { state: { from: location }, replace: true });
 			}
 		}
 
@@ -128,9 +113,6 @@ export default function AddForm({ fetchTodos, projectId }) {
 				})));
 			} catch (err) {
 				console.error(err);
-				// setFetchError("Nepodařilo se načíst uživatelé.");
-
-				// navigate('/login', { state: { from: location }, replace: true });
 			}
 		}
 
