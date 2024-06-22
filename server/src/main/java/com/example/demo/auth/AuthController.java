@@ -69,6 +69,12 @@ public class AuthController {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
+		try {
+			refreshTokenService.deleteByUserId(userDetails.getId());
+		} catch (Exception e) {
+			System.out.println("Token not found");
+		}
+
 		RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
 		ResponseCookie jwtRefreshCookie = jwtUtils.generateRefreshJwtCookie(refreshToken.getToken());
