@@ -5,7 +5,7 @@ import {Outlet} from "react-router-dom";
 
 const Layout = () => {
 	return (
-		<main className="App">
+		<main>
 			{/*todo: header jsem upravil, držet se html tagů. Co bude main?*/}
 			<Header/>
 			<ListOfProjects/>
