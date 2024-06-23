@@ -10,9 +10,10 @@ const useRefreshToken = () => {
 		setAuth(prev => {
 			console.log("useRefreshToken prev: " + JSON.stringify(prev));
 			console.log("useRefreshToken accessToken: " + response.data.token);
+			console.log("roles response: " + response.data.roles)
 			return {
 				...prev,
-				// roles: response.data.roles,
+				roles: response.data.roles,
 				accessToken: response.data.token
 			}
 		});

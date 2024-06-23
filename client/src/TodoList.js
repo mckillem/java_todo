@@ -50,7 +50,6 @@ function TodoList() {
 				isMounted && setTodos(response.data);
 			} catch (err) {
 				console.log("nějaká chyba v todolistu: " + err);
-				// setFetchError("Nepodařilo se načíst projekty.");
 
 				navigate('/login', { state: { from: location }, replace: true });
 			}
@@ -60,7 +59,7 @@ function TodoList() {
 
 		return () => {
 			isMounted = false;
-			isMounted && controller.abort()
+			isMounted && controller.abort();
 		}
 	}, [todos]);
 

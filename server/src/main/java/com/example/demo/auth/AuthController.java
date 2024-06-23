@@ -27,10 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -164,7 +161,6 @@ public class AuthController {
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refresh(HttpServletRequest request) {
 		String refreshToken = jwtUtils.getJwtRefreshFromCookies(request);
-		System.out.println("RefreshToken: " + refreshToken);
 
 		if ((refreshToken != null) && (!refreshToken.isEmpty())) {
 			return refreshTokenService.findByToken(refreshToken)
@@ -174,10 +170,17 @@ public class AuthController {
 
 						String newAccessToken = jwtUtils.generateAccessToken(user);
 
+						List<String> roles = user
+								.getRoles()
+								.stream()
+								.map(role -> role.getName().toString())
+								.collect(Collectors.toList());
+
 						return ResponseEntity.ok()
 //								.body(new MessageResponse("Token is refreshed successfully!"));
 								.body(new JwtResponse(
-										newAccessToken
+										newAccessToken,
+										roles
 								));
 					})
 					.orElseThrow(() -> new TokenRefreshException(

@@ -37,4 +37,9 @@ public class JwtResponse {
 	public JwtResponse(String accessToken) {
 		this.token = accessToken;
 	}
+
+	public JwtResponse(String accessToken, List<String> roles) {
+		this.token = accessToken;
+		this.roles = roles;
+	}
 }

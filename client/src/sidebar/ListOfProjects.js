@@ -53,7 +53,7 @@ function ListOfProjects() {
 
 		return () => {
 			isMounted = false;
-			isMounted && controller.abort()
+			isMounted && controller.abort();
 		}
 	}, [projects]);
 
