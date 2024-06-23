@@ -36,8 +36,7 @@ const LoginDave = () => {
 			const response = await axios.post(LOGIN_URL,
 				JSON.stringify({ username, password }),
 				{
-					headers: { "Content-Type": "application/json" },
-					withCredentials: true
+					headers: { "Content-Type": "application/json" }
 				}
 			);
 			console.log(JSON.stringify(response?.data));
