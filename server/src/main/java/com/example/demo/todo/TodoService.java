@@ -4,6 +4,7 @@ import com.example.demo.project.ProjectRepository;
 import com.example.demo.todo.exception.TodoNotFoundException;
 import com.example.demo.todo.exchange.TodoRequest;
 import com.example.demo.todo.model.Todo;
+import com.example.demo.todo.users.TodoUserRepository;
 import com.example.demo.todo.users.TodoUserService;
 import com.example.demo.user.User;
 import com.example.demo.user.UserRepository;
@@ -22,6 +23,7 @@ public class TodoService {
 	private StateRepository stateRepository;
 	private final UserRepository userRepository;
 	private final TodoUserService todoUserService;
+	private final TodoUserRepository todoUserRepository;
 
 	public List<Todo> getAllTodos() {
 
@@ -95,6 +97,9 @@ public class TodoService {
 
 	public List<Todo> getAllTodosByProject(Long id) {
 		Long projectId = projectRepository.findById(id).get().getId();
+		Collection<Todo> todos = todoRepository.findAllByProjectId(projectId);
+//		Collection<Long> todoIds = todos.stream().filter(todo -> todo.getId());
+//		Collection<User> users = todoUserRepository.findTodoUsersByTodoId(todos);
 
 		return todoRepository.findAllByProjectId(projectId);
 	}

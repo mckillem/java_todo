@@ -2,9 +2,13 @@ package com.example.demo.todo;
 
 import com.example.demo.todo.exchange.TodoRequest;
 import com.example.demo.todo.model.Todo;
+import com.example.demo.todo.users.TodoUserService;
+import com.example.demo.todo.users.model.TodoUser;
+import com.example.demo.todo.users.model.TodoUserPk;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -13,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TodoController {
 	private final TodoService todoService;
+	private final TodoUserService todoUserService;
 
 	@CrossOrigin("*")
 	@GetMapping
@@ -32,6 +37,13 @@ public class TodoController {
 	@ResponseBody
 	public List<Todo> getAllTodosByProject(@RequestParam Long id) {
 		return todoService.getAllTodosByProject(id);
+	}
+
+	@CrossOrigin("*")
+	@GetMapping("/users/")
+	@ResponseBody
+	public Collection<TodoUser> getAllUsersByTodo(@RequestParam TodoUserPk id) {
+		return todoUserService.getAllUsersByTodo(id);
 	}
 
 	@CrossOrigin("*")
