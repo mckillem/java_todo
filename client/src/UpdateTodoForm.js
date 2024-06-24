@@ -24,7 +24,7 @@ export default function UpdateTodoForm({ todo }) {
 	const [users, setUsers] = useState([]);
 	const [user, setUser] = useState([]);
 
-	console.log(todo)
+	// console.log(todo)
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -127,7 +127,7 @@ export default function UpdateTodoForm({ todo }) {
 	return (
 		<Fragment>
 			<Button variant="outlined" onClick={handleClickOpen}>
-				Přidat úkol
+				Upravit úkol
 			</Button>
 			<Dialog
 				open={open}
