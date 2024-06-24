@@ -22,9 +22,9 @@ export default function UpdateTodoForm({ todo }) {
 	const theme = useTheme();
 	const axiosPrivate = useAxiosPrivate();
 	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState([]);
+	const [user, setUser] = useState(todo.users);
 
-	// console.log(todo)
+	console.log(todo)
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -127,8 +127,9 @@ export default function UpdateTodoForm({ todo }) {
 	return (
 		<Fragment>
 			<Button variant="outlined" onClick={handleClickOpen}>
-				Upravit úkol
+				{todo.content}
 			</Button>
+			<span>popis: {todo.description}</span>
 			<Dialog
 				open={open}
 				onClose={handleClose}
