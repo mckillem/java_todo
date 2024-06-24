@@ -11,5 +11,5 @@ import java.util.Collection;
 public interface TodoUserRepository extends JpaRepository<TodoUser, TodoUserPk> {
 //	Collection<TodoUser> findTodoUsersByTodoId(TodoUserPk id);
 
-	Collection<TodoUser> findAllTodoUsersById(TodoUserPk id);
+	Collection<TodoUser> findAllTodoUsersByPk(TodoUserPk id);
 }

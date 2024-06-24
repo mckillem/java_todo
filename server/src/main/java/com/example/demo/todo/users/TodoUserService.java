@@ -23,6 +23,6 @@ public class TodoUserService {
 	}
 
 	public Collection<TodoUser> getAllUsersByTodo(TodoUserPk todoId) {
-		return todoUserRepository.findAllTodoUsersById(todoId);
+		return todoUserRepository.findAllTodoUsersByPk(todoId);
 	}
 }
