@@ -53,6 +53,10 @@ export default function AddForm({ fetchTodos, projectId }) {
 				console.error(err);
 			}
 
+			setContent("");
+			setDescription("");
+			setState("");
+			setUser([]);
 			setSuccess(true);
 			handleClose();
 		}

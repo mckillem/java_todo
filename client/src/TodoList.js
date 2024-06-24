@@ -49,6 +49,8 @@ function TodoList() {
 					signal: controller.signal
 				});
 				isMounted && setTodos(response.data);
+				// todo: neustále načítá
+				// setSuccess(true);
 			} catch (err) {
 				console.log("nějaká chyba v todolistu: " + err);
 
@@ -63,11 +65,13 @@ function TodoList() {
 			isMounted = false;
 			isMounted && controller.abort();
 		}
+	// 	todo: sice obnoví po přidání úkolu ale neobnoví při změně projektu
 	}, [success]);
 
 	const removeTodo = async (todoId) => {
 		try {
 			await axiosPrivate.delete('/todos/' + todoId);
+			setSuccess(true);
 		} catch (err) {
 			console.error(err);
 		}
