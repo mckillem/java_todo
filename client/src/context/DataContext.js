@@ -5,6 +5,7 @@ const DataContext = createContext({});
 export const DataProvider = ({ children }) => {
 	const [fetchError, setFetchError] = useState(null);
 	const [projectName, setProjectName] = useState("");
+	const [success, setSuccess] = useState(false);
 
 	function getStyles(name, user, theme, users) {
 		return {
@@ -18,7 +19,8 @@ export const DataProvider = ({ children }) => {
 	return (
 		<DataContext.Provider value={{
 			fetchError, setFetchError, getStyles,
-			projectName, setProjectName
+			projectName, setProjectName,
+			success, setSuccess
 		}}>
 			{children}
 		</DataContext.Provider>

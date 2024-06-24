@@ -19,7 +19,7 @@ function ListOfProjects() {
 	const [fetchError] = useState(null);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const {setProjectName} = useContext(DataContext);
+	const { setProjectName, success, setSuccess } = useContext(DataContext);
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
@@ -50,12 +50,13 @@ function ListOfProjects() {
 		}
 
 		getProjects();
+		setSuccess(false);
 
 		return () => {
 			isMounted = false;
 			isMounted && controller.abort();
 		}
-	}, [projects]);
+	}, [success]);
 
 	const Projects = (
 		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>

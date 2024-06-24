@@ -16,7 +16,7 @@ export default function AddProject() {
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const { getStyles} = useContext(DataContext);
+	const { getStyles, setSuccess } = useContext(DataContext);
 	const theme = useTheme();
 	const axiosPrivate = useAxiosPrivate();
 	const [users, setUsers] = useState([]);
@@ -48,6 +48,7 @@ export default function AddProject() {
 
 			setName("");
 			setDescription("");
+			setSuccess(true);
 			handleClose();
 		}
 
@@ -88,7 +89,7 @@ export default function AddProject() {
 
 		return () => {
 			isMounted = false;
-			isMounted && controller.abort()
+			isMounted && controller.abort();
 		}
 	}, [])
 

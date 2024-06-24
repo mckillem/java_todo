@@ -10,7 +10,7 @@ import useAxiosPrivate from "./hooks/useAxiosPrivate";
 function TodoList() {
 	const [todos, setTodos] = useState([]);
 	const [allTodos, setAllTodos] = useState(true);
-	const { fetchError, projectName } = useContext(DataContext);
+	const { fetchError, projectName, success, setSuccess } = useContext(DataContext);
 	const { projectId } = useParams();
 	const axiosPrivate = useAxiosPrivate();
 	const navigate = useNavigate();
@@ -56,12 +56,13 @@ function TodoList() {
 		}
 
 		getTodosByProject();
+		setSuccess(false);
 
 		return () => {
 			isMounted = false;
 			isMounted && controller.abort();
 		}
-	}, [todos]);
+	}, [success]);
 
 	const removeTodo = async (todoId) => {
 		try {

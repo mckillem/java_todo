@@ -19,7 +19,7 @@ export default function AddForm({ fetchTodos, projectId }) {
 	const [description, setDescription] = useState("");
 	const [state, setState] = useState("");
 	const [states, setStates] = useState([]);
-	const { getStyles } = useContext(DataContext);
+	const { getStyles, setSuccess } = useContext(DataContext);
 	const theme = useTheme();
 	const axiosPrivate = useAxiosPrivate();
 	const [users, setUsers] = useState([]);
@@ -53,6 +53,7 @@ export default function AddForm({ fetchTodos, projectId }) {
 				console.error(err);
 			}
 
+			setSuccess(true);
 			handleClose();
 		}
 
@@ -93,7 +94,7 @@ export default function AddForm({ fetchTodos, projectId }) {
 
 		return () => {
 			isMounted = false;
-			isMounted && controller.abort()
+			isMounted && controller.abort();
 		}
 		}, [])
 
@@ -120,7 +121,7 @@ export default function AddForm({ fetchTodos, projectId }) {
 
 		return () => {
 			isMounted = false;
-			isMounted && controller.abort()
+			isMounted && controller.abort();
 		}
 	}, [])
 
