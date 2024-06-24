@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import * as React from "react";
 import DataContext from "./context/DataContext";
 import useAxiosPrivate from "./hooks/useAxiosPrivate";
+import UpdateTodoForm from "./UpdateTodoForm";
 
 function TodoList() {
 	const [todos, setTodos] = useState([]);
@@ -100,7 +101,7 @@ function TodoList() {
 				{fetchError && <p style={{ color: "red" }}>{`Chyba: ${fetchError}`}</p>}
 				{!fetchError && todos.length ? todos.map(todo => {
 					return <div key={todo.id}>
-						<Button variant="outlined">{todo.content}</Button>
+						<UpdateTodoForm todo={todo}/>
 						<Button onClick={() => removeTodo(todo.id)}>X</Button>
 					</div>
 				}) : "no todos"}
