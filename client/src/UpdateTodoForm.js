@@ -22,9 +22,8 @@ export default function UpdateTodoForm({ todo }) {
 	const theme = useTheme();
 	const axiosPrivate = useAxiosPrivate();
 	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState(todo.users);
+	const [user, setUser] = useState(todo.users.map(user => user.id));
 
-	console.log(todo)
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -59,7 +58,7 @@ export default function UpdateTodoForm({ todo }) {
 		updateTodo();
 	}
 
-	const handleChange = (event) => {
+	const handleSetUser = (event) => {
 		const {
 			target: { value },
 		} = event;
@@ -184,7 +183,7 @@ export default function UpdateTodoForm({ todo }) {
 						labelId="multiple-name-label"
 						multiple
 						value={user}
-						onChange={handleChange}
+						onChange={handleSetUser}
 						input={<OutlinedInput label="Name" />}
 					>
 						{users.map(u => (
