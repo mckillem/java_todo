@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -16,15 +17,16 @@ import java.util.stream.Collectors;
 @Table(name = "todos_to_users")
 @NoArgsConstructor
 @Builder
+@Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TodoUser {
 	@EmbeddedId
-	private TodoUserPk id;
+	private TodoUserPk pk;
 
 	public static Collection<TodoUser> from(Collection<User> users, Long todoId) {
 		return users.stream()
 				.map(u -> TodoUser.builder()
-						.id(TodoUserPk.of(u.getId(), todoId))
+						.pk(TodoUserPk.of(u.getId(), todoId))
 						.build())
 				.collect(Collectors.toList());
 	}

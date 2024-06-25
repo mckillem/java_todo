@@ -11,20 +11,18 @@ import Select from '@mui/material/Select';
 import {InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 import DataContext from "./context/DataContext";
 import useAxiosPrivate from "./hooks/useAxiosPrivate";
-import useAuth from "./hooks/useAuth";
 
-export default function AddForm({ fetchTodos, projectId }) {
+export default function UpdateTodoForm({ todo }) {
 	const [open, setOpen] = useState(false);
-	const [content, setContent] = useState("");
-	const [description, setDescription] = useState("");
-	const [state, setState] = useState("");
+	const [content, setContent] = useState(todo.content);
+	const [description, setDescription] = useState(todo.description);
+	const [state, setState] = useState(todo.state.id);
 	const [states, setStates] = useState([]);
 	const { getStyles, setSuccess } = useContext(DataContext);
 	const theme = useTheme();
 	const axiosPrivate = useAxiosPrivate();
 	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState([]);
-	const { auth } = useAuth();
+	const [user, setUser] = useState(todo.users.map(user => user.id));
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -34,37 +32,33 @@ export default function AddForm({ fetchTodos, projectId }) {
 		setOpen(false);
 	};
 
-	function add(event) {
+	function update(event) {
 		event.preventDefault();
 
-		const todo = {
-			createdBy: auth.id,
-			projectId: parseInt(projectId),
+		const todoObject = {
+			createdBy: todo.createdBy,
+			projectId: todo.projectId,
 			content: content,
 			description: description,
 			state: {"id": state},
 			users: user
 		}
 
-		const newTodo = async () => {
+		const updateTodo = async () => {
 			try {
-				const response = await axiosPrivate.post('/todos', todo);
+				await axiosPrivate.patch('/todos/' + todo.id, todoObject);
 			} catch (err) {
 				console.error(err);
 			}
 
-			setContent("");
-			setDescription("");
-			setState("");
-			setUser([]);
 			setSuccess(true);
 			handleClose();
 		}
 
-		newTodo();
+		updateTodo();
 	}
 
-	const handleChange = (event) => {
+	const handleSetUser = (event) => {
 		const {
 			target: { value },
 		} = event;
@@ -132,14 +126,15 @@ export default function AddForm({ fetchTodos, projectId }) {
 	return (
 		<Fragment>
 			<Button variant="outlined" onClick={handleClickOpen}>
-				Přidat úkol
+				{todo.content}
 			</Button>
+			<span>popis: {todo.description}</span>
 			<Dialog
 				open={open}
 				onClose={handleClose}
 				PaperProps={{
 					component: 'form',
-					onSubmit: add
+					onSubmit: update
 				}}
 			>
 				<DialogTitle>Úkol</DialogTitle>
@@ -188,7 +183,7 @@ export default function AddForm({ fetchTodos, projectId }) {
 						labelId="multiple-name-label"
 						multiple
 						value={user}
-						onChange={handleChange}
+						onChange={handleSetUser}
 						input={<OutlinedInput label="Name" />}
 					>
 						{users.map(u => (

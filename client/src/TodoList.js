@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import * as React from "react";
 import DataContext from "./context/DataContext";
 import useAxiosPrivate from "./hooks/useAxiosPrivate";
+import UpdateTodoForm from "./UpdateTodoForm";
 
 function TodoList() {
 	const [todos, setTodos] = useState([]);
@@ -48,6 +49,8 @@ function TodoList() {
 					signal: controller.signal
 				});
 				isMounted && setTodos(response.data);
+				// todo: neustále načítá
+				// setSuccess(true);
 			} catch (err) {
 				console.log("nějaká chyba v todolistu: " + err);
 
@@ -62,11 +65,13 @@ function TodoList() {
 			isMounted = false;
 			isMounted && controller.abort();
 		}
+	// 	todo: sice obnoví po přidání úkolu ale neobnoví při změně projektu
 	}, [success]);
 
 	const removeTodo = async (todoId) => {
 		try {
 			await axiosPrivate.delete('/todos/' + todoId);
+			setSuccess(true);
 		} catch (err) {
 			console.error(err);
 		}
@@ -100,7 +105,7 @@ function TodoList() {
 				{fetchError && <p style={{ color: "red" }}>{`Chyba: ${fetchError}`}</p>}
 				{!fetchError && todos.length ? todos.map(todo => {
 					return <div key={todo.id}>
-						<Button variant="outlined">{todo.content}</Button>
+						<UpdateTodoForm todo={todo}/>
 						<Button onClick={() => removeTodo(todo.id)}>X</Button>
 					</div>
 				}) : "no todos"}

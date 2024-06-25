@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/v1/todos/users/?id=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbmF0dGZmIiwiaWF0IjoxNzE5MjU0MTg4LCJleHAiOjE3MTkzNDA1ODh9.vG4J_KNuRA0dYQMUyLeftVHwGlyq4cwVPI7sX1lyhcw

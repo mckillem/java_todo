@@ -1,6 +1,7 @@
 package com.example.demo.todo.users;
 
 import com.example.demo.todo.users.model.TodoUser;
+import com.example.demo.todo.users.model.TodoUserPk;
 import com.example.demo.user.User;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,9 @@ public class TodoUserService {
 		Collection<TodoUser> from = TodoUser.from(users, todoId);
 		todoUserRepository.saveAll(from);
 		todoUserRepository.flush();
+	}
+
+	public Collection<TodoUser> getAllUsersByTodo(TodoUserPk todoId) {
+		return todoUserRepository.findAllTodoUsersByPk(todoId);
 	}
 }
