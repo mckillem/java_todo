@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
@@ -10,11 +9,14 @@ import {MenuList} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {deleteLocaleStorage} from "../localStorage/LocalStorage";
 import {useNavigate} from "react-router-dom";
+import {useEffect, useRef, useState} from "react";
+import useLogout from "../hooks/useLogout";
 
 export default function UserMenu() {
-	const [open, setOpen] = React.useState(false);
-	const anchorRef = React.useRef(null);
+	const [open, setOpen] = useState(false);
+	const anchorRef = useRef(null);
 	const navigate = useNavigate();
+	const logout = useLogout();
 
 	const handleToggle = () => {
 		setOpen((prevOpen) => !prevOpen);
@@ -28,10 +30,10 @@ export default function UserMenu() {
 		setOpen(false);
 	};
 
-	const handleLogout = () => {
-	  	deleteLocaleStorage();
-		//   todo: spravit
-		navigate("/login");
+	const handleSignOut = async () => {
+		await logout();
+		deleteLocaleStorage();
+		navigate('/login');
 	}
 
 	function handleListKeyDown(event) {
@@ -44,8 +46,9 @@ export default function UserMenu() {
 	}
 
 	// return focus to the button when we transitioned from !open -> open
-	const prevOpen = React.useRef(open);
-	React.useEffect(() => {
+	const prevOpen = useRef(open);
+
+	useEffect(() => {
 		if (prevOpen.current === true && open === false) {
 			anchorRef.current.focus();
 		}
@@ -92,7 +95,7 @@ export default function UserMenu() {
 									>
 										<MenuItem onClick={handleClose}>Profile</MenuItem>
 										<MenuItem onClick={handleClose}>My account</MenuItem>
-										<MenuItem onClick={handleLogout}>Logout</MenuItem>
+										<MenuItem onClick={handleSignOut}>Logout</MenuItem>
 									</MenuList>
 								</ClickAwayListener>
 							</Paper>

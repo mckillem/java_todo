@@ -22,18 +22,6 @@ export const setEmail = (email) => {
 	localStorage.setItem("email", email);
 }
 
-// export const getName = () => {
-// 	return localStorage.getItem("firstName") + " " + localStorage.getItem("lastName");
-// }
-//
-// export const setFirstName = (firstName) => {
-// 	localStorage.setItem("firstName", firstName);
-// }
-//
-// export const setLastName = (lastName) => {
-// 	localStorage.setItem("lastName",lastName);
-// }
-
 export const setUsernameLocal = (username) => {
 	localStorage.setItem("username",username);
 }

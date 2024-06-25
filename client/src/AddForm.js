@@ -6,23 +6,25 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addTodo} from "./client";
 import {Fragment, useContext, useEffect, useState} from "react";
-import {getAllStates} from "./client";
 import Select from '@mui/material/Select';
 import {InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 import DataContext from "./context/DataContext";
-import {getId} from "./localStorage/LocalStorage";
+import useAxiosPrivate from "./hooks/useAxiosPrivate";
+import useAuth from "./hooks/useAuth";
 
 export default function AddForm({ fetchTodos, projectId }) {
 	const [open, setOpen] = useState(false);
-	const [project, setProject] = useState(projectId);
 	const [content, setContent] = useState("");
 	const [description, setDescription] = useState("");
 	const [state, setState] = useState("");
 	const [states, setStates] = useState([]);
-	const { users, user, handleChange, setFetchError, getStyles } = useContext(DataContext);
+	const { getStyles, setSuccess } = useContext(DataContext);
 	const theme = useTheme();
+	const axiosPrivate = useAxiosPrivate();
+	const [users, setUsers] = useState([]);
+	const [user, setUser] = useState([]);
+	const { auth } = useAuth();
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -36,39 +38,92 @@ export default function AddForm({ fetchTodos, projectId }) {
 		event.preventDefault();
 
 		const todo = {
-			"createdBy": getId(),
-			"projectId": project,
-			"content": content,
-			"description": description,
-			"state": {"id": state},
-			"users": user
+			createdBy: auth.id,
+			projectId: parseInt(projectId),
+			content: content,
+			description: description,
+			state: {"id": state},
+			users: user
 		}
 
-		addTodo(todo)
-			.then(() => {
-				fetchTodos();
-			}).catch(() => {
-				setFetchError("Nepodařilo se vytvořit úkol.");
-		}).finally(() => {
-			setContent("");
-			setDescription("");
-			handleClose()
-		})
+		const newTodo = async () => {
+			try {
+				const response = await axiosPrivate.post('/todos', todo);
+			} catch (err) {
+				console.error(err);
+			}
+
+			setSuccess(true);
+			handleClose();
+		}
+
+		newTodo();
 	}
 
+	const handleChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+
+		setUser(
+			// On autofill we get a stringified value.
+			typeof value === 'number' ? value.split(',') : value,
+		);
+	};
+
 	useEffect(() => {
-		getAllStates()
-			.then(res => res.json())
-			.then(data => {
-				setStates(data.map(d => ({
+		let isMounted = true;
+		const controller = new AbortController();
+
+		const getStates = async () => {
+			try {
+				const response = await axiosPrivate.get('/todos/states', {
+					signal: controller.signal
+				});
+				isMounted && setStates(response.data.map(d => ({
 					key: d.id,
 					value: d.name,
 					label: d.text
 				})));
-			}).catch(() => {
-				setFetchError("Nepodařilo se načíst stav.");
-		});
+			} catch (err) {
+				console.error(err);
+			}
+		}
+
+		getStates();
+
+		return () => {
+			isMounted = false;
+			isMounted && controller.abort();
+		}
 		}, [])
+
+	useEffect(() => {
+		let isMounted = true;
+		const controller = new AbortController();
+
+		const getUsers = async () => {
+			try {
+				const response = await axiosPrivate.get('/users', {
+					signal: controller.signal
+				});
+				isMounted && setUsers(response.data.map(d => ({
+					key: d.id,
+					value: d.username,
+					label: d.username
+				})));
+			} catch (err) {
+				console.error(err);
+			}
+		}
+
+		getUsers();
+
+		return () => {
+			isMounted = false;
+			isMounted && controller.abort();
+		}
+	}, [])
 
 	return (
 		<Fragment>

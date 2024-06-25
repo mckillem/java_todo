@@ -2,8 +2,8 @@ import {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from "@mui/material/TextField";
-import {loginUser} from "./client";
-import {setEmail, setId, setRoles, setToken, setTokenType, setUsernameLocal} from "./localStorage/LocalStorage";
+import {loginUser} from "../client";
+import {setEmail, setId, setRoles, setToken, setTokenType, setUsernameLocal} from "../localStorage/LocalStorage";
 import {useNavigate} from "react-router-dom";
 
 function Login() {

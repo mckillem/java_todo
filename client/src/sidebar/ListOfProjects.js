@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
@@ -8,12 +8,18 @@ import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import AddProject from "../AddProject";
-import {setProjectName} from "../localStorage/LocalStorage";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import {useLocation, useNavigate} from "react-router-dom";
 import DataContext from "../context/DataContext";
 
 function ListOfProjects() {
 	const [open, setOpen] = useState(true);
-	const { fetchError, projects } = useContext(DataContext);
+	const [projects, setProjects] = useState([]);
+	const axiosPrivate = useAxiosPrivate();
+	const [fetchError] = useState(null);
+	const navigate = useNavigate();
+	const location = useLocation();
+	const { setProjectName, success, setSuccess } = useContext(DataContext);
 
 	const toggleDrawer = (newOpen) => () => {
 		setOpen(newOpen);
@@ -21,9 +27,36 @@ function ListOfProjects() {
 
 	function todos(project) {
 		setProjectName(project.name);
-		// todo: změnit aby se nenačítala stráka ale jen se načetla data
-		window.location.href= project.id;
+
+		navigate("/" + project.id);
 	}
+
+	useEffect(() => {
+		let isMounted = true;
+		const controller = new AbortController();
+
+		const getProjects = async () => {
+
+			try {
+				const response = await axiosPrivate.get('/projects', {
+					signal: controller.signal
+				});
+				isMounted && setProjects(response.data);
+			} catch (err) {
+				console.error(err)
+
+				navigate('/login', { state: { from: location }, replace: true });
+			}
+		}
+
+		getProjects();
+		setSuccess(false);
+
+		return () => {
+			isMounted = false;
+			isMounted && controller.abort();
+		}
+	}, [success]);
 
 	const Projects = (
 		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>

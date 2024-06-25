@@ -1,47 +1,11 @@
-import { createContext, useState, useEffect } from 'react';
-import {getAllProjects, getAllUsers} from "../client";
+import { createContext, useState } from 'react';
 
 const DataContext = createContext({});
 
 export const DataProvider = ({ children }) => {
-	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState([]);
-	const [projects, setProjects] = useState([]);
 	const [fetchError, setFetchError] = useState(null);
-
-	 const fetchUsers = () =>
-		getAllUsers()
-			.then(res => res.json())
-			.then(data => {
-				setUsers(data.map(d => ({
-					key: d.id,
-					value: d.username,
-					label: d.username
-				})));
-			}).catch(() => {
-				setFetchError("Nepodařilo se načíst uživatelé.")
-		});
-
-	const fetchProjects = () => {
-		getAllProjects()
-			.then(res => res.json())
-			.then(data => {
-				setProjects(data);
-			}).catch(() => {
-				setFetchError("Nepodařilo se načíst projekty.");
-		});
-	}
-
-	const handleChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-
-		setUser(
-			// On autofill we get a stringified value.
-			typeof value === 'number' ? value.split(',') : value,
-		);
-	};
+	const [projectName, setProjectName] = useState("");
+	const [success, setSuccess] = useState(false);
 
 	function getStyles(name, user, theme, users) {
 		return {
@@ -52,19 +16,11 @@ export const DataProvider = ({ children }) => {
 		};
 	}
 
-	useEffect(() => {
-		fetchUsers();
-	}, [])
-
-	useEffect(() => {
-		fetchProjects();
-	}, []);
-
 	return (
 		<DataContext.Provider value={{
-			fetchError, setFetchError,
-			users, user, handleChange,
-			projects, setProjects, fetchProjects, getStyles
+			fetchError, setFetchError, getStyles,
+			projectName, setProjectName,
+			success, setSuccess
 		}}>
 			{children}
 		</DataContext.Provider>

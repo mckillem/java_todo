@@ -6,18 +6,21 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {addProject} from "./client";
-import {Fragment, useContext, useState} from "react";
+import {Fragment, useContext, useEffect, useState} from "react";
 import Select from '@mui/material/Select';
 import {FormControl, InputLabel, MenuItem, OutlinedInput, useTheme} from "@mui/material";
 import DataContext from "./context/DataContext";
+import useAxiosPrivate from "./hooks/useAxiosPrivate";
 
 export default function AddProject() {
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
-	const { users, user, handleChange, setFetchError, fetchProjects, getStyles} = useContext(DataContext);
+	const { getStyles, setSuccess } = useContext(DataContext);
 	const theme = useTheme();
+	const axiosPrivate = useAxiosPrivate();
+	const [users, setUsers] = useState([]);
+	const [user, setUser] = useState([]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -31,22 +34,64 @@ export default function AddProject() {
 		event.preventDefault();
 
 		const project = {
-			"name": name,
-			"description": description,
-			"users": user
+			name: name,
+			description: description,
+			users: user
 		}
 
-		addProject(project)
-			.then(() => {
-				fetchProjects();
-			}).catch(() => {
-				setFetchError("Nepodařilo se uložit projekt.");
-		}).finally(() => {
+		const newProject = async () => {
+			try {
+				const response = await axiosPrivate.post('/projects', project);
+			} catch (err) {
+				console.error(err);
+			}
+
 			setName("");
 			setDescription("");
-			handleClose()
-		})
+			setSuccess(true);
+			handleClose();
+		}
+
+		newProject();
 	}
+
+	const handleChange = (event) => {
+		const {
+			target: { value },
+		} = event;
+
+		setUser(
+			// On autofill we get a stringified value.
+			typeof value === 'number' ? value.split(',') : value,
+		);
+	};
+
+	useEffect(() => {
+		let isMounted = true;
+		const controller = new AbortController();
+
+		const getUsers = async () => {
+			try {
+				const response = await axiosPrivate.get('/users', {
+					signal: controller.signal
+				});
+				isMounted && setUsers(response.data.map(d => ({
+					key: d.id,
+					value: d.username,
+					label: d.username
+				})));
+			} catch (err) {
+				console.error(err);
+			}
+		}
+
+		getUsers();
+
+		return () => {
+			isMounted = false;
+			isMounted && controller.abort();
+		}
+	}, [])
 
 	return (
 		<Fragment>
