@@ -15,7 +15,7 @@
 	<name>todo</name>
 	<description>Todo</description>
 	<properties>
-		<java.version>19</java.version>
+		<java.version>22</java.version>
 		<frontend-maven-plugin.version>1.14.2</frontend-maven-plugin.version>
 		<node.version>v20.9.0</node.version>
 		<npm.version>10.1.0</npm.version>
@@ -115,7 +115,7 @@
 				<version>3.3.1</version>
 				<configuration>
 					<from>
-						<image>openjdk:19</image>
+						<image>eclipse-temurin:22.0.1_8-jre-alpine</image>
 					</from>
 					<container>
 						<ports>
@@ -141,7 +141,7 @@
 						<version>3.3.1</version>
 						<configuration>
 							<from>
-								<image>openjdk:19</image>
+								<image>eclipse-temurin:22.0.1_8-jre-alpine</image>
 							</from>
 							<container>
 								<ports>
@@ -193,7 +193,7 @@
 						<version>3.3.1</version>
 						<configuration>
 							<from>
-								<image>openjdk:19</image>
+								<image>eclipse-temurin:22.0.1_8-jre-alpine</image>
 							</from>
 							<container>
 								<ports>
