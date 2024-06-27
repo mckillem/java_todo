@@ -245,7 +245,7 @@
                                   https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
 						<version>1.14.2</version>
 						<configuration>
-							<nodeVersion>v4.6.0</nodeVersion>
+							<nodeVersion>${node.version}</nodeVersion>
 							<workingDirectory>./client</workingDirectory>
 						</configuration>
 						<executions>
