@@ -13,12 +13,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>todo</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Todo</description>
 	<properties>
 		<java.version>19</java.version>
 		<frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
 		<node.version>v20.9.0</node.version>
 		<npm.version>10.1.0</npm.version>
+		<app.image.name>todo</app.image.name>
+		<app.image.tag/>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -91,76 +93,291 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/classes/static</outputDirectory>
-							<resources>
-								<resource>
-									<directory>app/build</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.14.2</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<workingDirectory>./client</workingDirectory>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
 				</configuration>
-				<executions>
-					<execution>
-						<id>install node</id>
-						<goals>
-							<goal>install-node-and-npm</goal>
-						</goals>
-						<configuration>
-							<nodeVersion>${node.version}</nodeVersion>
-							<npmVersion>${npm.version}</npmVersion>
-						</configuration>
-					</execution>
-					<execution>
-						<id>npm install</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<phase>generate-resources</phase>
-					</execution>
-					<execution>
-						<id>npm test</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<phase>test</phase>
-						<configuration>
-							<arguments>test</arguments>
-							<environmentVariables>
-								<CI>true</CI>
-							</environmentVariables>
-						</configuration>
-					</execution>
-					<execution>
-						<id>npm build</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<phase>compile</phase>
-						<configuration>
-							<arguments>run build</arguments>
-						</configuration>
-					</execution>
-				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.3.1</version>
+				<configuration>
+					<from>
+						<image>openjdk:19</image>
+					</from>
+					<container>
+						<ports>
+							<port>8080</port>
+						</ports>
+						<format>OCI</format>
+					</container>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>jib-push-to-dockerhub</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.google.cloud.tools</groupId>
+						<artifactId>jib-maven-plugin</artifactId>
+						<version>3.3.1</version>
+						<configuration>
+							<from>
+								<image>openjdk:19</image>
+							</from>
+							<container>
+								<ports>
+									<port>8080</port>
+								</ports>
+								<format>OCI</format>
+							</container>
+						</configuration>
+						<executions>
+							<execution>
+								<id>push-custom-tag</id>
+								<phase>package</phase>
+								<configuration>
+									<to>
+										<image>docker.io/mckillem/${app.image.name}:${app.image.tag}</image>
+									</to>
+								</configuration>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>push-latest-tag</id>
+								<phase>package</phase>
+								<configuration>
+									<to>
+										<image>docker.io/mckillem/${app.image.name}:latest</image>
+									</to>
+								</configuration>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>jib-push-to-local</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.google.cloud.tools</groupId>
+						<artifactId>jib-maven-plugin</artifactId>
+						<version>3.3.1</version>
+						<configuration>
+							<from>
+								<image>openjdk:19</image>
+							</from>
+							<container>
+								<ports>
+									<port>8080</port>
+								</ports>
+								<format>OCI</format>
+							</container>
+						</configuration>
+						<executions>
+							<execution>
+								<id>push-custom-tag</id>
+								<phase>package</phase>
+								<configuration>
+									<to>
+										<image>mckillem/${app.image.name}:${app.image.tag}</image>
+									</to>
+								</configuration>
+								<goals>
+									<goal>dockerBuild</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>push-latest-tag</id>
+								<phase>package</phase>
+								<configuration>
+									<to>
+										<image>mckillem/${app.image.name}:latest</image>
+									</to>
+								</configuration>
+								<goals>
+									<goal>dockerBuild</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>build-frontend</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<!-- Use the latest released version:
+                                  https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
+						<version>1.11.2</version>
+						<configuration>
+							<nodeVersion>v4.6.0</nodeVersion>
+							<workingDirectory>./client</workingDirectory>
+						</configuration>
+						<executions>
+							<execution>
+								<id>install node and npm</id>
+								<goals>
+									<goal>install-node-and-npm</goal>
+								</goals>
+								<configuration>
+									<nodeVersion>${node.version}</nodeVersion>
+									<npmVersion>${npm.version}</npmVersion>
+								</configuration>
+							</execution>
+							<execution>
+								<id>npm install</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<configuration>
+									<arguments>install</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>npm run build</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<configuration>
+									<arguments>run build</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-build-folder</id>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<resources>
+										<resource>
+											<directory>app/build</directory>
+										</resource>
+									</resources>
+									<outputDirectory>${basedir}/target/classes/static</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+
+	<!--	<build>-->
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<artifactId>maven-resources-plugin</artifactId>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>copy-resources</id>-->
+<!--						<phase>process-classes</phase>-->
+<!--						<goals>-->
+<!--							<goal>copy-resources</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<outputDirectory>${basedir}/target/classes/static</outputDirectory>-->
+<!--							<resources>-->
+<!--								<resource>-->
+<!--									<directory>app/build</directory>-->
+<!--								</resource>-->
+<!--							</resources>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
+<!--			<plugin>-->
+<!--				<groupId>com.github.eirslett</groupId>-->
+<!--				<artifactId>frontend-maven-plugin</artifactId>-->
+<!--				<version>1.14.2</version>-->
+<!--				<configuration>-->
+<!--					<workingDirectory>./client</workingDirectory>-->
+<!--				</configuration>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>install node</id>-->
+<!--						<goals>-->
+<!--							<goal>install-node-and-npm</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<nodeVersion>${node.version}</nodeVersion>-->
+<!--							<npmVersion>${npm.version}</npmVersion>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>npm install</id>-->
+<!--						<goals>-->
+<!--							<goal>npm</goal>-->
+<!--						</goals>-->
+<!--						<phase>generate-resources</phase>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>npm test</id>-->
+<!--						<goals>-->
+<!--							<goal>npm</goal>-->
+<!--						</goals>-->
+<!--						<phase>test</phase>-->
+<!--						<configuration>-->
+<!--							<arguments>test</arguments>-->
+<!--							<environmentVariables>-->
+<!--								<CI>true</CI>-->
+<!--							</environmentVariables>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>npm build</id>-->
+<!--						<goals>-->
+<!--							<goal>npm</goal>-->
+<!--						</goals>-->
+<!--						<phase>compile</phase>-->
+<!--						<configuration>-->
+<!--							<arguments>run build</arguments>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
+<!--		</plugins>-->
+<!--	</build>-->
 
 </project>
