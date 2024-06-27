@@ -115,7 +115,7 @@
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>1.14.2</version>
 				<configuration>
-					<workingDirectory>../client</workingDirectory>
+					<workingDirectory>./client</workingDirectory>
 				</configuration>
 				<executions>
 					<execution>
