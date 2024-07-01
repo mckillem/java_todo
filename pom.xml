@@ -145,11 +145,13 @@
 							<from>
 								<image>eclipse-temurin:22.0.1_8-jre-alpine</image>
 								<platforms>
+									<digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>
 									<platform>
 										<architecture>amd64</architecture>
 										<os>linux</os>
 									</platform>
 									<platform>
+										<digest>sha256:78bcd3a4e163af9cb51c4ee73c1ccc26bfe42ca6217b2c62bd38b6b060ea076c</digest>
 										<architecture>arm64</architecture>
 										<os>linux</os>
 									</platform>
@@ -207,10 +209,12 @@
 							<from>
 								<image>eclipse-temurin:22.0.1_8-jre-alpine</image>
 								<platforms>
+									<digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>
 									<platform>
 										<architecture>amd64</architecture>
 										<os>linux</os>
 									</platform>
+									<digest>sha256:78bcd3a4e163af9cb51c4ee73c1ccc26bfe42ca6217b2c62bd38b6b060ea076c</digest>
 									<platform>
 										<architecture>arm64</architecture>
 										<os>linux</os>
