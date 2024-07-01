@@ -21,6 +21,9 @@
 		<npm.version>10.1.0</npm.version>
 		<app.image.name>todo</app.image.name>
 		<app.image.tag/>
+<!--		<app.image.platform.amd>amd64</app.image.platform.amd>-->
+<!--		<app.image.platform.arm>arm64</app.image.platform.arm>-->
+		<app.image.platform/>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -170,7 +173,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>docker.io/mckillem/${app.image.name}:${app.image.tag}</image>
+										<image>docker.io/mckillem/${app.image.name}_${app.image.platform}:${app.image.tag}</image>
 									</to>
 								</configuration>
 								<goals>
@@ -182,7 +185,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>docker.io/mckillem/${app.image.name}:latest</image>
+										<image>docker.io/mckillem/${app.image.name}_${app.image.platform}:latest</image>
 									</to>
 								</configuration>
 								<goals>
@@ -234,7 +237,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>mckillem/${app.image.name}:${app.image.tag}</image>
+										<image>mckillem/${app.image.name}_${app.image.platform}:${app.image.tag}</image>
 									</to>
 								</configuration>
 								<goals>
@@ -246,7 +249,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>mckillem/${app.image.name}:latest</image>
+										<image>mckillem/${app.image.name}_${app.image.platform}:latest</image>
 									</to>
 								</configuration>
 								<goals>
