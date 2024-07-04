@@ -21,9 +21,8 @@
 		<npm.version>10.1.0</npm.version>
 		<app.image.name>todo</app.image.name>
 		<app.image.tag/>
-<!--		<app.image.platform.amd>amd64</app.image.platform.amd>-->
-<!--		<app.image.platform.arm>arm64</app.image.platform.arm>-->
-		<app.image.platform/>
+		<app.image.platform.amd>amd64</app.image.platform.amd>
+		<app.image.platform.arm>arm64</app.image.platform.arm>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -134,7 +133,7 @@
 	</build>
 	<profiles>
 		<profile>
-			<id>jib-push-to-dockerhub</id>
+			<id>jib-push-to-dockerhub-amd</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
@@ -153,8 +152,62 @@
 										<architecture>amd64</architecture>
 										<os>linux</os>
 									</platform>
+								</platforms>
+							</from>
+							<container>
+								<ports>
+									<port>8080</port>
+								</ports>
+								<format>OCI</format>
+							</container>
+						</configuration>
+						<executions>
+							<execution>
+								<id>push-custom-tag</id>
+								<phase>package</phase>
+								<configuration>
+									<to>
+										<image>docker.io/mckillem/${app.image.name}_${app.image.platform.amd}:${app.image.tag}</image>
+									</to>
+								</configuration>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>push-latest-tag</id>
+								<phase>package</phase>
+								<configuration>
+									<to>
+										<image>docker.io/mckillem/${app.image.name}_${app.image.platform.amd}:latest</image>
+									</to>
+								</configuration>
+								<goals>
+									<goal>build</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>jib-push-to-dockerhub-arm</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.google.cloud.tools</groupId>
+						<artifactId>jib-maven-plugin</artifactId>
+						<version>3.3.1</version>
+						<configuration>
+							<from>
+								<image>eclipse-temurin:22.0.1_8-jre-alpine</image>
+								<platforms>
+									<digest>sha256:78bcd3a4e163af9cb51c4ee73c1ccc26bfe42ca6217b2c62bd38b6b060ea076c</digest>
 									<platform>
-										<digest>sha256:78bcd3a4e163af9cb51c4ee73c1ccc26bfe42ca6217b2c62bd38b6b060ea076c</digest>
 										<architecture>arm64</architecture>
 										<os>linux</os>
 									</platform>
@@ -173,7 +226,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>docker.io/mckillem/${app.image.name}_${app.image.platform}:${app.image.tag}</image>
+										<image>docker.io/mckillem/${app.image.name}_${app.image.platform.arm}:${app.image.tag}</image>
 									</to>
 								</configuration>
 								<goals>
@@ -185,7 +238,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>docker.io/mckillem/${app.image.name}_${app.image.platform}:latest</image>
+										<image>docker.io/mckillem/${app.image.name}_${app.image.platform.arm}:latest</image>
 									</to>
 								</configuration>
 								<goals>
