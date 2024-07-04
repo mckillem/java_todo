@@ -170,7 +170,14 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>docker.io/mckillem/${app.image.name}_${app.image.platform.amd}:${app.image.tag}</image>
+										<image>docker.io/mckillem/${app.image.name}-${app.image.platform.amd}:${app.image.tag}</image>
+										<platforms>
+											<digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>
+											<platform>
+												<architecture>amd64</architecture>
+												<os>linux</os>
+											</platform>
+										</platforms>
 									</to>
 								</configuration>
 								<goals>
@@ -182,7 +189,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>docker.io/mckillem/${app.image.name}_${app.image.platform.amd}:latest</image>
+										<image>docker.io/mckillem/${app.image.name}-${app.image.platform.amd}:latest</image>
 									</to>
 								</configuration>
 								<goals>
