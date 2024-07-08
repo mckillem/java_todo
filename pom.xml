@@ -133,12 +133,13 @@
 	</build>
 	<profiles>
 		<profile>
-			<id>jib-push-to-dockerhub-amd</id>
+			<id>jib-push-to-dockerhub</id>
+<!--			<id>jib-push-to-dockerhub-amd</id>-->
 			<activation>
 				<activeByDefault>false</activeByDefault>
-				<os>
-					<arch>amd64</arch>
-				</os>
+<!--				<os>-->
+<!--					<arch>amd64</arch>-->
+<!--				</os>-->
 			</activation>
 			<build>
 				<plugins>
@@ -149,13 +150,13 @@
 						<configuration>
 							<from>
 								<image>eclipse-temurin:22.0.1_8-jre-alpine</image>
-								<platforms>
-									<digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>
-									<platform>
-										<architecture>amd64</architecture>
-										<os>linux</os>
-									</platform>
-								</platforms>
+<!--								<platforms>-->
+<!--									<digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>-->
+<!--									<platform>-->
+<!--										<architecture>amd64</architecture>-->
+<!--										<os>linux</os>-->
+<!--									</platform>-->
+<!--								</platforms>-->
 							</from>
 							<container>
 								<ports>
@@ -170,14 +171,15 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>docker.io/mckillem/${app.image.name}-${app.image.platform.amd}:${app.image.tag}</image>
-										<platforms>
-											<digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>
-											<platform>
-												<architecture>amd64</architecture>
-												<os>linux</os>
-											</platform>
-										</platforms>
+										<image>docker.io/mckillem/${app.image.name}:${app.image.tag}</image>
+<!--										<image>docker.io/mckillem/${app.image.name}-${app.image.platform.amd}:${app.image.tag}</image>-->
+<!--										<platforms>-->
+<!--											<digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>-->
+<!--											<platform>-->
+<!--												<architecture>amd64</architecture>-->
+<!--												<os>linux</os>-->
+<!--											</platform>-->
+<!--										</platforms>-->
 									</to>
 								</configuration>
 								<goals>
@@ -189,7 +191,8 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>docker.io/mckillem/${app.image.name}-${app.image.platform.amd}:latest</image>
+										<image>docker.io/mckillem/${app.image.name}:latest</image>
+<!--										<image>docker.io/mckillem/${app.image.name}-${app.image.platform.amd}:latest</image>-->
 									</to>
 								</configuration>
 								<goals>
@@ -303,7 +306,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>mckillem/${app.image.name}_${app.image.platform}:${app.image.tag}</image>
+<!--										<image>mckillem/${app.image.name}_${app.image.platform}:${app.image.tag}</image>-->
 									</to>
 								</configuration>
 								<goals>
@@ -315,7 +318,7 @@
 								<phase>package</phase>
 								<configuration>
 									<to>
-										<image>mckillem/${app.image.name}_${app.image.platform}:latest</image>
+<!--										<image>mckillem/${app.image.name}_${app.image.platform}:latest</image>-->
 									</to>
 								</configuration>
 								<goals>
