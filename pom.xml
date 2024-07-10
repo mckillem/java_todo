@@ -97,40 +97,54 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.example.demo.DemoApplication</mainClass>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-				<version>3.3.1</version>
-				<configuration>
-					<from>
-						<image>eclipse-temurin:22.0.1_8-jre-alpine</image>
-					</from>
-					<container>
-						<ports>
-							<port>8080</port>
-						</ports>
-						<format>OCI</format>
-					</container>
-				</configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
+
+<!--	dle amigoscode-->
+<!--	<build>-->
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-failsafe-plugin</artifactId>-->
+<!--			</plugin>-->
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--				<configuration>-->
+<!--					<mainClass>com.example.demo.DemoApplication</mainClass>-->
+<!--					<excludes>-->
+<!--						<exclude>-->
+<!--							<groupId>org.projectlombok</groupId>-->
+<!--							<artifactId>lombok</artifactId>-->
+<!--						</exclude>-->
+<!--					</excludes>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+<!--			<plugin>-->
+<!--				<groupId>com.google.cloud.tools</groupId>-->
+<!--				<artifactId>jib-maven-plugin</artifactId>-->
+<!--				<version>3.3.1</version>-->
+<!--				<configuration>-->
+<!--					<from>-->
+<!--						<image>eclipse-temurin:22.0.1_8-jre-alpine</image>-->
+<!--					</from>-->
+<!--					<container>-->
+<!--						<ports>-->
+<!--							<port>8080</port>-->
+<!--						</ports>-->
+<!--						<format>OCI</format>-->
+<!--					</container>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+<!--		</plugins>-->
+<!--	</build>-->
 	<profiles>
 		<profile>
 			<id>jib-push-to-dockerhub</id>
