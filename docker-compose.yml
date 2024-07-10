@@ -45,20 +45,20 @@ services:
     restart: always
     volumes:
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
-      - ./certbot/www:/var/www/certbot/:ro
-      - ./certbot/conf:/etc/letsencrypt
+#      - ./certbot/www:/var/www/certbot/:ro
+#      - ./certbot/conf:/etc/letsencrypt
     depends_on:
       - front-end
     networks:
       - todo-app
 
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf:/etc/letsencrypt
-    command:
-      - renew
+#  certbot:
+#    image: certbot/certbot:latest
+#    volumes:
+#      - ./certbot/www/:/var/www/certbot/:rw
+#      - ./certbot/conf:/etc/letsencrypt
+#    command:
+#      - renew
         #      - certonly
         #      - --webroot
         #      - -w
@@ -73,4 +73,4 @@ volumes:
   cert_home:
 
 networks:
-  submission-app:
+  todo-app:
