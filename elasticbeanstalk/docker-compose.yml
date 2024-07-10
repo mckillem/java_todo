@@ -1,7 +1,7 @@
 #version: "3.8"
 #services:
 #  backend:
-#    image: "mckillem/todo:4.7.2024.8.18.36"
+#    image: "mckillem/todo:10.7.2024.8.1.58"
 #    ports:
 #      - "8081:8081"
 #    restart: always
