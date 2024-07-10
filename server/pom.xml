@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.3</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <name>todo</name>
+    <description>Todo</description>
+    <properties>
+        <java.version>22</java.version>
+        <frontend-maven-plugin.version>1.14.2</frontend-maven-plugin.version>
+        <node.version>v20.9.0</node.version>
+        <npm.version>10.1.0</npm.version>
+        <app.image.name>todo</app.image.name>
+        <app.image.tag/>
+        <app.image.platform.amd>amd64</app.image.platform.amd>
+        <app.image.platform.arm>arm64</app.image.platform.arm>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>3.2.7</version>
+        </dependency>
+
+        <!--		<dependency>-->
+        <!--			<groupId>org.springframework.boot</groupId>-->
+        <!--			<artifactId>spring-boot-docker-compose</artifactId>-->
+        <!--			<scope>runtime</scope>-->
+        <!--			<optional>true</optional>-->
+        <!--		</dependency>-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--	dle amigoscode-->
+    <!--	<build>-->
+    <!--		<plugins>-->
+    <!--			<plugin>-->
+    <!--				<groupId>org.apache.maven.plugins</groupId>-->
+    <!--				<artifactId>maven-failsafe-plugin</artifactId>-->
+    <!--			</plugin>-->
+    <!--			<plugin>-->
+    <!--				<groupId>org.springframework.boot</groupId>-->
+    <!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+    <!--				<configuration>-->
+    <!--					<mainClass>com.example.demo.DemoApplication</mainClass>-->
+    <!--					<excludes>-->
+    <!--						<exclude>-->
+    <!--							<groupId>org.projectlombok</groupId>-->
+    <!--							<artifactId>lombok</artifactId>-->
+    <!--						</exclude>-->
+    <!--					</excludes>-->
+    <!--				</configuration>-->
+    <!--			</plugin>-->
+    <!--			<plugin>-->
+    <!--				<groupId>com.google.cloud.tools</groupId>-->
+    <!--				<artifactId>jib-maven-plugin</artifactId>-->
+    <!--				<version>3.3.1</version>-->
+    <!--				<configuration>-->
+    <!--					<from>-->
+    <!--						<image>eclipse-temurin:22.0.1_8-jre-alpine</image>-->
+    <!--					</from>-->
+    <!--					<container>-->
+    <!--						<ports>-->
+    <!--							<port>8080</port>-->
+    <!--						</ports>-->
+    <!--						<format>OCI</format>-->
+    <!--					</container>-->
+    <!--				</configuration>-->
+    <!--			</plugin>-->
+    <!--		</plugins>-->
+    <!--	</build>-->
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>jib-push-to-dockerhub</id>-->
+<!--            &lt;!&ndash;			<id>jib-push-to-dockerhub-amd</id>&ndash;&gt;-->
+<!--            <activation>-->
+<!--                <activeByDefault>false</activeByDefault>-->
+<!--                &lt;!&ndash;				<os>&ndash;&gt;-->
+<!--                &lt;!&ndash;					<arch>amd64</arch>&ndash;&gt;-->
+<!--                &lt;!&ndash;				</os>&ndash;&gt;-->
+<!--            </activation>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>com.google.cloud.tools</groupId>-->
+<!--                        <artifactId>jib-maven-plugin</artifactId>-->
+<!--                        <version>3.3.1</version>-->
+<!--                        <configuration>-->
+<!--                            <from>-->
+<!--                                <image>eclipse-temurin:22.0.1_8-jre-alpine</image>-->
+<!--                                &lt;!&ndash;								<platforms>&ndash;&gt;-->
+<!--                                &lt;!&ndash;									<digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>&ndash;&gt;-->
+<!--                                &lt;!&ndash;									<platform>&ndash;&gt;-->
+<!--                                &lt;!&ndash;										<architecture>amd64</architecture>&ndash;&gt;-->
+<!--                                &lt;!&ndash;										<os>linux</os>&ndash;&gt;-->
+<!--                                &lt;!&ndash;									</platform>&ndash;&gt;-->
+<!--                                &lt;!&ndash;								</platforms>&ndash;&gt;-->
+<!--                            </from>-->
+<!--                            <container>-->
+<!--                                <ports>-->
+<!--                                    <port>8080</port>-->
+<!--                                </ports>-->
+<!--                                <format>OCI</format>-->
+<!--                            </container>-->
+<!--                        </configuration>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>push-custom-tag</id>-->
+<!--                                <phase>package</phase>-->
+<!--                                <configuration>-->
+<!--                                    <to>-->
+<!--                                        <image>docker.io/mckillem/${app.image.name}:${app.image.tag}</image>-->
+<!--                                        &lt;!&ndash;										<image>docker.io/mckillem/${app.image.name}-${app.image.platform.amd}:${app.image.tag}</image>&ndash;&gt;-->
+<!--                                        &lt;!&ndash;										<platforms>&ndash;&gt;-->
+<!--                                        &lt;!&ndash;											<digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>&ndash;&gt;-->
+<!--                                        &lt;!&ndash;											<platform>&ndash;&gt;-->
+<!--                                        &lt;!&ndash;												<architecture>amd64</architecture>&ndash;&gt;-->
+<!--                                        &lt;!&ndash;												<os>linux</os>&ndash;&gt;-->
+<!--                                        &lt;!&ndash;											</platform>&ndash;&gt;-->
+<!--                                        &lt;!&ndash;										</platforms>&ndash;&gt;-->
+<!--                                    </to>-->
+<!--                                </configuration>-->
+<!--                                <goals>-->
+<!--                                    <goal>build</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>push-latest-tag</id>-->
+<!--                                <phase>package</phase>-->
+<!--                                <configuration>-->
+<!--                                    <to>-->
+<!--                                        <image>docker.io/mckillem/${app.image.name}:latest</image>-->
+<!--                                        &lt;!&ndash;										<image>docker.io/mckillem/${app.image.name}-${app.image.platform.amd}:latest</image>&ndash;&gt;-->
+<!--                                    </to>-->
+<!--                                </configuration>-->
+<!--                                <goals>-->
+<!--                                    <goal>build</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+<!--        <profile>-->
+<!--            <id>jib-push-to-dockerhub-arm</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>false</activeByDefault>-->
+<!--                <os>-->
+<!--                    <arch>arm64</arch>-->
+<!--                </os>-->
+<!--            </activation>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>com.google.cloud.tools</groupId>-->
+<!--                        <artifactId>jib-maven-plugin</artifactId>-->
+<!--                        <version>3.3.1</version>-->
+<!--                        <configuration>-->
+<!--                            <from>-->
+<!--                                <image>eclipse-temurin:22.0.1_8-jre-alpine</image>-->
+<!--                                <platforms>-->
+<!--                                    <digest>sha256:78bcd3a4e163af9cb51c4ee73c1ccc26bfe42ca6217b2c62bd38b6b060ea076c</digest>-->
+<!--                                    <platform>-->
+<!--                                        <architecture>arm64</architecture>-->
+<!--                                        <os>linux</os>-->
+<!--                                    </platform>-->
+<!--                                </platforms>-->
+<!--                            </from>-->
+<!--                            <container>-->
+<!--                                <ports>-->
+<!--                                    <port>8080</port>-->
+<!--                                </ports>-->
+<!--                                <format>OCI</format>-->
+<!--                            </container>-->
+<!--                        </configuration>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>push-custom-tag</id>-->
+<!--                                <phase>package</phase>-->
+<!--                                <configuration>-->
+<!--                                    <to>-->
+<!--                                        <image>docker.io/mckillem/${app.image.name}_${app.image.platform.arm}:${app.image.tag}</image>-->
+<!--                                    </to>-->
+<!--                                </configuration>-->
+<!--                                <goals>-->
+<!--                                    <goal>build</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>push-latest-tag</id>-->
+<!--                                <phase>package</phase>-->
+<!--                                <configuration>-->
+<!--                                    <to>-->
+<!--                                        <image>docker.io/mckillem/${app.image.name}_${app.image.platform.arm}:latest</image>-->
+<!--                                    </to>-->
+<!--                                </configuration>-->
+<!--                                <goals>-->
+<!--                                    <goal>build</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+<!--        <profile>-->
+<!--            <id>jib-push-to-local</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>false</activeByDefault>-->
+<!--            </activation>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>com.google.cloud.tools</groupId>-->
+<!--                        <artifactId>jib-maven-plugin</artifactId>-->
+<!--                        <version>3.3.1</version>-->
+<!--                        <configuration>-->
+<!--                            <from>-->
+<!--                                <image>eclipse-temurin:22.0.1_8-jre-alpine</image>-->
+<!--                                <platforms>-->
+<!--                                    <digest>sha256:7294e7c43aba19e457c7476e8fefffa2f89ed8167417935bcd576bd2cbd90de8</digest>-->
+<!--                                    <platform>-->
+<!--                                        <architecture>amd64</architecture>-->
+<!--                                        <os>linux</os>-->
+<!--                                    </platform>-->
+<!--                                    <digest>sha256:78bcd3a4e163af9cb51c4ee73c1ccc26bfe42ca6217b2c62bd38b6b060ea076c</digest>-->
+<!--                                    <platform>-->
+<!--                                        <architecture>arm64</architecture>-->
+<!--                                        <os>linux</os>-->
+<!--                                    </platform>-->
+<!--                                </platforms>-->
+<!--                            </from>-->
+<!--                            <container>-->
+<!--                                <ports>-->
+<!--                                    <port>8080</port>-->
+<!--                                </ports>-->
+<!--                                <format>OCI</format>-->
+<!--                            </container>-->
+<!--                        </configuration>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>push-custom-tag</id>-->
+<!--                                <phase>package</phase>-->
+<!--                                <configuration>-->
+<!--                                    <to>-->
+<!--                                        &lt;!&ndash;										<image>mckillem/${app.image.name}_${app.image.platform}:${app.image.tag}</image>&ndash;&gt;-->
+<!--                                    </to>-->
+<!--                                </configuration>-->
+<!--                                <goals>-->
+<!--                                    <goal>dockerBuild</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>push-latest-tag</id>-->
+<!--                                <phase>package</phase>-->
+<!--                                <configuration>-->
+<!--                                    <to>-->
+<!--                                        &lt;!&ndash;										<image>mckillem/${app.image.name}_${app.image.platform}:latest</image>&ndash;&gt;-->
+<!--                                    </to>-->
+<!--                                </configuration>-->
+<!--                                <goals>-->
+<!--                                    <goal>dockerBuild</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+<!--        <profile>-->
+<!--            <id>build-frontend</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>com.github.eirslett</groupId>-->
+<!--                        <artifactId>frontend-maven-plugin</artifactId>-->
+<!--                        &lt;!&ndash; Use the latest released version:-->
+<!--                                  https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ &ndash;&gt;-->
+<!--                        <version>${frontend-maven-plugin.version}</version>-->
+<!--                        <configuration>-->
+<!--                            <nodeVersion>${node.version}</nodeVersion>-->
+<!--                            <workingDirectory>./client</workingDirectory>-->
+<!--                        </configuration>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>install node and npm</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>install-node-and-npm</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <nodeVersion>${node.version}</nodeVersion>-->
+<!--                                    <npmVersion>${npm.version}</npmVersion>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>npm install</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>npm</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <arguments>install</arguments>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>npm run build</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>npm</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <arguments>run build</arguments>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                    <plugin>-->
+<!--                        <artifactId>maven-resources-plugin</artifactId>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>copy-build-folder</id>-->
+<!--                                <phase>process-classes</phase>-->
+<!--                                <goals>-->
+<!--                                    <goal>copy-resources</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <resources>-->
+<!--                                        <resource>-->
+<!--                                            <directory>client/build</directory>-->
+<!--                                        </resource>-->
+<!--                                    </resources>-->
+<!--                                    <outputDirectory>${basedir}/server/target/classes/static</outputDirectory>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+<!--    </profiles>-->
+
+
+    <!--	<build>-->
+    <!--		<plugins>-->
+    <!--			<plugin>-->
+    <!--				<artifactId>maven-resources-plugin</artifactId>-->
+    <!--				<executions>-->
+    <!--					<execution>-->
+    <!--						<id>copy-resources</id>-->
+    <!--						<phase>process-classes</phase>-->
+    <!--						<goals>-->
+    <!--							<goal>copy-resources</goal>-->
+    <!--						</goals>-->
+    <!--						<configuration>-->
+    <!--							<outputDirectory>${basedir}/target/classes/static</outputDirectory>-->
+    <!--							<resources>-->
+    <!--								<resource>-->
+    <!--									<directory>app/build</directory>-->
+    <!--								</resource>-->
+    <!--							</resources>-->
+    <!--						</configuration>-->
+    <!--					</execution>-->
+    <!--				</executions>-->
+    <!--			</plugin>-->
+    <!--			<plugin>-->
+    <!--				<groupId>com.github.eirslett</groupId>-->
+    <!--				<artifactId>frontend-maven-plugin</artifactId>-->
+    <!--				<version>1.14.2</version>-->
+    <!--				<configuration>-->
+    <!--					<workingDirectory>./client</workingDirectory>-->
+    <!--				</configuration>-->
+    <!--				<executions>-->
+    <!--					<execution>-->
+    <!--						<id>install node</id>-->
+    <!--						<goals>-->
+    <!--							<goal>install-node-and-npm</goal>-->
+    <!--						</goals>-->
+    <!--						<configuration>-->
+    <!--							<nodeVersion>${node.version}</nodeVersion>-->
+    <!--							<npmVersion>${npm.version}</npmVersion>-->
+    <!--						</configuration>-->
+    <!--					</execution>-->
+    <!--					<execution>-->
+    <!--						<id>npm install</id>-->
+    <!--						<goals>-->
+    <!--							<goal>npm</goal>-->
+    <!--						</goals>-->
+    <!--						<phase>generate-resources</phase>-->
+    <!--					</execution>-->
+    <!--					<execution>-->
+    <!--						<id>npm test</id>-->
+    <!--						<goals>-->
+    <!--							<goal>npm</goal>-->
+    <!--						</goals>-->
+    <!--						<phase>test</phase>-->
+    <!--						<configuration>-->
+    <!--							<arguments>test</arguments>-->
+    <!--							<environmentVariables>-->
+    <!--								<CI>true</CI>-->
+    <!--							</environmentVariables>-->
+    <!--						</configuration>-->
+    <!--					</execution>-->
+    <!--					<execution>-->
+    <!--						<id>npm build</id>-->
+    <!--						<goals>-->
+    <!--							<goal>npm</goal>-->
+    <!--						</goals>-->
+    <!--						<phase>compile</phase>-->
+    <!--						<configuration>-->
+    <!--							<arguments>run build</arguments>-->
+    <!--						</configuration>-->
+    <!--					</execution>-->
+    <!--				</executions>-->
+    <!--			</plugin>-->
+    <!--		</plugins>-->
+    <!--	</build>-->
+
+</project>
