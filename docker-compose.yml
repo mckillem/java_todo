@@ -9,7 +9,7 @@
 #      SPRING_PROFILES_ACTIVE: dev
 
 services:
-  db:
+  postgres-db:
     image: postgres:15.1-alpine
 #    build:
 #      context: elasticbeanstalk/database
@@ -18,8 +18,14 @@ services:
 #      POSTGRES_URL: jdbc:postgresql://localhost:5432/postgres
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - todo-app:/data/postgres
+    ports:
+      - "5432:5432"
     networks:
       - todo-app
+    restart: unless-stopped
 
   back-end:
     build:
@@ -34,7 +40,7 @@ services:
 #      db.username: postgres
 #      db.password: postgres
     depends_on:
-      - db
+      - postgres-db
     networks:
       - todo-app
 
@@ -54,7 +60,7 @@ services:
   webserver:
     image: nginx:latest
     ports:
-      - 80:80
+      - 81:80
       - 443:443
     restart: always
     volumes:
@@ -84,7 +90,8 @@ services:
       #      - assignments.coderscampus.com
 
 volumes:
-  cert_home:
+  todo-app:
 
 networks:
   todo-app:
+    driver: bridge
