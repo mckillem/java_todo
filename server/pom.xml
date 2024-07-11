@@ -23,6 +23,7 @@
         <app.image.tag/>
         <app.image.platform.amd>amd64</app.image.platform.amd>
         <app.image.platform.arm>arm64</app.image.platform.arm>
+        <src.dir>src/main/java</src.dir>
     </properties>
     <dependencies>
         <dependency>
@@ -95,19 +96,20 @@
     </dependencies>
 
     <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <version>3.2.3</version>-->
-<!--                <configuration>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
+                <configuration>
+                    <mainClass>com.example.demo.DemoApplication</mainClass>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
