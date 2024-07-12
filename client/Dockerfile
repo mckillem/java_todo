@@ -6,6 +6,7 @@ COPY . .
 # install node modules and build assets
 RUN npm install && npm run build
 
+#todo: potřebujeme?
 ## nginx state for serving content
 #FROM nginx:alpine
 #
